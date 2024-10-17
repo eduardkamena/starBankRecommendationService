@@ -4,14 +4,23 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
+@Configuration
 public class RecommendationsDataSourceConfiguration {
 
+    /*
+    Добавление настройку источника данных — DataSource
+    Для подключения используется connection pool HikariCP — это дефолтный connection pool,
+    который используется в Spring Boot.
+    Он сам устанавливает соединение с базой данных и поддерживает эти соединения
+     */
     @Bean(name = "recommendationsDataSource")
-    public DataSource recommendationsDataSource(@Value("${application.recommendations-db.url}") String recommendationsUrl) {
+    @Value("${application.recommendations-db.url}")
+    public DataSource recommendationsDataSource(String recommendationsUrl) {
         var dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(recommendationsUrl);
         dataSource.setDriverClassName("org.h2.Driver");
@@ -19,10 +28,10 @@ public class RecommendationsDataSourceConfiguration {
         return dataSource;
     }
 
+    // Добавление конфигурации для JdbcTemplate в класс конфигурации
     @Bean(name = "recommendationsJdbcTemplate")
-    public JdbcTemplate recommendationsJdbcTemplate(
-            @Qualifier("recommendationsDataSource") DataSource dataSource
-    ) {
+    @Qualifier("recommendationsDataSource")
+    public JdbcTemplate recommendationsJdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
