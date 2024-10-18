@@ -18,11 +18,16 @@ public class RecommendationsRepository {
     }
 
     // Тестовый SQL запрос в БД через JdbcTemplate
-    public int getRandomTransactionAmount(UUID user) {
+    public int getRandomTransactionAmount(UUID user_id, String transactionType, String productsType) {
         Integer result = jdbcTemplate.queryForObject(
-                "SELECT amount FROM transactions t WHERE t.user_id = ? LIMIT 1",
+                "SELECT SUM(t.AMOUNT) AS transactions_amount " +
+                        "FROM TRANSACTIONS t " +
+                        "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
+                        "WHERE t.TYPE = '" + transactionType + "' " +
+                        "AND p.TYPE = '" + productsType + "' " +
+                        "AND t.USER_ID = ?",
                 Integer.class,
-                user);
+                user_id);
         return result != null ? result : 0;
     }
 

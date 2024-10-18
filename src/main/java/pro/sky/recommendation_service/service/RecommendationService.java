@@ -4,6 +4,6 @@ import java.util.UUID;
 
 public interface RecommendationService {
 
-    int getRandomTransactionAmount(UUID user);
+    int getRandomTransactionAmount(UUID user_id, String transactionType, String productsType);
 
 }
