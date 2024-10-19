@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>pro.sky</groupId>
 	<artifactId>recommendation_service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>recommendation_service</name>
-	<description>Recommendation microservice of bank credit products</description>
+	<description>Recommendation microservice of bank products</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -30,6 +30,7 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
