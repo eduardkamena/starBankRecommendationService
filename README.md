@@ -12,4 +12,4 @@
 Проблемы и отзывы
 ---
 
-Если вы сталкнулись с какой-то проблемой или у вас есть предложения, пожалуйста откройте тему на GitHub https://github.com/eduardkamena/block4-coursework-recommendation_service/issues
+Если вы столкнулись с какой-то проблемой или у вас есть предложения, пожалуйста откройте тему на GitHub https://github.com/eduardkamena/block4-coursework-recommendation_service/issues
