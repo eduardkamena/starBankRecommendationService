@@ -1,16 +1,16 @@
 package pro.sky.recommendation_service.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RecommendationDTO {
 
-    String name;
-    UUID id;
-    String text;
+    private final String name;
+    private final UUID id;
+    private final String text;
 
 }

@@ -17,18 +17,29 @@ public class RecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Тестовый SQL запрос в БД через JdbcTemplate
-    public int getRandomTransactionAmount(UUID user_id, String transactionType, String productsType) {
+    // Join SQL запрос в БД на сумму транзакций пополнения или списания (transactionType) по продукту (productsType)
+    public int getTransactionAmount(UUID user_id, String productsType, String transactionType) {
         Integer result = jdbcTemplate.queryForObject(
                 "SELECT SUM(t.AMOUNT) AS transactions_amount " +
                         "FROM TRANSACTIONS t " +
                         "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
-                        "WHERE t.TYPE = '" + transactionType + "' " +
-                        "AND p.TYPE = '" + productsType + "' " +
+                        "WHERE p.TYPE = '" + productsType + "' " +
+                        "AND t.TYPE = '" + transactionType + "' " +
                         "AND t.USER_ID = ?",
                 Integer.class,
                 user_id);
         return result != null ? result : 0;
+    }
+
+    // Запрос в БД на наличие/отсутствия продукта у пользователя
+    public boolean isProductExists(UUID user_id, String productsType) {
+        String sql = "SELECT COUNT(*) " +
+                "FROM TRANSACTIONS t " +
+                "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
+                "WHERE p.TYPE = '" + productsType + "' " +
+                "AND t.USER_ID = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id);
+        return count != null && count > 0;
     }
 
 }
