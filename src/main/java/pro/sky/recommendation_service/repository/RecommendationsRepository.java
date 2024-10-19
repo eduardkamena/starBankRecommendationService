@@ -50,4 +50,14 @@ public class RecommendationsRepository {
         return count != null && count > 0;
     }
 
+    // Запрос в БД на наличие/отсутствия пользователя
+    public boolean isUserExists(UUID user_id) {
+        String sql = "SELECT COUNT(*) " +
+                "FROM USERS u " +
+                "WHERE u.ID = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id);
+        logger.info("Successfully SQL-request for user exists for user_id: {}", user_id);
+        return count != null && count > 0;
+    }
+
 }
