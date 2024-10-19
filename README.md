@@ -13,3 +13,7 @@
 ---
 
 Если вы столкнулись с какой-то проблемой или у вас есть предложения, пожалуйста откройте тему на [GitHub Issues](https://github.com/eduardkamena/block4-coursework-recommendation_service/issues)
+
+Версии и изменения
+---
+[Можно посмотреть тут](https://github.com/eduardkamena/block4-coursework-recommendation_service/blob/develop/CHANGELOG.md)
