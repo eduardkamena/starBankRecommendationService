@@ -7,7 +7,7 @@
 Документация
 ---
 
-Работа над свервисом продолжается. С подлной документацией можно ознакомиться в Wiki [Документация](https://github.com/eduardkamena/block4-coursework-recommendation_service/wiki)
+Работа над свервисом продолжается. С полной документацией можно ознакомиться в Wiki [Документация](https://github.com/eduardkamena/block4-coursework-recommendation_service/wiki)
 
 Проблемы и отзывы
 ---
