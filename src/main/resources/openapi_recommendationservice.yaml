@@ -1,0 +1,97 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Recommendation Service API",
+    "description": "Recommendation Service",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8085/",
+      "description": "Developer server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Контроллер рекомендаций",
+      "description": "Выполняет действия с рекомендациями"
+    }
+  ],
+  "paths": {
+    "/recommendation/{user_id}": {
+      "get": {
+        "tags": [
+          "Контроллер рекомендаций"
+        ],
+        "summary": "Получение рекомендаций",
+        "description": "Позволяет получить рекомендации для пользователя",
+        "operationId": "getUserRecommendation",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRecommendationsDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RecommendationDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Назвиние рекомендации"
+          },
+          "id": {
+            "type": "string",
+            "description": "Идентификатор рекомендации",
+            "format": "uuid"
+          },
+          "text": {
+            "type": "string",
+            "description": "Описание рекомендации"
+          }
+        },
+        "description": "Сущность рекомендации"
+      },
+      "UserRecommendationsDTO": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "Идентификатор клиента",
+            "format": "uuid"
+          },
+          "recommendations": {
+            "type": "array",
+            "description": "Рекомендации, доступные клиенту",
+            "items": {
+              "$ref": "#/components/schemas/RecommendationDTO"
+            }
+          }
+        },
+        "description": "Сущность клиента"
+      }
+    }
+  }
+}
