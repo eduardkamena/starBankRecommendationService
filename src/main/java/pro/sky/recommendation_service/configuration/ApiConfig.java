@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 url = "http://localhost:8085/",
                 description = "Developer server"
         )
-
 )
 public class ApiConfig {
+
 }

@@ -27,10 +27,16 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     @Override
     public UserRecommendationsDTO getAllRecommendations(UUID user_id) {
+
+        logger.info("Start getting in List<> all recommendations for user_id: {}", user_id);
         List<RecommendationDTO> recommendations = new ArrayList<>();
+
         for (RecommendationRuleSet rule : recommendationRuleSets) {
-            rule.checkRecommendation(user_id).ifPresent(recommendations::add);
+            rule.checkRecommendation(user_id)
+                    .ifPresent(recommendations::add);
+            logger.info("Adding result of getting recommendation to List<> for user_id: {}", user_id);
         }
+        logger.info("Transferring all found recommendations from List<> to UserRecommendationsDTO for user_id: {}", user_id);
         return new UserRecommendationsDTO(user_id, recommendations);
     }
 

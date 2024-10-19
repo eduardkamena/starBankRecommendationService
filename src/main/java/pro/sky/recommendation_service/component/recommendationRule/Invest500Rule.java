@@ -1,6 +1,8 @@
 package pro.sky.recommendation_service.component.recommendationRule;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import pro.sky.recommendation_service.component.RecommendationRuleSet;
 import pro.sky.recommendation_service.dto.RecommendationDTO;
@@ -30,18 +32,23 @@ public class Invest500Rule implements RecommendationRuleSet {
     String TRANSACTION_TYPE_DEPOSIT = "DEPOSIT"; // onlyInUpperCase
     int TRANSACTION_CONDITION = 1000;
 
+    private final Logger logger = LoggerFactory.getLogger(Invest500Rule.class);
+
     private final RecommendationsRepository recommendationsRepository;
 
     @Override
     public Optional<RecommendationDTO> checkRecommendation(UUID user_id) {
 
+        logger.info("Start checking {} recommendation for user_id: {}", NAME, user_id);
         if (hasDebitProduct(user_id)
                 && !hasInvestProduct(user_id)
                 && hasSavingDepositCondition(user_id)
         ) {
+            logger.info("Found {} recommendation for user_id: {}", NAME, user_id);
             return Optional.of(
                     new RecommendationDTO(NAME, ID, TEXT));
         }
+        logger.info("Not Found {} recommendation for user_id: {}", NAME, user_id);
         return Optional.empty();
     }
 

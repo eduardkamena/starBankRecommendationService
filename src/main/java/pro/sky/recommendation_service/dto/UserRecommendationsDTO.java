@@ -14,6 +14,7 @@ public class UserRecommendationsDTO {
 
     @Schema(description = "Идентификатор клиента")
     private final UUID user_id;
+
     @Schema(description = "Рекомендации, доступные клиенту")
     private final List<RecommendationDTO> recommendations;
 

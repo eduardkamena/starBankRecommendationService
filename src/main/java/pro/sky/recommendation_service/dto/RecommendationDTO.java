@@ -11,10 +11,12 @@ import java.util.UUID;
 @Schema(description = "Сущность рекомендации")
 public class RecommendationDTO {
 
-    @Schema(description = "Назвиние рекомендации")
+    @Schema(description = "Название рекомендации")
     private final String name;
+
     @Schema(description = "Идентификатор рекомендации")
     private final UUID id;
+
     @Schema(description = "Описание рекомендации")
     private final String text;
 
