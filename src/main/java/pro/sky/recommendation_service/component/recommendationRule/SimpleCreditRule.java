@@ -45,7 +45,7 @@ public class SimpleCreditRule implements RecommendationRuleSet {
     @Override
     public Optional<RecommendationDTO> checkRecommendation(UUID user_id) {
 
-        logger.info("Start checking {} recommendation for user_id: {}", NAME, user_id);
+        logger.info("Starting checking {} recommendation for user_id: {}", NAME, user_id);
         if (!hasCreditProduct(user_id)
                 && hasPositiveDebitBalance(user_id)
                 && hasDebitWithdrawCondition(user_id)

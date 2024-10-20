@@ -45,7 +45,7 @@ public class TopSavingRule implements RecommendationRuleSet {
     @Override
     public Optional<RecommendationDTO> checkRecommendation(UUID user_id) {
 
-        logger.info("Start checking {} recommendation for user_id: {}", NAME, user_id);
+        logger.info("Starting checking {} recommendation for user_id: {}", NAME, user_id);
         if (hasDebitProduct(user_id)
                 && (hasDebitDepositCondition(user_id) || hasSavingDepositCondition(user_id))
                 && hasPositiveDebitBalance(user_id)

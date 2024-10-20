@@ -39,7 +39,7 @@ public class Invest500Rule implements RecommendationRuleSet {
     @Override
     public Optional<RecommendationDTO> checkRecommendation(UUID user_id) {
 
-        logger.info("Start checking {} recommendation for user_id: {}", NAME, user_id);
+        logger.info("Starting checking {} recommendation for user_id: {}", NAME, user_id);
         if (hasDebitProduct(user_id)
                 && !hasInvestProduct(user_id)
                 && hasSavingDepositCondition(user_id)

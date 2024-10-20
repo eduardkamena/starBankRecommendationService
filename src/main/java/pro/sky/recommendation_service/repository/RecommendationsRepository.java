@@ -32,7 +32,7 @@ public class RecommendationsRepository {
                         "AND t.USER_ID = ?",
                 Integer.class,
                 user_id);
-        logger.info("Successfully SQL-request for transaction amount " +
+        logger.info("Executing a SQL query for user transactions amount " +
                 "for user_id: {} with product type: {} and transaction type: {}", user_id, productsType, transactionType);
         return result != null ? result : 0;
     }
@@ -45,7 +45,7 @@ public class RecommendationsRepository {
                 "WHERE p.TYPE = '" + productsType + "' " +
                 "AND t.USER_ID = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id);
-        logger.info("Successfully SQL-request for user product exists " +
+        logger.info("Executing a SQL query for the presence of a user product in the database " +
                 "for user_id: {} and product type: {}", user_id, productsType);
         return count != null && count > 0;
     }
@@ -56,7 +56,7 @@ public class RecommendationsRepository {
                 "FROM USERS u " +
                 "WHERE u.ID = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id);
-        logger.info("Successfully SQL-request for user exists for user_id: {}", user_id);
+        logger.info("Executing a SQL query for the presence of a user in the database for user_id: {}", user_id);
         return count != null && count > 0;
     }
 
