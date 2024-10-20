@@ -26,8 +26,8 @@ class RecommendationsRepositoryIntegrationTest {
 
     @Test
     void testIsProductExists() {
-        UUID userId = UUID.fromString("11111111-1111-1111-1111-111111111111");
-        boolean exists = recommendationsRepository.isProductExists(userId, "LOAN");
+        UUID userId = UUID.fromString("1f9b149c-6577-448a-bc94-16bea229b71a");
+        boolean exists = recommendationsRepository.isProductExists(userId, "DEBIT");
 
         assertTrue(exists);
     }
