@@ -12,12 +12,7 @@ import javax.sql.DataSource;
 @Configuration
 public class RecommendationsDataSourceConfiguration {
 
-    /*
-    Добавление настройку источника данных — DataSource
-    Для подключения используется connection pool HikariCP — это дефолтный connection pool,
-    который используется в Spring Boot.
-    Он сам устанавливает соединение с базой данных и поддерживает эти соединения
-     */
+    // Добавление источника данных — DataSource
     @Bean(name = "recommendationsDataSource")
     @Value("${application.recommendations-db.url}")
     public DataSource recommendationsDataSource(String recommendationsUrl) {
@@ -28,7 +23,7 @@ public class RecommendationsDataSourceConfiguration {
         return dataSource;
     }
 
-    // Добавление конфигурации для JdbcTemplate в класс конфигурации
+    // Добавление конфигурации для JdbcTemplate
     @Bean(name = "recommendationsJdbcTemplate")
     @Qualifier("recommendationsDataSource")
     public JdbcTemplate recommendationsJdbcTemplate(DataSource dataSource) {
