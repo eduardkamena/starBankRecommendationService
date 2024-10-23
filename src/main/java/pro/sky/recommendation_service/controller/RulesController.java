@@ -5,6 +5,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pro.sky.recommendation_service.entity.Rule;
+import pro.sky.recommendation_service.service.RulesService;
+
+import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/rule")
@@ -15,13 +20,21 @@ import org.springframework.web.bind.annotation.*;
 )
 public class RulesController {
 
+    private final RulesService rulesService;
+
     @GetMapping(path = "/list")
     @Operation(
             summary = "Получение всех правил",
             description = "Позволяет поулчить список всех возможных правил для подбора рекомендаций"
     )
     public ResponseEntity<Object> getAllRules(){
-        return ResponseEntity.ok().build();
+        List<Rule> rules;
+        try {
+            rules = rulesService.getAllRules();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok(rules);
     }
 
     @PostMapping
@@ -29,7 +42,7 @@ public class RulesController {
             summary = "Добавление правила",
             description = "Позволяет добавлять правило для подбора рекомендаций"
     )
-    public ResponseEntity<?> createRule() {
+    public ResponseEntity<Void> createRule(@RequestBody Rule rule) {
         return ResponseEntity.ok().build();
     }
 

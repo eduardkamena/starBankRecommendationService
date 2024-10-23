@@ -3,7 +3,7 @@ package pro.sky.recommendation_service.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import pro.sky.recommendation_service.enitites.Rule;
+import pro.sky.recommendation_service.entity.Rule;
 
 import java.util.List;
 import java.util.UUID;
