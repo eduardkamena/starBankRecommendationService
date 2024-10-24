@@ -6,8 +6,8 @@ import pro.sky.recommendation_service.entity.Rule;
 import pro.sky.recommendation_service.repository.RulesRepository;
 import pro.sky.recommendation_service.service.RulesService;
 
-import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +16,7 @@ public class RuleServiceImpl implements RulesService {
     private final RulesRepository rulesRepository;
 
     @Override
-    public List<Rule> getAllRules() throws SQLException {
+    public List<Rule> getAllRules() {
         return rulesRepository.getAllRules();
     }
 
@@ -26,7 +26,7 @@ public class RuleServiceImpl implements RulesService {
     }
 
     @Override
-    public void deleteRule(String id) {
-
+    public void deleteRule(UUID ruleId) {
+        rulesRepository.deleteRuleById(ruleId.toString());
     }
 }
