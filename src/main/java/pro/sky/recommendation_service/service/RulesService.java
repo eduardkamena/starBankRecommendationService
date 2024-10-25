@@ -10,6 +10,6 @@ public interface RulesService {
 
     List<Rule> getAllRules() throws SQLException;
     Rule createRule(Rule rule);
-    void deleteRule(UUID ruleId);
+    void deleteRule(UUID id);
 
 }
