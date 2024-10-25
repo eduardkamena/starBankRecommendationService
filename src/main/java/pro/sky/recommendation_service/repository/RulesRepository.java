@@ -6,9 +6,6 @@ import org.springframework.stereotype.Repository;
 import pro.sky.recommendation_service.entity.Rule;
 import pro.sky.recommendation_service.repository.mapper.RuleRowMapper;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,41 +14,28 @@ public class RulesRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    RuleRowMapper ruleRowMapper;
-
     public RulesRepository(
             @Qualifier("rulesJdbcTemplate") JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Rule> getAllRules(){
-        List<Rule> rules = new ArrayList<>();
-        DataSource dataSource = jdbcTemplate.getDataSource();
+        String sql = "SELECT * FROM rules";
 
-        try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM \"RulesData\"")) {
-            while (resultSet.next()) {
-                Rule rule = ruleRowMapper.mapRow(resultSet, rules.size());
-                rules.add(rule);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return rules;
+        return jdbcTemplate.query(sql, new RuleRowMapper());
     }
 
-    public void deleteRuleById(String id) {
-        DataSource dataSource = jdbcTemplate.getDataSource();
-        String deleteSql = "DELETE FROM \"RulesData\" WHERE \"RuleId\" = ?";
+    public void addRule(Rule rule){
+        String addSql = "INSERT INTO rules (id, query, arguments, negate)  VALUES (?, ?, ?, ?)";
+        UUID ruleId = UUID.randomUUID();
 
-        try{
-            Connection connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(deleteSql);
-            statement.setString(1, id);
-            statement.execute();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
+        jdbcTemplate.update(addSql, ruleId, rule.getQuery(), rule.getArguments(), rule.isNegate());
+
+    }
+
+    public void deleteRuleById(UUID ruleId) {
+        String deleteSql = "DELETE FROM rules WHERE id = ?";
+
+        jdbcTemplate.update(deleteSql, ruleId);
     }
 }
