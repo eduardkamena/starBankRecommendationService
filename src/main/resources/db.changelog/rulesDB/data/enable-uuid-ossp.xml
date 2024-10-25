@@ -4,10 +4,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <!--    <include file="enable-uuid-ossp.xml" relativeToChangelogFile="true"/>-->
-    <include file="create-products-table.xml" relativeToChangelogFile="true"/>
-    <include file="create-rules-table.xml" relativeToChangelogFile="true"/>
-    <include file="create-recommendations-table.xml" relativeToChangelogFile="true"/>
-
-
+    <changeSet id="enable-uuid" author="gitWestender">
+        <sql>
+            CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        </sql>
+    </changeSet>
 </databaseChangeLog>

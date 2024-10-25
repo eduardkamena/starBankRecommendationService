@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-products-table" author="gitWestender">
+        <sql>
+            create table products
+            (
+                product_id   UUID default RANDOM_UUID() primary key,
+--                 recommendation_id   UUID default uuid_generate_v4 primary key,
+                product_name        text not null,
+                product_description text
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

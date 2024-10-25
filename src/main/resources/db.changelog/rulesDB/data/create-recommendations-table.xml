@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-recommendations_table" author="gitWestender">
+        <sql>
+            create table recommendations
+            (
+                product_id   UUID references products(product_id) on delete cascade,
+                rule_id UUID references rules(rule_id) on delete cascade,
+                primary key (product_id, rule_id)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
