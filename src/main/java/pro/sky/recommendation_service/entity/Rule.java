@@ -7,9 +7,8 @@ import java.util.UUID;
 @Data
 public class Rule {
 
-    private UUID id;
     private String query;
-    private String arguments;
+    private String[] arguments;
     private boolean negate;
 
 }
