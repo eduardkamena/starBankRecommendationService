@@ -15,7 +15,7 @@ public class RulesRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public RulesRepository(
-            @Qualifier("rulesJdbcTemplate") JdbcTemplate jdbcTemplate) {
+            @Qualifier("dynamicsJdbcTemplate") JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
