@@ -1,8 +1,6 @@
 package pro.sky.recommendation_service.configuration;
 
 import liquibase.integration.spring.SpringLiquibase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
@@ -10,40 +8,32 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
 @Configuration
-public class RecommendationRulesDataSourceConfiguration {
-
-    private static final Logger logger = LoggerFactory.getLogger(RecommendationRulesDataSourceConfiguration.class);
+public class DynamicRecommendationDataSourceConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.secondary")
     public DataSourceProperties secondaryDataSourceProperties() {
-        DataSourceProperties properties = new DataSourceProperties();
-        logger.info("Second(Rules) DataSource Properties: {}", properties);
-        return properties;
+        return new DataSourceProperties();
     }
 
-    @Bean(name = "rulesDataSource")
+    @Bean(name = "dynamicsDataSource")
     public DataSource secondaryDataSource() {
-        DataSource dataSource = secondaryDataSourceProperties().initializeDataSourceBuilder().build();
-        logger.info("Second(Rules) DataSource: {}", dataSource);
-        return dataSource;
+        return secondaryDataSourceProperties().initializeDataSourceBuilder().build();
     }
 
-    @Bean
+    /*@Bean
     public PlatformTransactionManager secondaryTransactionalManager(
-            @Qualifier("rulesDataSource") DataSource secondaryDataSource) {
+            @Qualifier("dynamicsDataSource") DataSource secondaryDataSource) {
         return new DataSourceTransactionManager(secondaryDataSource);
-    }
+    }*/
 
-   @Bean(name = "rulesJdbcTemplate")
+   @Bean(name = "dynamicsJdbcTemplate")
     public JdbcTemplate rulesJdbcTemplate(
-            @Qualifier("rulesDataSource") DataSource dataSource) {
+            @Qualifier("dynamicsDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
