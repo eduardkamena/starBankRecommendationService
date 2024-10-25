@@ -8,6 +8,7 @@
     <include file="create-rules-table.xml" relativeToChangelogFile="true"/>
     <include file="create-products-table.xml" relativeToChangelogFile="true"/>
     <include file="create-recommendations-table.xml" relativeToChangelogFile="true"/>
+    <include file="add-data.xml" relativeToChangelogFile="true"/>
 
 
 </databaseChangeLog>
