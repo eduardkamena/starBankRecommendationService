@@ -8,8 +8,8 @@
         <sql>
             create table recommendations
             (
-                product_id   UUID references products(product_id) on delete cascade,
-                rule_id UUID references rules(rule_id) on delete cascade,
+                product_id   UUID references products(id) on delete cascade,
+                rule_id UUID references rules(id) on delete cascade,
                 primary key (product_id, rule_id)
             );
         </sql>

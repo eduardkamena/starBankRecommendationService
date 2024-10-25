@@ -5,15 +5,17 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
     <changeSet id="create-products-table" author="gitWestender">
-        <sql>
-            create table products
-            (
-                product_id   UUID default RANDOM_UUID() primary key,
---                 recommendation_id   UUID default uuid_generate_v4 primary key,
-                product_name        text not null,
-                product_description text
-            );
-        </sql>
+        <createTable tableName="products">
+            <column name="id" type="UUID" defaultValueComputed="uuid_generate_v4()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>
