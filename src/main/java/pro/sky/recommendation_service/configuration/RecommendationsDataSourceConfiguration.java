@@ -16,7 +16,7 @@ public class RecommendationsDataSourceConfiguration {
 
     // Добавление настройки подключения второй БД
     @Primary
-    @Bean(name = "defaultDataSource")
+//    @Bean(name = "defaultDataSource")
     public DataSource defaultDataSource(DataSourceProperties properties) {
         return properties.initializeDataSourceBuilder().build();
     }
