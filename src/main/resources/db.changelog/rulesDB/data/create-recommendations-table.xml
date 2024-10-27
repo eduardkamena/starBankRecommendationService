@@ -6,12 +6,16 @@
 
     <changeSet id="create-recommendations_table" author="gitWestender">
         <sql>
-            create table recommendations
+            create table product_recommendations
             (
-                product_id   UUID references products(id) on delete cascade,
-                rule_id UUID references rules(id) on delete cascade,
-                primary key (product_id, rule_id)
+                recommendation_id   UUID primary key default uuid_generate_v4() not null,
+                product_id          UUID                                        not null,
+                product_name        varchar(255)                                not null,
+                product_description text
             );
+
+            alter table rules
+                add constraint fk_rules_on_product foreign key (id) references rules (id)
         </sql>
     </changeSet>
 

@@ -5,19 +5,25 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
     <changeSet id="create-rules-table" author="gitWestender">
-        <createTable tableName="rules">
-            <column name="id" type="UUID" defaultValueComputed="uuid_generate_v4()">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="query" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="arguments" type="TEXT[]">
-                <constraints nullable="false"/>
-            </column>
-            <column name="negate" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+        <sql>
+            create table arguments
+            (
+                rule_id  UUID not null,
+                index    int,
+                argument varchar(20)
+            );
+
+            create table rules
+            (
+                id     UUID default uuid_generate_v4(),
+                query  varchar(255) not null,
+                negate boolean      not null,
+                constraint pk_rules primary key (id)
+            );
+
+            alter table arguments
+                add constraint fk_arguments_on_rules foreign key (rule_id) references rules (id);
+
+        </sql>
     </changeSet>
 </databaseChangeLog>
