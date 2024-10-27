@@ -1,14 +1,12 @@
 package pro.sky.recommendation_service.repository;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pro.sky.recommendation_service.dto.RecommendationRuleDTO;
 import pro.sky.recommendation_service.entity.RecommendationRule;
 import pro.sky.recommendation_service.repository.mapper.RuleRowMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,9 +21,14 @@ public class RulesRepository {
     }
 
     public List<RecommendationRule> getAllRules(){
-        String sql = "SELECT rules.id, rules.query, arguments.argument, rules.negate FROM rules join arguments on rules.id = arguments.rule_id";
 
-        return jdbcTemplate.query(sql, new RuleRowMapper(jdbcTemplate));
+        String selectRuleQuery = "SELECT * FROM rules";
+
+        RuleRowMapper rowMapper = new RuleRowMapper(jdbcTemplate);
+        jdbcTemplate.query(selectRuleQuery, rowMapper);
+
+        return rowMapper.getRules();
+
     }
 
     public void addRule(RecommendationRuleDTO rule){
