@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pro.sky.recommendation_service.entity.Rule;
+import pro.sky.recommendation_service.dto.RecommendationRuleDTO;
+import pro.sky.recommendation_service.entity.RecommendationRule;
 import pro.sky.recommendation_service.service.RulesService;
 
 import java.sql.SQLException;
@@ -29,7 +30,7 @@ public class RulesController {
             summary = "Получение всех правил",
             description = "Позволяет поулчить список всех возможных правил для подбора рекомендаций"
     )
-    public List<Rule> getAllRules() throws SQLException {
+    public List<RecommendationRule> getAllRules() throws SQLException {
         return rulesService.getAllRules();
     }
 
@@ -38,23 +39,19 @@ public class RulesController {
             summary = "Добавление правила",
             description = "Позволяет добавлять правило для подбора рекомендаций"
     )
-    public ResponseEntity<Rule> createRule(@RequestBody Rule rule) {
-        try{
-            Rule createdRule = rulesService.createRule(rule);
-            return new ResponseEntity<>(createdRule, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public String createRule(@RequestBody RecommendationRuleDTO rule) {
+        rulesService.createRule(rule);
+        return "done";
     }
-
-    @DeleteMapping("/delete/{id}")
-    @Operation(
-            summary = "Удаление првила",
-            description = "Позволяет удалить правило из списка"
-    )
-    public ResponseEntity<Void> deleteRule(@PathVariable UUID id) {
-        rulesService.deleteRule(id);
-        return ResponseEntity.ok().build();
-    }
+//
+//    @DeleteMapping("/delete/{id}")
+//    @Operation(
+//            summary = "Удаление првила",
+//            description = "Позволяет удалить правило из списка"
+//    )
+//    public ResponseEntity<Void> deleteRule(@PathVariable UUID id) {
+//        rulesService.deleteRule(id);
+//        return ResponseEntity.ok().build();
+//    }
 
 }

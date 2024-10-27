@@ -15,7 +15,9 @@
             );
 
             alter table rules
-                add constraint fk_rules_on_product foreign key (id) references rules (id)
+                add constraint fk_rules_on_product foreign key (id) references rules (id);
+
+
         </sql>
     </changeSet>
 
