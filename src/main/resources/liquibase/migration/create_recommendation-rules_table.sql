@@ -6,7 +6,7 @@ CREATE TABLE if NOT EXISTS recommendations (
     product_id UUID NOT null,
     product_text TEXT NOT null,
     PRIMARY KEY(product_id)
-)
+    )
 
 -- changeset ekamenskikh:2
 INSERT INTO recommendations (product_name, product_id, product_text)
@@ -40,3 +40,11 @@ INSERT INTO recommendations (product_name, product_id, product_text)
     Безопасность и надежность.
     Ваши средства находятся под защитой банка, а доступ к ним возможен только через мобильное приложение или интернет-банкинг.
     Начните использовать «Копилку» уже сегодня и станьте ближе к своим финансовым целям!')
+
+-- changeset ekamenskikh:3
+CREATE TABLE if NOT EXISTS rules (
+    query VARCHAR(255) NOT null,
+    arguments TEXT[] NOT null,
+    negate BOOLEAN NOT null,
+    PRIMARY KEY(query)
+    )
