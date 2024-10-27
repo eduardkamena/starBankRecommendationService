@@ -3,7 +3,7 @@ package pro.sky.recommendation_service.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import pro.sky.recommendation_service.entity.Rule;
+import pro.sky.recommendation_service.entity.RecommendationRule;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +23,6 @@ public class RecommendationDTO {
     private final String text;
 
     @Schema(description = "Список правил")
-    private List<Rule> rules;
+    private List<RecommendationRule> rules;
 
 }
