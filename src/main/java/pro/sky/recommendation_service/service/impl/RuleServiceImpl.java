@@ -50,11 +50,11 @@ public class RuleServiceImpl implements RulesService {
     /**
      * Метод проверки, позволяющий узнать есть ли query в enum Queries
      *
-     * @param query строка для проверки
+     * @param rule сущность, запрос которой мы проверяем
      */
-    public boolean isQueryValid(Queries query) {
+    public boolean isQueryValid(RecommendationRuleDTO rule) {
         try {
-            Queries.valueOf(query.name());
+            Queries.valueOf(rule.getQuery().toString());
             return true;
         } catch (IllegalArgumentException e) {
             return false;
@@ -69,7 +69,7 @@ public class RuleServiceImpl implements RulesService {
      */
     public void checkArguments(RecommendationRuleDTO rule) {
         List<String> arguments = rule.getArguments();
-        if (isQueryValid(rule.getQuery())) {
+        if (!isQueryValid(rule)) {
             throw new IllegalArgumentException("Rule must pass a query from a list of possible");
         }
 
