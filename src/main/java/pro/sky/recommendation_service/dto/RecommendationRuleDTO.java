@@ -14,10 +14,10 @@ import java.util.List;
 @Schema(description = "Сущность правила")
 public class RecommendationRuleDTO {
 
+    @Enumerated(EnumType.STRING)
     @Schema(description = "Описание запроса")
     private Queries query;
 
-    @Enumerated(EnumType.STRING)
     @Schema(description = "Аргументы запроса")
     private List<String> arguments;
 
