@@ -9,7 +9,8 @@ import java.util.UUID;
 public interface RulesService {
 
     List<RecommendationRule> getAllRules();
-    void createRule(RecommendationRuleDTO rule);
+    void createSimpleRule(RecommendationRuleDTO rule);
+    void createRuleFromRecommendation(UUID id, RecommendationRuleDTO rule);
 //    void deleteRule(UUID id);
 
 }

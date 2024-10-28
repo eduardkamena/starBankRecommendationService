@@ -31,12 +31,27 @@ public class RulesRepository {
 
     }
 
-    public void addRule(RecommendationRuleDTO rule){
+    public void addSimpleRule(RecommendationRuleDTO rule){
         String addRule = "INSERT INTO rules (id, query, negate)  VALUES (?, ?, ?)";
         String addArguments = "INSERT INTO arguments (rule_id, index, argument)  VALUES (?, ?, ?)";
         UUID ruleId = UUID.randomUUID();
 
         jdbcTemplate.update(addRule, ruleId, rule.getQuery().toString(), rule.isNegate());
+
+        List<String> arguments = rule.getArguments();
+        int count = 1;
+        for (String argument : arguments) {
+            jdbcTemplate.update(addArguments, ruleId, count++, argument);
+        }
+
+    }
+
+    public void addRecommendationRule(UUID id, RecommendationRuleDTO rule){
+        String addRule = "INSERT INTO rules (id, query, negate, recommendation_id)  VALUES (?, ?, ?, ?)";
+        String addArguments = "INSERT INTO arguments (argument_id, index, argument)  VALUES (?, ?, ?)";
+        final UUID ruleId = UUID.randomUUID();
+
+        jdbcTemplate.update(addRule, ruleId, rule.getQuery().toString(), rule.isNegate(), id);
 
         List<String> arguments = rule.getArguments();
         int count = 1;

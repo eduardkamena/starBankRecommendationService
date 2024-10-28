@@ -2,11 +2,9 @@ package pro.sky.recommendation_service.repository;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.stereotype.Repository;
-import pro.sky.recommendation_service.entity.DynamicProductRecommendation;
+import pro.sky.recommendation_service.dto.DynamicRecommendationDTO;
 
-import java.sql.Types;
 import java.util.UUID;
 
 @Repository
@@ -19,12 +17,17 @@ public class DynamicProductRecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public DynamicProductRecommendation createProductRecommendation(DynamicProductRecommendation recommendation) {
-        String sql = "INSERT INTO product_recommendations (recommendation_id, product_id, product_name, product_description, recommendationRules)" +
-                " VALUES (?, ?, ?, ?, ?)";
-        UUID id = UUID.randomUUID();
+    public UUID createProductRecommendation(DynamicRecommendationDTO recommendation) {
+        String sql = "INSERT INTO product_recommendations " +
+                "(recommendation_id, product_id, product_name, product_description)" +
+                " VALUES (?, ?, ?, ?)";
+        final UUID ID = UUID.randomUUID();
 
-        jdbcTemplate.update(sql);
-        return recommendation;
+        jdbcTemplate.update(sql,
+                ID,
+                recommendation.getProduct_id(),
+                recommendation.getProduct_name(),
+                recommendation.getProduct_text());
+        return ID;
     }
 }
