@@ -1,7 +1,9 @@
 package pro.sky.recommendation_service.repository.mapper;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Service;
 import pro.sky.recommendation_service.entity.RecommendationRule;
 import pro.sky.recommendation_service.entity.enums.Queries;
 
@@ -9,10 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+@Service
 public class RuleRowMapper implements RowMapper<RecommendationRule> {
     private final JdbcTemplate jdbcTemplate;
 
-    public RuleRowMapper(JdbcTemplate jdbcTemplate) {
+    public RuleRowMapper(@Qualifier("dynamicsJdbcTemplate")  JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -22,8 +25,8 @@ public class RuleRowMapper implements RowMapper<RecommendationRule> {
     public RecommendationRule mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         UUID ruleId = rs.getObject("id", UUID.class);
-
         RecommendationRule rule = ruleMap.get(ruleId);
+
         if (rule == null) {
             rule = new RecommendationRule();
             rule.setId(ruleId);
@@ -32,7 +35,7 @@ public class RuleRowMapper implements RowMapper<RecommendationRule> {
             ruleMap.put(ruleId, rule);
         }
 
-        String argumentQuery = "SELECT argument FROM arguments WHERE rule_id = ?";
+        String argumentQuery = "SELECT argument FROM arguments WHERE argument_id = ?";
         List<String> arguments = jdbcTemplate.queryForList(argumentQuery, String.class, ruleId);
         rule.setArguments(arguments);
 

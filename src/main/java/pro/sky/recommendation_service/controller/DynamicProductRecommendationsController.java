@@ -3,10 +3,7 @@ package pro.sky.recommendation_service.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pro.sky.recommendation_service.dto.DynamicRecommendationDTO;
 import pro.sky.recommendation_service.dto.RecommendationDTO;
 import pro.sky.recommendation_service.entity.DynamicProductRecommendation;
@@ -27,6 +24,11 @@ public class DynamicProductRecommendationsController {
     public String createRecommendation(@RequestBody DynamicRecommendationDTO recommendation) {
         dynamicProductRecommendationsService.createDynamicRecommendations(recommendation);
         return "done";
+    }
+
+    @GetMapping("/list")
+    public List<DynamicProductRecommendation> getRecommendations() {
+        return dynamicProductRecommendationsService.getAllDynamicRecommendations();
     }
 
 }

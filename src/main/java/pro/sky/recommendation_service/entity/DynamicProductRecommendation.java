@@ -1,11 +1,14 @@
 package pro.sky.recommendation_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Data
 @Table(name = "product_recommendations")
 public class DynamicProductRecommendation {
 
@@ -26,4 +29,5 @@ public class DynamicProductRecommendation {
     @OneToMany
     @JoinColumn(name = "id")
     private List<RecommendationRule> recommendationRules;
+
 }

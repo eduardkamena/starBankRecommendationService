@@ -32,7 +32,7 @@ public class DynamicRecommendationDataSourceConfiguration {
     }*/
 
    @Bean(name = "dynamicsJdbcTemplate")
-    public JdbcTemplate rulesJdbcTemplate(
+    public JdbcTemplate dynamicsJdbcTemplate(
             @Qualifier("dynamicsDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }

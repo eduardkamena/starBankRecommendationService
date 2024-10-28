@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pro.sky.recommendation_service.dto.DynamicRecommendationDTO;
+import pro.sky.recommendation_service.entity.DynamicProductRecommendation;
+import pro.sky.recommendation_service.repository.mapper.DynamicRecommendationRowMapper;
+import pro.sky.recommendation_service.repository.mapper.RuleRowMapper;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -15,6 +19,15 @@ public class DynamicProductRecommendationsRepository {
     public DynamicProductRecommendationsRepository(
             @Qualifier("dynamicsJdbcTemplate") JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<DynamicProductRecommendation> getAllRecommendations() {
+        String sql = "select * from product_recommendations inner join rules r on product_recommendations.recommendation_id = r.recommendation_id";
+
+        RuleRowMapper ruleRowMapper = new RuleRowMapper(jdbcTemplate);
+        DynamicRecommendationRowMapper recommendationRowMapper = new DynamicRecommendationRowMapper(jdbcTemplate, ruleRowMapper);
+
+        return jdbcTemplate.query(sql, recommendationRowMapper);
     }
 
     public UUID createProductRecommendation(DynamicRecommendationDTO recommendation) {
@@ -30,4 +43,5 @@ public class DynamicProductRecommendationsRepository {
                 recommendation.getProduct_text());
         return ID;
     }
+
 }

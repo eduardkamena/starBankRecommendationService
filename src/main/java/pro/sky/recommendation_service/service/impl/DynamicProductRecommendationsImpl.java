@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pro.sky.recommendation_service.dto.DynamicRecommendationDTO;
 import pro.sky.recommendation_service.dto.RecommendationRuleDTO;
+import pro.sky.recommendation_service.entity.DynamicProductRecommendation;
 import pro.sky.recommendation_service.repository.DynamicProductRecommendationsRepository;
 import pro.sky.recommendation_service.service.DynamicProductRecommendationsService;
 
@@ -25,6 +26,10 @@ public class DynamicProductRecommendationsImpl implements DynamicProductRecommen
 
         recommendationRules.forEach(
                 recommendationRuleDTO -> ruleService.createRuleFromRecommendation(createdRecommendationID, recommendationRuleDTO));
+    }
+
+    public List<DynamicProductRecommendation> getAllDynamicRecommendations() {
+        return dynamicProductRecommendationRepository.getAllRecommendations();
     }
 
 }

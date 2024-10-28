@@ -33,7 +33,7 @@ public class RulesRepository {
 
     public void addSimpleRule(RecommendationRuleDTO rule){
         String addRule = "INSERT INTO rules (id, query, negate)  VALUES (?, ?, ?)";
-        String addArguments = "INSERT INTO arguments (rule_id, index, argument)  VALUES (?, ?, ?)";
+        String addArguments = "INSERT INTO arguments (argument_id, index, argument)  VALUES (?, ?, ?)";
         UUID ruleId = UUID.randomUUID();
 
         jdbcTemplate.update(addRule, ruleId, rule.getQuery().toString(), rule.isNegate());
