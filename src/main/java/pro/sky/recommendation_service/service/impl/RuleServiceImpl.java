@@ -8,10 +8,7 @@ import pro.sky.recommendation_service.entity.enums.Queries;
 import pro.sky.recommendation_service.repository.RulesRepository;
 import pro.sky.recommendation_service.service.RulesService;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +23,7 @@ public class RuleServiceImpl implements RulesService {
 
     @Override
     public void createRule(RecommendationRuleDTO rule) {
+        checkArguments(rule);
         rulesRepository.addRule(rule);
     }
 //
@@ -67,12 +65,12 @@ public class RuleServiceImpl implements RulesService {
      * Проверяет передаваемые значения аргументов
      *
      * @param rule правило, чьи аргументы будут проверяться на соответствие
-     * @throws IllegalArgumentException если аргументы не соответствуют или отсутствуют вовсе
+     * @throws IllegalArgumentException если аргументы/запрос не соответствуют или отсутствуют вовсе
      */
     public void checkArguments(RecommendationRuleDTO rule) {
         List<String> arguments = rule.getArguments();
-        if (isQueryValid(rule.getQuery()) || rule.getArguments().isEmpty()) {
-            throw new IllegalArgumentException("Rule must have at least one argument");
+        if (isQueryValid(rule.getQuery())) {
+            throw new IllegalArgumentException("Rule must pass a query from a list of possible");
         }
 
         for (String argument : arguments) {
