@@ -20,20 +20,7 @@ public class RuleRowMapper implements RowMapper<RecommendationRule> {
 
     @Override
     public RecommendationRule mapRow(ResultSet rs, int rowNum) throws SQLException {
-//
-//
-//        RecommendationRule rule = new RecommendationRule();
-//        UUID ruleId = rs.getObject("id", UUID.class);
-//
-//        rule.setId(ruleId);
-//        rule.setQuery(Queries.valueOf(rs.getString("query")));
-////        rule.setArguments((List<String>) rs.getArray("argument").getArray());
-//        rule.setNegate(rs.getBoolean("negate"));
-//
-//        String sql = "SELECT argument FROM arguments WHERE rule_id = ?";
-//        List<String> arguments = jdbcTemplate.queryForList(sql, String.class, ruleId);
-//        rule.setArguments(arguments);
-//
+
         UUID ruleId = rs.getObject("id", UUID.class);
 
         RecommendationRule rule = ruleMap.get(ruleId);
