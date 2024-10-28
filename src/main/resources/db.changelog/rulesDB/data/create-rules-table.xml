@@ -8,21 +8,22 @@
         <sql>
             create table arguments
             (
-                rule_id  UUID not null,
-                index    int,
-                argument varchar(20)
+                argument_id UUID not null,
+                index       int,
+                argument    varchar(20)
             );
 
             create table rules
             (
-                id     UUID default uuid_generate_v4(),
-                query  varchar(255) not null,
-                negate boolean      not null,
+                id                UUID default uuid_generate_v4(),
+                query             varchar(255) not null,
+                negate            boolean      not null,
+                recommendation_id UUID         not null,
                 constraint pk_rules primary key (id)
             );
 
             alter table arguments
-                add constraint fk_arguments_on_rules foreign key (rule_id) references rules (id);
+                add constraint fk_arguments_on_rules foreign key (argument_id) references rules (id);
 
         </sql>
     </changeSet>
