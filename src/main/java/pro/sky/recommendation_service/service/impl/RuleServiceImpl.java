@@ -9,6 +9,7 @@ import pro.sky.recommendation_service.repository.RulesRepository;
 import pro.sky.recommendation_service.service.RulesService;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,15 +23,16 @@ public class RuleServiceImpl implements RulesService {
     }
 
     @Override
-    public void createRule(RecommendationRuleDTO rule) {
+    public void createSimpleRule(RecommendationRuleDTO rule) {
         checkArguments(rule);
-        rulesRepository.addRule(rule);
+        rulesRepository.addSimpleRule(rule);
     }
-//
-//    @Override
-//    public void deleteRule(UUID id) {
-//        rulesRepository.deleteRuleById(id);
-//    }
+
+    @Override
+    public void createRuleFromRecommendation(UUID id, RecommendationRuleDTO rule) {
+        checkArguments(rule);
+        rulesRepository.addRecommendationRule(id, rule);
+    }
 
     /**
      * Метод проверки, позволяющий узнать является ли строка положительным числом в пределах Integer
