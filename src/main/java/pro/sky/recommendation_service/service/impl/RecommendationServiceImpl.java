@@ -8,7 +8,7 @@ import pro.sky.recommendation_service.component.RecommendationRuleSet;
 import pro.sky.recommendation_service.dto.RecommendationDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
-import pro.sky.recommendation_service.repository.RecommendationsRepository;
+import pro.sky.recommendation_service.repository.TransactionsRepository;
 import pro.sky.recommendation_service.service.RecommendationService;
 
 import java.util.ArrayList;
@@ -21,13 +21,13 @@ public class RecommendationServiceImpl implements RecommendationService {
     private final Logger logger = LoggerFactory.getLogger(RecommendationServiceImpl.class);
 
     private final RecommendationRuleSet[] recommendationRuleSets;
-    private final RecommendationsRepository recommendationsRepository;
+    private final TransactionsRepository transactionsRepository;
 
     @Autowired
     public RecommendationServiceImpl(RecommendationRuleSet[] recommendationRuleSets,
-                                     RecommendationsRepository recommendationsRepository) {
+                                     TransactionsRepository transactionsRepository) {
         this.recommendationRuleSets = recommendationRuleSets;
-        this.recommendationsRepository = recommendationsRepository;
+        this.transactionsRepository = transactionsRepository;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class RecommendationServiceImpl implements RecommendationService {
 
         logger.info("Starting checking user in database for user_id: {}", user_id);
 
-        if (recommendationsRepository.isUserExists(user_id)) {
+        if (transactionsRepository.isUserExists(user_id)) {
 
             logger.info("Starting getting in List<> all recommendations for user_id: {}", user_id);
             List<RecommendationDTO> recommendations = new ArrayList<>();

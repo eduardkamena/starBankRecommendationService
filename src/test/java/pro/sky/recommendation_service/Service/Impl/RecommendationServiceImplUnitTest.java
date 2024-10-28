@@ -8,7 +8,7 @@ import pro.sky.recommendation_service.component.RecommendationRuleSet;
 import pro.sky.recommendation_service.dto.RecommendationDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
-import pro.sky.recommendation_service.repository.RecommendationsRepository;
+import pro.sky.recommendation_service.repository.TransactionsRepository;
 import pro.sky.recommendation_service.service.RecommendationService;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RecommendationServiceImplUnitTest {
 
     @Mock
-    private RecommendationsRepository recommendationsRepository;
+    private TransactionsRepository transactionsRepository;
 
     @Mock
     private RecommendationRuleSet recommendationRuleSet;
@@ -63,7 +63,7 @@ class RecommendationServiceImplUnitTest {
         UserRecommendationsDTO mockDTO = new UserRecommendationsDTO(userId, recommendationList);
 
         // when
-        when(recommendationsRepository.isUserExists(userId)).thenReturn(true);
+        when(transactionsRepository.isUserExists(userId)).thenReturn(true);
         when(recommendationService.getAllRecommendations(userId)).thenReturn(mockDTO);
 
         UserRecommendationsDTO result = recommendationService.getAllRecommendations(userId);

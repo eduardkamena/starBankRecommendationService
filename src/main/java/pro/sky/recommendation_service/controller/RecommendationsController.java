@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pro.sky.recommendation_service.dto.RecommendationDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.AppError;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
+import pro.sky.recommendation_service.repository.RecommendationsRepository;
 import pro.sky.recommendation_service.service.RecommendationService;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -28,9 +31,11 @@ public class RecommendationsController {
     private final Logger logger = LoggerFactory.getLogger(RecommendationsController.class);
 
     private final RecommendationService recommendationService;
+    private final RecommendationsRepository recommendationsRepository;
 
-    public RecommendationsController(RecommendationService recommendationService) {
+    public RecommendationsController(RecommendationService recommendationService, RecommendationsRepository recommendationsRepository) {
         this.recommendationService = recommendationService;
+        this.recommendationsRepository = recommendationsRepository;
     }
 
     @GetMapping(path = "/{user_id}")
@@ -56,4 +61,10 @@ public class RecommendationsController {
         }
     }
 
+    @GetMapping(path = "/prod/{product_id}")
+    public Optional<RecommendationDTO> getpProd(
+            @PathVariable
+            @Parameter(description = "Идентификатор клиента") UUID product_id) {
+        return recommendationsRepository.isProductExists(product_id);
+        }
 }

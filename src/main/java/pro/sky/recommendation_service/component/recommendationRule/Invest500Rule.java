@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import pro.sky.recommendation_service.component.RecommendationRuleSet;
 import pro.sky.recommendation_service.dto.RecommendationDTO;
 import pro.sky.recommendation_service.repository.RecommendationsRepository;
+import pro.sky.recommendation_service.repository.TransactionsRepository;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -34,6 +35,8 @@ public class Invest500Rule implements RecommendationRuleSet {
 
     private final Logger logger = LoggerFactory.getLogger(Invest500Rule.class);
 
+    private final TransactionsRepository transactionsRepository;
+
     private final RecommendationsRepository recommendationsRepository;
 
     @Override
@@ -45,8 +48,9 @@ public class Invest500Rule implements RecommendationRuleSet {
                 && hasSavingDepositCondition(user_id)
         ) {
             logger.info("Found {} recommendation for user_id: {}", NAME, user_id);
-            return Optional.of(
-                    new RecommendationDTO(NAME, ID, TEXT));
+            return recommendationsRepository.isProductExists(ID);
+            //return Optional.of(new RecommendationDTO(NAME, ID, TEXT));
+
         }
         logger.info("Not Found {} recommendation for user_id: {}", NAME, user_id);
         return Optional.empty();
@@ -54,15 +58,15 @@ public class Invest500Rule implements RecommendationRuleSet {
 
     // Рефакторинг условий с помощью дополнительных методов
     public boolean hasDebitProduct(UUID user_id) {
-        return recommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_DEBIT);
+        return transactionsRepository.isProductExists(user_id, PRODUCT_TYPE_DEBIT);
     }
 
     public boolean hasInvestProduct(UUID user_id) {
-        return recommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_INVEST);
+        return transactionsRepository.isProductExists(user_id, PRODUCT_TYPE_INVEST);
     }
 
     public boolean hasSavingDepositCondition(UUID user_id) {
-        return recommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
+        return transactionsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
                 > TRANSACTION_CONDITION;
     }
 

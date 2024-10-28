@@ -8,7 +8,7 @@ import pro.sky.recommendation_service.component.RecommendationRuleSet;
 import pro.sky.recommendation_service.dto.RecommendationDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
-import pro.sky.recommendation_service.repository.RecommendationsRepository;
+import pro.sky.recommendation_service.repository.TransactionsRepository;
 import pro.sky.recommendation_service.service.impl.RecommendationServiceImpl;
 
 import java.util.Optional;
@@ -25,12 +25,12 @@ class RecommendationServiceImplTests {
     private RecommendationRuleSet ruleSetMock;
 
     @Mock
-    private RecommendationsRepository recommendationsRepositoryMock;
+    private TransactionsRepository transactionsRepositoryMock;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        recommendationService = new RecommendationServiceImpl(new RecommendationRuleSet[]{ruleSetMock}, recommendationsRepositoryMock);
+        recommendationService = new RecommendationServiceImpl(new RecommendationRuleSet[]{ruleSetMock}, transactionsRepositoryMock);
     }
 
     @Test
@@ -38,7 +38,7 @@ class RecommendationServiceImplTests {
         UUID userId = UUID.randomUUID();
         RecommendationDTO recommendation = new RecommendationDTO("Инвестиции", UUID.randomUUID(), "Инвестируйте 500");
 
-        when(recommendationsRepositoryMock.isUserExists(userId)).thenReturn(true);
+        when(transactionsRepositoryMock.isUserExists(userId)).thenReturn(true);
 
         when(ruleSetMock.checkRecommendation(userId))
                 .thenReturn(Optional.of(recommendation));
@@ -54,7 +54,7 @@ class RecommendationServiceImplTests {
     void testGetAllRecommendations_WithoutRecommendations() {
         UUID userId = UUID.randomUUID();
 
-        when(recommendationsRepositoryMock.isUserExists(userId)).thenReturn(true);
+        when(transactionsRepositoryMock.isUserExists(userId)).thenReturn(true);
 
         when(ruleSetMock.checkRecommendation(userId))
                 .thenReturn(Optional.empty());
@@ -68,7 +68,7 @@ class RecommendationServiceImplTests {
     @Test
     void testGetAllRecommendations_UserNotFound() {
         UUID userId = UUID.randomUUID();
-        when(recommendationsRepositoryMock.isUserExists(userId)).thenReturn(false);
+        when(transactionsRepositoryMock.isUserExists(userId)).thenReturn(false);
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> {
             recommendationService.getAllRecommendations(userId);

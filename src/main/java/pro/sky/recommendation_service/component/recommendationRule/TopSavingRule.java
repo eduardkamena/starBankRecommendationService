@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import pro.sky.recommendation_service.component.RecommendationRuleSet;
 import pro.sky.recommendation_service.dto.RecommendationDTO;
-import pro.sky.recommendation_service.repository.RecommendationsRepository;
+import pro.sky.recommendation_service.repository.TransactionsRepository;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -40,7 +40,7 @@ public class TopSavingRule implements RecommendationRuleSet {
 
     private final Logger logger = LoggerFactory.getLogger(TopSavingRule.class);
 
-    private final RecommendationsRepository recommendationsRepository;
+    private final TransactionsRepository transactionsRepository;
 
     @Override
     public Optional<RecommendationDTO> checkRecommendation(UUID user_id) {
@@ -60,23 +60,23 @@ public class TopSavingRule implements RecommendationRuleSet {
 
     // Рефакторинг условий с помощью дополнительных методов
     public boolean hasDebitProduct(UUID user_id) {
-        return recommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_DEBIT);
+        return transactionsRepository.isProductExists(user_id, PRODUCT_TYPE_DEBIT);
     }
 
     public boolean hasDebitDepositCondition(UUID user_id) {
-        return recommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
+        return transactionsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
                 >= TRANSACTION_CONDITION;
     }
 
     public boolean hasSavingDepositCondition(UUID user_id) {
-        return recommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
+        return transactionsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
                 >= TRANSACTION_CONDITION;
     }
 
     public boolean hasPositiveDebitBalance(UUID user_id) {
-        return recommendationsRepository.getTransactionAmount
+        return transactionsRepository.getTransactionAmount
                 (user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
-                > recommendationsRepository.getTransactionAmount
+                > transactionsRepository.getTransactionAmount
                 (user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW);
     }
 
