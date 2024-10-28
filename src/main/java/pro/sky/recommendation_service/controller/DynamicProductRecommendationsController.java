@@ -12,6 +12,7 @@ import pro.sky.recommendation_service.dto.RecommendationDTO;
 import pro.sky.recommendation_service.entity.DynamicProductRecommendation;
 import pro.sky.recommendation_service.entity.RecommendationRule;
 import pro.sky.recommendation_service.service.DynamicProductRecommendationsService;
+import pro.sky.recommendation_service.service.impl.DynamicProductRecommendationsImpl;
 
 import java.util.List;
 
@@ -20,15 +21,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DynamicProductRecommendationsController {
 
-    private final DynamicProductRecommendationsService dynamicProductRecommendationsService;
+    private final DynamicProductRecommendationsImpl dynamicProductRecommendationsService;
 
     @PostMapping("/add")
-//    public ResponseEntity<RecommendationDTO> createRecommendation(@RequestBody RecommendationDTO recommendation) {
-//        RecommendationDTO createdRecommendation = dynamicProductRecommendationsService.createRecommendation(recommendation);
-//        return new ResponseEntity<>(createdRecommendation, HttpStatus.OK);
-//    }
-    public String add(@RequestBody DynamicRecommendationDTO recommendation) {
-        System.out.println(recommendation.toString());
+    public String createRecommendation(@RequestBody DynamicRecommendationDTO recommendation) {
+        dynamicProductRecommendationsService.createDynamicRecommendations(recommendation);
         return "done";
     }
 
