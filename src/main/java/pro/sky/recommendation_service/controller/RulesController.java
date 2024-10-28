@@ -40,7 +40,7 @@ public class RulesController {
             description = "Позволяет добавлять правило для подбора рекомендаций"
     )
     public String createRule(@RequestBody RecommendationRuleDTO rule) {
-        rulesService.createRule(rule);
+        rulesService.createSimpleRule(rule);
         return "done";
     }
 //
