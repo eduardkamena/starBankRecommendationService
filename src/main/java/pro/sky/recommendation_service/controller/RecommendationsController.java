@@ -62,9 +62,9 @@ public class RecommendationsController {
     }
 
     @GetMapping(path = "/prod/{product_id}")
-    public Optional<RecommendationDTO> getpProd(
+    public Optional<RecommendationDTO> getRecommendation(
             @PathVariable
-            @Parameter(description = "Идентификатор клиента") UUID product_id) {
-        return recommendationsRepository.isProductExists(product_id);
+            @Parameter(description = "Рекомендация") UUID product_id) {
+        return recommendationsRepository.getProductDescription(product_id);
         }
 }
