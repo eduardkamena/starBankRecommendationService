@@ -3,31 +3,24 @@ package pro.sky.recommendation_service.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.recommendation_service.dto.RulesDTO;
+import pro.sky.recommendation_service.repository.RulesRepository;
 import pro.sky.recommendation_service.service.RulesService;
 
 @Service
 public class RulesServiceImpl implements RulesService {
 
     private final RulesDTO rules;
+    private final RulesRepository rulesRepository;
 
     @Autowired
-    public RulesServiceImpl(RulesDTO rules) {
+    public RulesServiceImpl(RulesDTO rules, RulesRepository rulesRepository) {
         this.rules = rules;
+        this.rulesRepository = rulesRepository;
     }
 
     @Override
     public RulesDTO createRule(RulesDTO rulesDTO) {
-        try {
-            checkArguments(rulesDTO);
-            RulesDTO newRules = new RulesDTO();
-            newRules.setQuery(rules.getQuery());
-            newRules.setArguments(rules.getArguments());
-            newRules.setNegate(rules.isNegate());
-            return newRules;
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(e);
-
-        }
+        return rulesRepository.createRule(rulesDTO);
     }
 
     private void checkArguments(RulesDTO rulesDTO) {

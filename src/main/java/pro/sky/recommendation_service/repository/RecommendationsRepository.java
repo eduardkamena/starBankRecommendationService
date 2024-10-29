@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pro.sky.recommendation_service.dto.RecommendationDTO;
@@ -26,11 +25,13 @@ public class RecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Запрос в БД на наличие/отсутствия пользователя
+    // Запрос в БД на наличие/отсутствия продукта
     public Optional<RecommendationDTO> getProductDescription(UUID product_id) {
         String sql = "SELECT product_name, product_id , product_text " +
                 "FROM RECOMMENDATIONS r " +
                 "WHERE r.product_id = ?";
+
+        logger.info("Starting SQL-query for product in database for product_id: {}", product_id);
 
         RecommendationDTO recommendationDTO = jdbcTemplate.queryForObject(sql,
                 (rs, rowNum) -> {
