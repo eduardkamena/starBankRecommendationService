@@ -32,22 +32,18 @@ public class RecommendationsRepository {
                 "FROM RECOMMENDATIONS r " +
                 "WHERE r.product_id = ?";
 
-        try {
-            RecommendationDTO recommendationDTO = jdbcTemplate.queryForObject(sql,
-                    (rs, rowNum) -> {
-                        String name = rs.getString("product_name");
-                        UUID id = UUID.fromString(rs.getString("product_id"));
-                        String description = rs.getString("product_text");
-                        return new RecommendationDTO(name, id, description);
-                    },
-                    product_id);
+        RecommendationDTO recommendationDTO = jdbcTemplate.queryForObject(sql,
+                (rs, rowNum) -> {
+                    String name = rs.getString("product_name");
+                    UUID id = UUID.fromString(rs.getString("product_id"));
+                    String description = rs.getString("product_text");
+                    return new RecommendationDTO(name, id, description);
+                },
+                product_id);
 
-            logger.info("Product found in the database for product_id: {}", product_id);
-            return Optional.ofNullable(recommendationDTO);
+        logger.info("Product found in the database for product_id: {}", product_id);
+        assert recommendationDTO != null;
+        return Optional.of(recommendationDTO);
 
-        } catch (EmptyResultDataAccessException e) {
-            logger.info("Product not found in the database for product_id: {}", product_id);
-            return Optional.empty();
-        }
     }
 }
