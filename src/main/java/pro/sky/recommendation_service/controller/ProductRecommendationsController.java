@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.recommendation_service.dto.RecommendationDTO;
-import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.AppError;
-import pro.sky.recommendation_service.exception.UserNotFoundException;
 import pro.sky.recommendation_service.repository.RecommendationsRepository;
 
 import java.util.Optional;
