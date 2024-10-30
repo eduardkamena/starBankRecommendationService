@@ -17,7 +17,6 @@ import pro.sky.recommendation_service.exception.UserNotFoundException;
 import pro.sky.recommendation_service.repository.RecommendationsRepository;
 import pro.sky.recommendation_service.service.UserRecommendationsService;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController

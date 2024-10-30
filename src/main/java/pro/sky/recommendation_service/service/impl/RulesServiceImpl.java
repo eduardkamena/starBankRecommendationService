@@ -3,8 +3,12 @@ package pro.sky.recommendation_service.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.recommendation_service.dto.RulesDTO;
+import pro.sky.recommendation_service.enums.RulesArgumentsENUM;
+import pro.sky.recommendation_service.enums.RulesQueryENUM;
 import pro.sky.recommendation_service.repository.RulesRepository;
 import pro.sky.recommendation_service.service.RulesService;
+
+import java.util.Arrays;
 
 @Service
 public class RulesServiceImpl implements RulesService {
@@ -20,37 +24,49 @@ public class RulesServiceImpl implements RulesService {
 
     @Override
     public RulesDTO createRule(RulesDTO rulesDTO) {
+        checkArguments(rulesDTO);
         return rulesRepository.createRule(rulesDTO);
     }
 
-    private void checkArguments(RulesDTO rulesDTO) {
-//        boolean flag = true;
-//        if (rules.getQuery().isEmpty() || rules.getArguments() == null) {
-//            throw new IllegalArgumentException("Rules must have at least one argument");
-//        }
+    @Override
+    public void deleteRule(String query) {
+        checkQuery(query);
+        rulesRepository.deleteRule(query);
+    }
+
+    public boolean checkQuery(String query) {
+        if (Arrays.stream(RulesQueryENUM.values()).noneMatch(e -> e.name().equals(query))) {
+            throw new IllegalArgumentException("Query should contains in RulesQueryENUM");
+        } else return true;
+    }
+
+    public boolean checkArguments(RulesDTO rulesDTO) {
+
+        if (rulesDTO.getQuery() == null
+                || rulesDTO.getQuery().isEmpty()
+                || Arrays.stream(RulesQueryENUM.values()).noneMatch(e -> e.name().equals(rulesDTO.getQuery().toUpperCase()))) {
+            throw new IllegalArgumentException("Query cannot be null or empty and should contains in RulesQueryENUM");
+        }
 
         String[] arguments = rulesDTO.getArguments();
-        for (String argument : arguments) {
-//            if (flag) {
-            if (argument.equals("DEBIT")
-                    || argument.equals("CREDIT")
-                    || argument.equals("INVEST")
-                    || argument.equals("SAVING")
-                    || argument.equals(">")
-                    || argument.equals("<")
-                    || argument.equals(">=")
-                    || argument.equals("<=")
-                    || argument.equals("=")
-                    || argument.equals("100000")) {
+        if (arguments == null
+                || arguments.length == 0) {
+            throw new IllegalArgumentException("Arguments cannot be null or empty");
+        }
 
-//                } else {
-//                    flag = false;
-//                }
-            } else {
-                throw new IllegalArgumentException("Rules must have at least one argument");
-            }
+        String argumentsStr = Arrays.toString(arguments).toUpperCase();
+
+        if (Arrays.stream(RulesArgumentsENUM.values()).anyMatch(e -> argumentsStr.contains(e.name()))
+                || argumentsStr.contains(">")
+                || argumentsStr.contains("<")
+                || argumentsStr.contains(">=")
+                || argumentsStr.contains("<=")
+                || argumentsStr.contains("=")
+        ) {
+            return true;
+        } else {
+            throw new IllegalArgumentException("Rules must have at least one argument or contains in RulesArgumentsENUM");
         }
     }
 
 }
-

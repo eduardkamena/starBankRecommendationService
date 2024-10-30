@@ -15,14 +15,6 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfiguration {
 
-    // Добавление настройки подключения второй БД
-//    @Primary
-//    @Bean(name = "postgresDataSource")
-//    @ConfigurationProperties(prefix = "spring.datasource")
-//    public DataSource postgresDataSource(DataSourceProperties properties) {
-//        return properties.initializeDataSourceBuilder().build();
-//    }
-
     // Добавление источника данных — DataSource
     @Bean(name = "recommendationsDataSource")
     public DataSource recommendationsDataSource(
@@ -40,15 +32,6 @@ public class DataSourceConfiguration {
     public JdbcTemplate recommendationsJdbcTemplate(@Qualifier("recommendationsDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
-
-
-//    // Добавление настройки подключения к PostgreSQL
-//    @Primary
-//    @Bean(name = "postgresDataSource")
-//    @ConfigurationProperties(prefix = "spring.datasource")
-//    public DataSource postgresDataSource() {
-//        return DataSourceBuilder.create().build();
-//    }
 
     @Primary
     @Bean(name = "postgresDataSource")
@@ -68,4 +51,5 @@ public class DataSourceConfiguration {
     public JdbcTemplate postgresJdbcTemplate(@Qualifier("postgresDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
+
 }

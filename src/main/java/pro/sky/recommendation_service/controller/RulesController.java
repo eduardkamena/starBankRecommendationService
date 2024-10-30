@@ -1,10 +1,7 @@
 package pro.sky.recommendation_service.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pro.sky.recommendation_service.dto.RulesDTO;
 import pro.sky.recommendation_service.service.RulesService;
 
@@ -22,8 +19,15 @@ public class RulesController {
     }
 
     @PostMapping
-    public RulesDTO createRules(@RequestBody RulesDTO rules) {
+    public RulesDTO createRule(@RequestBody RulesDTO rules) {
         return rulesService.createRule(rules);
 
     }
+
+    @DeleteMapping
+    public void deleteRule(@RequestBody String query) {
+        rulesService.deleteRule(query);
+
+    }
+
 }
