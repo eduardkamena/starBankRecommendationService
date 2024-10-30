@@ -1,32 +1,27 @@
 package pro.sky.recommendation_service.repository.mapper;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import pro.sky.recommendation_service.entity.DynamicProductRecommendation;
 import pro.sky.recommendation_service.entity.RecommendationRule;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class DynamicRecommendationRowMapper implements RowMapper<DynamicProductRecommendation> {
-    private final JdbcTemplate jdbcTemplate;
     private final RuleRowMapper ruleRowMapper;
 
-    public DynamicRecommendationRowMapper(@Qualifier("dynamicsJdbcTemplate") JdbcTemplate jdbcTemplate, RuleRowMapper ruleRowMapper) {
-        this.jdbcTemplate = jdbcTemplate;
+    public DynamicRecommendationRowMapper(RuleRowMapper ruleRowMapper) {
         this.ruleRowMapper = ruleRowMapper;
     }
 
     private final Map<UUID, DynamicProductRecommendation> recommendationsMap = new HashMap<>();
+    private final Map<UUID, List<RecommendationRule>> rulesMap = new HashMap<>();
 
     public DynamicProductRecommendation mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         UUID recommendationId = rs.getObject("recommendation_id", UUID.class);
+
         DynamicProductRecommendation recommendation = recommendationsMap.get(recommendationId);
 
         if (recommendation == null) {
@@ -36,12 +31,17 @@ public class DynamicRecommendationRowMapper implements RowMapper<DynamicProductR
             recommendation.setProductId(rs.getObject("product_id", UUID.class));
             recommendation.setProductDescription(rs.getString("product_description"));
             recommendationsMap.put(recommendationId, recommendation);
+
+            List<RecommendationRule> rules = ruleRowMapper.getRulesForRecommendation(recommendationId);
+            rulesMap.put(recommendationId, rules);
         }
 
-        String rulesSql = "select * from product_recommendations where recommendation_id=?";
-        List<RecommendationRule> rules = jdbcTemplate.query(rulesSql, ruleRowMapper, recommendationId);
-        recommendation.setRecommendationRules(rules);
+        recommendation.setRecommendationRules(rulesMap.get(recommendationId));
 
         return recommendation;
+    }
+
+    public List<DynamicProductRecommendation> getAllRecommendations() {
+        return new ArrayList<>(recommendationsMap.values());
     }
 }
