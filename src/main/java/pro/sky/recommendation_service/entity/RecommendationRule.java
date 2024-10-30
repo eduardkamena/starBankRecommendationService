@@ -24,7 +24,7 @@ public class RecommendationRule {
     private Queries query;
 
     @ElementCollection(targetClass = String.class)
-    @CollectionTable(name = "arguments" , joinColumns = @JoinColumn(name = "rule_id"))
+    @CollectionTable(name = "arguments" , joinColumns = @JoinColumn(name = "argument_id"))
     @Column(name = "argument" , nullable = false)
     private List<String> arguments = new ArrayList<>();
 
