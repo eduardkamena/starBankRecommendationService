@@ -25,9 +25,11 @@ public class DynamicProductRecommendationsRepository {
         String sql = "select * from product_recommendations inner join rules r on product_recommendations.recommendation_id = r.recommendation_id";
 
         RuleRowMapper ruleRowMapper = new RuleRowMapper(jdbcTemplate);
-        DynamicRecommendationRowMapper recommendationRowMapper = new DynamicRecommendationRowMapper(jdbcTemplate, ruleRowMapper);
+        DynamicRecommendationRowMapper recommendationRowMapper = new DynamicRecommendationRowMapper(ruleRowMapper);
 
-        return jdbcTemplate.query(sql, recommendationRowMapper);
+        jdbcTemplate.query(sql, recommendationRowMapper);
+
+        return recommendationRowMapper.getAllRecommendations();
     }
 
     public UUID createProductRecommendation(DynamicRecommendationDTO recommendation) {
