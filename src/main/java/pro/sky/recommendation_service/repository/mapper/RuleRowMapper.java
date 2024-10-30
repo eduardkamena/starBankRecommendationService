@@ -20,11 +20,14 @@ public class RuleRowMapper implements RowMapper<RecommendationRule> {
     }
 
     private final Map<UUID, RecommendationRule> ruleMap = new HashMap<>();
+    private final Map<UUID, List<String>> argumentsMap = new HashMap<>();
 
     @Override
     public RecommendationRule mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         UUID ruleId = rs.getObject("id", UUID.class);
+        UUID recommendationId = rs.getObject("recommendation_id", UUID.class);
+
         RecommendationRule rule = ruleMap.get(ruleId);
 
         if (rule == null) {
@@ -32,15 +35,21 @@ public class RuleRowMapper implements RowMapper<RecommendationRule> {
             rule.setId(ruleId);
             rule.setQuery(Queries.valueOf(rs.getString("query")));
             rule.setNegate(rs.getBoolean("negate"));
-            ruleMap.put(ruleId, rule);
+            ruleMap.put(recommendationId, rule);
+
+            String argumentQuery = "SELECT argument FROM arguments WHERE argument_id = ?";
+            List<String> arguments = jdbcTemplate.queryForList(argumentQuery, String.class, ruleId);
+            argumentsMap.put(ruleId, arguments);
         }
 
-        String argumentQuery = "SELECT argument FROM arguments WHERE argument_id = ?";
-        List<String> arguments = jdbcTemplate.queryForList(argumentQuery, String.class, ruleId);
-        rule.setArguments(arguments);
-
+        rule.setArguments(argumentsMap.get(ruleId));
         return rule;
 
+    }
+
+    public List<RecommendationRule> getRulesForRecommendation(UUID recommendationId) {
+        String query = "SELECT * FROM rules WHERE recommendation_id = ?";
+        return jdbcTemplate.query(query, new Object[]{recommendationId}, this);
     }
 
     public List<RecommendationRule> getRules() {
