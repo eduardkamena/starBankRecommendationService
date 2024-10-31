@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import pro.sky.recommendation_service.dto.RulesDTO;
 
 import java.sql.Types;
-import java.util.Arrays;
+import java.util.*;
 
 @Repository
 public class RulesRepository {
@@ -59,6 +59,33 @@ public class RulesRepository {
         } else {
             logger.info("Successfully deleted rule in database for rule.query: {}", sanitizedQuery);
         }
+    }
+
+    // SQL-запрос на вывод списка всех объектов запроса в БД
+    public Optional<List<RulesDTO>> readAllRules() {
+
+        String sql = "SELECT * FROM rules";
+
+        logger.info("Starting SQL-query for reading all rules in database");
+
+        List<RulesDTO> rulesDTO = jdbcTemplate.query(sql,
+                (rs, rowNum) -> {
+                    String query = rs.getString("query");
+                    String argumentsStr = rs.getString("arguments");
+                    String[] arguments = parseArguments(argumentsStr);
+                    boolean negate = rs.getBoolean("negate");
+                    return new RulesDTO(query, arguments, negate);
+                });
+
+        logger.info("Successfully reading all rules in database");
+
+        assert rulesDTO != null;
+        return Optional.of(rulesDTO);
+
+    }
+
+    private String[] parseArguments(String argumentsStr) {
+        return argumentsStr.replace("[", "").replace("]", "").split(", ");
     }
 
 }

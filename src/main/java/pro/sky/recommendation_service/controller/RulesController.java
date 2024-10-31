@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import pro.sky.recommendation_service.dto.RulesDTO;
 import pro.sky.recommendation_service.service.RulesService;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping(path = "/rules")
 @Tag(
@@ -28,6 +31,11 @@ public class RulesController {
     public void deleteRule(@RequestBody String query) {
         rulesService.deleteRule(query);
 
+    }
+
+    @GetMapping
+    public Optional<List<RulesDTO>> readAllRules() {
+        return rulesService.readAllRules();
     }
 
 }

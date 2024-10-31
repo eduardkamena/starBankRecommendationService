@@ -9,6 +9,8 @@ import pro.sky.recommendation_service.repository.RulesRepository;
 import pro.sky.recommendation_service.service.RulesService;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RulesServiceImpl implements RulesService {
@@ -32,6 +34,11 @@ public class RulesServiceImpl implements RulesService {
     public void deleteRule(String query) {
         checkQuery(query);
         rulesRepository.deleteRule(query);
+    }
+
+    @Override
+    public Optional<List<RulesDTO>> readAllRules() {
+        return rulesRepository.readAllRules();
     }
 
     public boolean checkQuery(String query) {
