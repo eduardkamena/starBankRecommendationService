@@ -11,10 +11,10 @@ public interface RecommendationsService {
 
     Recommendations createRecommendation(RecommendationsDTO recommendationsDTO);
 
-    Optional<RecommendationsDTO> readRule(UUID id);
+    Optional<RecommendationsDTO> getRule(UUID id);
 
     void deleteRule(UUID id);
 
-    List<RecommendationsDTO> readAllRules();
+    List<RecommendationsDTO> getAllRules();
 
 }

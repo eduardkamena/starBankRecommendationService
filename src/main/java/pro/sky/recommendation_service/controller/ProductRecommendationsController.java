@@ -11,37 +11,39 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pro.sky.recommendation_service.entity.Recommendations;
+import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.exception.AppError;
-import pro.sky.recommendation_service.repository.RecommendationsRepository;
+import pro.sky.recommendation_service.service.ProductRecommendationsService;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/product")
 @Tag(
-        name = "Контроллер продукта рекомендаций",
-        description = "Выполняет действия с продуктом рекомендаций")
+        name = "Контроллер продукта рекомендации",
+        description = "Выполняет действия с продуктом рекомендации")
 public class ProductRecommendationsController {
 
     private final Logger logger = LoggerFactory.getLogger(ProductRecommendationsController.class);
 
-    private final RecommendationsRepository recommendationsRepository;
+    private final ProductRecommendationsService productRecommendationsService;
 
-    public ProductRecommendationsController(RecommendationsRepository recommendationsRepository) {
-        this.recommendationsRepository = recommendationsRepository;
+    public ProductRecommendationsController(ProductRecommendationsService productRecommendationsService) {
+        this.productRecommendationsService = productRecommendationsService;
     }
 
     @GetMapping(path = "/{product_id}")
     public ResponseEntity<Object> getRecommendation(
-            @PathVariable
-            @Parameter(description = "Продукт рекомендации") UUID product_id) {
+            @Parameter(description = "Идентификатор продукта рекомендации")
+            @PathVariable UUID product_id) {
 
         logger.info("Received request for getting recommendation product for product_id: {}", product_id);
 
+        product_id = UUID.fromString(String.valueOf(product_id));
+
         try {
-            Optional<Recommendations> result = recommendationsRepository.findById(product_id);
+            List<ProductRecommendationsDTO> result = productRecommendationsService.getByProductId(product_id);
             logger.info("Outputting recommendation product for product_id: {}", product_id);
             return ResponseEntity.ok(result);
 

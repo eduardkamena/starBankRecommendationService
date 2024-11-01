@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pro.sky.recommendation_service.component.RecommendationRuleSet;
-import pro.sky.recommendation_service.entity.Recommendations;
+import pro.sky.recommendation_service.component.FixedRecommendationRuleSet;
+import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
 import pro.sky.recommendation_service.repository.TransactionsRepository;
@@ -20,13 +20,13 @@ public class UserRecommendationsServiceImpl implements UserRecommendationsServic
 
     private final Logger logger = LoggerFactory.getLogger(UserRecommendationsServiceImpl.class);
 
-    private final RecommendationRuleSet[] recommendationRuleSets;
+    private final FixedRecommendationRuleSet[] fixedRecommendationRuleSets;
     private final TransactionsRepository transactionsRepository;
 
     @Autowired
-    public UserRecommendationsServiceImpl(RecommendationRuleSet[] recommendationRuleSets,
+    public UserRecommendationsServiceImpl(FixedRecommendationRuleSet[] fixedRecommendationRuleSets,
                                           TransactionsRepository transactionsRepository) {
-        this.recommendationRuleSets = recommendationRuleSets;
+        this.fixedRecommendationRuleSets = fixedRecommendationRuleSets;
         this.transactionsRepository = transactionsRepository;
     }
 
@@ -38,11 +38,11 @@ public class UserRecommendationsServiceImpl implements UserRecommendationsServic
         if (transactionsRepository.isUserExists(user_id)) {
 
             logger.info("Starting getting in List<> all recommendations for user_id: {}", user_id);
-            List<Recommendations> recommendations = new ArrayList<>();
+            List<ProductRecommendationsDTO> recommendations = new ArrayList<>();
 
-            for (RecommendationRuleSet rule : recommendationRuleSets) {
+            for (FixedRecommendationRuleSet rule : fixedRecommendationRuleSets) {
                 rule.checkRecommendation(user_id)
-                        .ifPresent(recommendations::add);
+                        .ifPresent(recommendations::addAll);
                 logger.info("Adding result of getting recommendation to List<> for user_id: {}", user_id);
             }
             logger.info("Transferring all found recommendations from List<> to UserRecommendationsDTO for user_id: {}", user_id);

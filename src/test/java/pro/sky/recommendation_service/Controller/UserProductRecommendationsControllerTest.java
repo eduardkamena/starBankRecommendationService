@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pro.sky.recommendation_service.controller.UserRecommendationsController;
-import pro.sky.recommendation_service.entity.Recommendations;
+import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.service.UserRecommendationsService;
 
@@ -52,8 +52,8 @@ public class UserProductRecommendationsControllerTest {
         // given
         UUID userId = UUID.fromString("d4a4d619-9a0c-4fc5-b0cb-76c49409546b");
 
-        Recommendations recommendations = new Recommendations(NAME, ID, TEXT);
-        List<Recommendations> recommendationList = new ArrayList<>();
+        ProductRecommendationsDTO recommendations = new ProductRecommendationsDTO(NAME, ID, TEXT);
+        List<ProductRecommendationsDTO> recommendationList = new ArrayList<>();
         recommendationList.add(recommendations);
 
         UserRecommendationsDTO mockDTO = new UserRecommendationsDTO(userId, recommendationList);
@@ -69,9 +69,9 @@ public class UserProductRecommendationsControllerTest {
                 .andExpect(status().isOk()) //receive
                 .andExpect(jsonPath("$.user_id").value(userId.toString()))
                 .andExpect(jsonPath("$.recommendations").isArray())
-                .andExpect(jsonPath("$.recommendations[0].name").value(NAME))
-                .andExpect(jsonPath("$.recommendations[0].id").value(ID.toString()))
-                .andExpect(jsonPath("$.recommendations[0].text").value(TEXT));
+                .andExpect(jsonPath("$.recommendations[0].product_name").value(NAME))
+                .andExpect(jsonPath("$.recommendations[0].product_id").value(ID.toString()))
+                .andExpect(jsonPath("$.recommendations[0].product_text").value(TEXT));
     }
 
     @Test

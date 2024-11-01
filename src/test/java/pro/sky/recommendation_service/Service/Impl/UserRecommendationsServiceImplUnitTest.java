@@ -4,7 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import pro.sky.recommendation_service.component.RecommendationRuleSet;
+import pro.sky.recommendation_service.component.FixedRecommendationRuleSet;
+import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
@@ -27,7 +28,7 @@ class UserRecommendationsServiceImplUnitTest {
     private TransactionsRepository transactionsRepository;
 
     @Mock
-    private RecommendationRuleSet recommendationRuleSet;
+    private FixedRecommendationRuleSet fixedRecommendationRuleSet;
 
     @Mock
     private UserRecommendationsService userRecommendationsService;
@@ -56,8 +57,8 @@ class UserRecommendationsServiceImplUnitTest {
         // given
         UUID userId = UUID.fromString("d4a4d619-9a0c-4fc5-b0cb-76c49409546b");
 
-        Recommendations recommendations = new Recommendations(NAME, ID, TEXT);
-        List<Recommendations> recommendationList = new ArrayList<>();
+        ProductRecommendationsDTO recommendations = new ProductRecommendationsDTO(NAME, ID, TEXT);
+        List<ProductRecommendationsDTO> recommendationList = new ArrayList<>();
         recommendationList.add(recommendations);
 
         UserRecommendationsDTO mockDTO = new UserRecommendationsDTO(userId, recommendationList);
@@ -71,9 +72,9 @@ class UserRecommendationsServiceImplUnitTest {
         // then
         assertEquals(userId, result.getUser_id());
         assertEquals(1, result.getRecommendations().size());
-        assertEquals(NAME, result.getRecommendations().get(0).getName());
-        assertEquals(ID, result.getRecommendations().get(0).getId());
-        assertEquals(TEXT, result.getRecommendations().get(0).getText());
+        assertEquals(NAME, result.getRecommendations().get(0).getProduct_name());
+        assertEquals(ID, result.getRecommendations().get(0).getProduct_id());
+        assertEquals(TEXT, result.getRecommendations().get(0).getProduct_text());
 
         verify(userRecommendationsService).getAllRecommendations(userId);
     }
@@ -82,10 +83,10 @@ class UserRecommendationsServiceImplUnitTest {
     void shouldGetAllRecommendations_WithoutRecommendations() {
         //given
         UUID userId = UUID.randomUUID();
-        List<Recommendations> recommendationList = new ArrayList<>();
+        List<ProductRecommendationsDTO> recommendationList = new ArrayList<>();
 
         // when
-        when(recommendationRuleSet.checkRecommendation(userId)).thenReturn(Optional.empty());
+        when(fixedRecommendationRuleSet.checkRecommendation(userId)).thenReturn(Optional.empty());
 
         UserRecommendationsDTO result = new UserRecommendationsDTO(userId, recommendationList);
 

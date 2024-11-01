@@ -55,7 +55,7 @@ public class RecommendationsServiceImpl implements RecommendationsService {
     }
 
     @Override
-    public Optional<RecommendationsDTO> readRule(UUID id) {
+    public Optional<RecommendationsDTO> getRule(UUID id) {
         return recommendationsRepository.findById(id)
                 .map(recommendation -> {
                     RecommendationsDTO dto = new RecommendationsDTO();
@@ -82,7 +82,7 @@ public class RecommendationsServiceImpl implements RecommendationsService {
     }
 
     @Override
-    public List<RecommendationsDTO> readAllRules() {
+    public List<RecommendationsDTO> getAllRules() {
         return recommendationsRepository.findAll()
                 .stream()
                 .map(recommendation -> {

@@ -4,13 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import pro.sky.recommendation_service.component.RecommendationRuleSet;
+import pro.sky.recommendation_service.component.FixedRecommendationRuleSet;
+import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
+import pro.sky.recommendation_service.dto.RecommendationsDTO;
 import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
 import pro.sky.recommendation_service.repository.TransactionsRepository;
 import pro.sky.recommendation_service.service.impl.UserRecommendationsServiceImpl;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,7 +26,7 @@ class UserRecommendationsServiceImplTests {
     private UserRecommendationsServiceImpl recommendationService;
 
     @Mock
-    private RecommendationRuleSet ruleSetMock;
+    private FixedRecommendationRuleSet ruleSetMock;
 
     @Mock
     private TransactionsRepository transactionsRepositoryMock;
@@ -30,24 +34,27 @@ class UserRecommendationsServiceImplTests {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        recommendationService = new UserRecommendationsServiceImpl(new RecommendationRuleSet[]{ruleSetMock}, transactionsRepositoryMock);
+        recommendationService = new UserRecommendationsServiceImpl(new FixedRecommendationRuleSet[]{ruleSetMock}, transactionsRepositoryMock);
     }
 
     @Test
     void testGetAllRecommendations_WithRecommendations() {
         UUID userId = UUID.randomUUID();
-        Recommendations recommendation = new Recommendations("Инвестиции", UUID.randomUUID(), "Инвестируйте 500");
+        ProductRecommendationsDTO recommendation = new ProductRecommendationsDTO(
+                "Инвестиции", UUID.randomUUID(), "Инвестируйте 500");
+
+        List<ProductRecommendationsDTO> recommendationsList = Collections.singletonList(recommendation);
 
         when(transactionsRepositoryMock.isUserExists(userId)).thenReturn(true);
 
         when(ruleSetMock.checkRecommendation(userId))
-                .thenReturn(Optional.of(recommendation));
+                .thenReturn(Optional.of(recommendationsList));
 
         UserRecommendationsDTO result = recommendationService.getAllRecommendations(userId);
 
         assertEquals(1, result.getRecommendations().size());
         assertEquals(userId, result.getUser_id());
-        assertEquals("Инвестиции", result.getRecommendations().get(0).getName());
+        assertEquals("Инвестиции", result.getRecommendations().get(0).getProduct_name());
     }
 
     @Test

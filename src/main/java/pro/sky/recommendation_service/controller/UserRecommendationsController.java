@@ -21,8 +21,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping(path = "/recommendation")
 @Tag(
-        name = "Контроллер рекомендаций",
-        description = "Выполняет действия с рекомендациями")
+        name = "Контроллер рекомендаций продукта(ов) клиенту",
+        description = "Выполняет действия с рекомендациями продукта(ов) клиенту")
 public class UserRecommendationsController {
 
     private final Logger logger = LoggerFactory.getLogger(UserRecommendationsController.class);
@@ -33,10 +33,10 @@ public class UserRecommendationsController {
         this.userRecommendationsService = userRecommendationsService;
     }
 
-    @GetMapping(path = "/{user_id}")
+    @GetMapping(path = "/fixed/{user_id}")
     @Operation(
-            summary = "Получение рекомендаций",
-            description = "Позволяет получить рекомендации для пользователя")
+            summary = "Получение фиксированных рекомендаций продукта(ов)",
+            description = "Позволяет получить фиксированные рекомендации продукта(ов) клиенту")
     public ResponseEntity<Object> getUserRecommendation(
             @PathVariable
             @Parameter(description = "Идентификатор клиента") UUID user_id) {

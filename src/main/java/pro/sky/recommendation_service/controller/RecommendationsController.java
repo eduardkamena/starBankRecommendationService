@@ -29,7 +29,7 @@ public class RecommendationsController {
 
     @PostMapping
     public ResponseEntity<Recommendations> createRecommendation(
-            @Parameter(description = "Создание динамического правила")
+            @Parameter(description = "Создание динамического правила рекомендации")
             @RequestBody RecommendationsDTO recommendation) {
 
         Recommendations createdRecommendation = recommendationsService.createRecommendation(recommendation);
@@ -38,18 +38,18 @@ public class RecommendationsController {
     }
 
     @GetMapping(path = "/{rule_id}")
-    public ResponseEntity<Optional<RecommendationsDTO>> readRule(
-            @Parameter(description = "Идентификатор динамического правила")
+    public ResponseEntity<Optional<RecommendationsDTO>> getRule(
+            @Parameter(description = "Идентификатор динамического правила рекомендации")
             @PathVariable UUID rule_id) {
 
-        Optional<RecommendationsDTO> foundRecommendation = recommendationsService.readRule(rule_id);
+        Optional<RecommendationsDTO> foundRecommendation = recommendationsService.getRule(rule_id);
 
         return ResponseEntity.ok(foundRecommendation);
     }
 
     @DeleteMapping(path = "/{rule_id}")
     public ResponseEntity<Object> deleteRule(
-            @Parameter(description = "Идентификатор динамического правила")
+            @Parameter(description = "Идентификатор динамического правила рекомендации")
             @PathVariable UUID rule_id) {
 
         recommendationsService.deleteRule(rule_id);
@@ -60,9 +60,9 @@ public class RecommendationsController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<RecommendationsDTO>> readAllRules() {
+    public ResponseEntity<List<RecommendationsDTO>> getAllRules() {
 
-        List<RecommendationsDTO> foundAllRecommendations = recommendationsService.readAllRules();
+        List<RecommendationsDTO> foundAllRecommendations = recommendationsService.getAllRules();
 
         return ResponseEntity.ok(foundAllRecommendations);
     }
