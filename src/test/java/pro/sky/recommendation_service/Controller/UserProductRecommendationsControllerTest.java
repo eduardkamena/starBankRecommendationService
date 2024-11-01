@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pro.sky.recommendation_service.controller.UserRecommendationsController;
-import pro.sky.recommendation_service.dto.RecommendationDTO;
+import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.service.UserRecommendationsService;
 
@@ -52,9 +52,9 @@ public class UserProductRecommendationsControllerTest {
         // given
         UUID userId = UUID.fromString("d4a4d619-9a0c-4fc5-b0cb-76c49409546b");
 
-        RecommendationDTO recommendationDTO = new RecommendationDTO(NAME, ID, TEXT);
-        List<RecommendationDTO> recommendationList = new ArrayList<>();
-        recommendationList.add(recommendationDTO);
+        Recommendations recommendations = new Recommendations(NAME, ID, TEXT);
+        List<Recommendations> recommendationList = new ArrayList<>();
+        recommendationList.add(recommendations);
 
         UserRecommendationsDTO mockDTO = new UserRecommendationsDTO(userId, recommendationList);
 

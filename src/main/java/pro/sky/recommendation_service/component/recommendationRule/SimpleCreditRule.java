@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import pro.sky.recommendation_service.component.RecommendationRuleSet;
-import pro.sky.recommendation_service.dto.RecommendationDTO;
+import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.repository.RecommendationsRepository;
 import pro.sky.recommendation_service.repository.TransactionsRepository;
 
@@ -33,7 +33,7 @@ public class SimpleCreditRule implements RecommendationRuleSet {
     private final RecommendationsRepository recommendationsRepository;
 
     @Override
-    public Optional<RecommendationDTO> checkRecommendation(UUID user_id) {
+    public Optional<Recommendations> checkRecommendation(UUID user_id) {
 
         logger.info("Starting checking {} recommendation for user_id: {}", NAME, user_id);
         if (!hasCreditProduct(user_id)
@@ -41,7 +41,7 @@ public class SimpleCreditRule implements RecommendationRuleSet {
                 && hasDebitWithdrawCondition(user_id)
         ) {
             logger.info("Found {} recommendation for user_id: {}", NAME, user_id);
-            return recommendationsRepository.getProductDescription(ID);
+            return recommendationsRepository.findById(ID);
         }
         logger.info("Not Found {} recommendation for user_id: {}", NAME, user_id);
         return Optional.empty();

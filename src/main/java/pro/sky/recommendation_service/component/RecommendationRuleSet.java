@@ -1,12 +1,12 @@
 package pro.sky.recommendation_service.component;
 
-import pro.sky.recommendation_service.dto.RecommendationDTO;
+import pro.sky.recommendation_service.entity.Recommendations;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public interface RecommendationRuleSet {
 
-    Optional<RecommendationDTO> checkRecommendation(UUID user_id);
+    Optional<Recommendations> checkRecommendation(UUID user_id);
 
 }

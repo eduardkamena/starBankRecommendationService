@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.recommendation_service.component.RecommendationRuleSet;
-import pro.sky.recommendation_service.dto.RecommendationDTO;
+import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
 import pro.sky.recommendation_service.repository.TransactionsRepository;
@@ -38,7 +38,7 @@ public class UserRecommendationsServiceImpl implements UserRecommendationsServic
         if (transactionsRepository.isUserExists(user_id)) {
 
             logger.info("Starting getting in List<> all recommendations for user_id: {}", user_id);
-            List<RecommendationDTO> recommendations = new ArrayList<>();
+            List<Recommendations> recommendations = new ArrayList<>();
 
             for (RecommendationRuleSet rule : recommendationRuleSets) {
                 rule.checkRecommendation(user_id)

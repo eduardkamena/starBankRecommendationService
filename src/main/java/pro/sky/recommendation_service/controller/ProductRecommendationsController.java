@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pro.sky.recommendation_service.dto.RecommendationDTO;
+import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.exception.AppError;
 import pro.sky.recommendation_service.repository.RecommendationsRepository;
 
@@ -41,7 +41,7 @@ public class ProductRecommendationsController {
         logger.info("Received request for getting recommendation product for product_id: {}", product_id);
 
         try {
-            Optional<RecommendationDTO> result = recommendationsRepository.getProductDescription(product_id);
+            Optional<Recommendations> result = recommendationsRepository.findById(product_id);
             logger.info("Outputting recommendation product for product_id: {}", product_id);
             return ResponseEntity.ok(result);
 

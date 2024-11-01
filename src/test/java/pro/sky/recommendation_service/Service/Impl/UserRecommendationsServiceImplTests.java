@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pro.sky.recommendation_service.component.RecommendationRuleSet;
-import pro.sky.recommendation_service.dto.RecommendationDTO;
+import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
 import pro.sky.recommendation_service.repository.TransactionsRepository;
@@ -36,7 +36,7 @@ class UserRecommendationsServiceImplTests {
     @Test
     void testGetAllRecommendations_WithRecommendations() {
         UUID userId = UUID.randomUUID();
-        RecommendationDTO recommendation = new RecommendationDTO("Инвестиции", UUID.randomUUID(), "Инвестируйте 500");
+        Recommendations recommendation = new Recommendations("Инвестиции", UUID.randomUUID(), "Инвестируйте 500");
 
         when(transactionsRepositoryMock.isUserExists(userId)).thenReturn(true);
 

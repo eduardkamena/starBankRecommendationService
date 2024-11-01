@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import pro.sky.recommendation_service.component.RecommendationRuleSet;
-import pro.sky.recommendation_service.dto.RecommendationDTO;
+import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
 import pro.sky.recommendation_service.repository.TransactionsRepository;
@@ -56,9 +56,9 @@ class UserRecommendationsServiceImplUnitTest {
         // given
         UUID userId = UUID.fromString("d4a4d619-9a0c-4fc5-b0cb-76c49409546b");
 
-        RecommendationDTO recommendationDTO = new RecommendationDTO(NAME, ID, TEXT);
-        List<RecommendationDTO> recommendationList = new ArrayList<>();
-        recommendationList.add(recommendationDTO);
+        Recommendations recommendations = new Recommendations(NAME, ID, TEXT);
+        List<Recommendations> recommendationList = new ArrayList<>();
+        recommendationList.add(recommendations);
 
         UserRecommendationsDTO mockDTO = new UserRecommendationsDTO(userId, recommendationList);
 
@@ -82,7 +82,7 @@ class UserRecommendationsServiceImplUnitTest {
     void shouldGetAllRecommendations_WithoutRecommendations() {
         //given
         UUID userId = UUID.randomUUID();
-        List<RecommendationDTO> recommendationList = new ArrayList<>();
+        List<Recommendations> recommendationList = new ArrayList<>();
 
         // when
         when(recommendationRuleSet.checkRecommendation(userId)).thenReturn(Optional.empty());
