@@ -10,6 +10,7 @@ import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.exception.AppError;
 import pro.sky.recommendation_service.service.RecommendationsService;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -36,11 +37,11 @@ public class RecommendationsController {
     }
 
     @GetMapping(path = "/{rule_id}")
-    public ResponseEntity<Recommendations> readRule(
+    public ResponseEntity<Optional<RecommendationsDTO>> readRule(
             @Parameter(description = "Идентификатор динамического правила")
             @PathVariable UUID rule_id) {
 
-        Recommendations foundRecommendation = recommendationsService.readRule(rule_id);
+        Optional<RecommendationsDTO> foundRecommendation = recommendationsService.readRule(rule_id);
 
         return ResponseEntity.ok(foundRecommendation);
     }

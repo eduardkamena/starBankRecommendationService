@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.AppError;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
-import pro.sky.recommendation_service.repository.RecommendationsRepository;
 import pro.sky.recommendation_service.service.UserRecommendationsService;
 
 import java.util.UUID;
@@ -29,11 +28,9 @@ public class UserRecommendationsController {
     private final Logger logger = LoggerFactory.getLogger(UserRecommendationsController.class);
 
     private final UserRecommendationsService userRecommendationsService;
-    private final RecommendationsRepository recommendationsRepository;
 
-    public UserRecommendationsController(UserRecommendationsService userRecommendationsService, RecommendationsRepository recommendationsRepository) {
+    public UserRecommendationsController(UserRecommendationsService userRecommendationsService) {
         this.userRecommendationsService = userRecommendationsService;
-        this.recommendationsRepository = recommendationsRepository;
     }
 
     @GetMapping(path = "/{user_id}")

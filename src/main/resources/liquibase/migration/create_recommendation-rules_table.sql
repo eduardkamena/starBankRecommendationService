@@ -13,7 +13,6 @@ CREATE TABLE if NOT EXISTS recommendations (
 CREATE TABLE if NOT EXISTS rules (
     id UUID NOT null,
     query VARCHAR(255) NOT null,
-    arguments TEXT NOT null,
     negate BOOLEAN NOT null,
     PRIMARY KEY(id)
     )

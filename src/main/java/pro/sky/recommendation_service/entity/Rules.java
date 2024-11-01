@@ -26,9 +26,12 @@ public class Rules {
     @Schema(description = "Название объекта запроса")
     private String query;
 
-    @Column(columnDefinition = "TEXT")
     @Schema(description = "Аргументы объекта запроса")
-    private String arguments;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "rules_arguments", joinColumns = @JoinColumn(name = "rules_id"))
+    @Column(name = "argument")
+    @OrderColumn(name = "argument_index")
+    private List<String> arguments;
 
     @Schema(description = "Подтверждение объекта запроса")
     private boolean negate;

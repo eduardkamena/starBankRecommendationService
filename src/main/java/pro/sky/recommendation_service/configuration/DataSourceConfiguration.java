@@ -5,13 +5,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -35,25 +32,6 @@ public class DataSourceConfiguration {
     public JdbcTemplate recommendationsJdbcTemplate(@Qualifier("recommendationsDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
-
-//    @Primary
-//    @Bean(name = "postgresDataSource")
-//    @ConfigurationProperties(prefix = "spring.datasource")
-//    public DataSource postgresDataSource() {
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName("org.postgresql.Driver");
-//        dataSource.setUrl("jdbc:postgresql://localhost:5432/recommendation_rules");
-//        dataSource.setUsername("postgres");
-//        dataSource.setPassword("postgres");
-//        return dataSource;
-//    }
-//
-//    // Добавление конфигурации для JdbcTemplate
-//    @Bean(name = "postgresJdbcTemplate")
-//    @Qualifier("postgresDataSource")
-//    public JdbcTemplate postgresJdbcTemplate(@Qualifier("postgresDataSource") DataSource dataSource) {
-//        return new JdbcTemplate(dataSource);
-//    }
 
     @Primary
     @Bean(name = "postgresDataSource")

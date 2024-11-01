@@ -3,14 +3,17 @@ package pro.sky.recommendation_service.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.recommendation_service.dto.RecommendationsDTO;
+import pro.sky.recommendation_service.dto.RulesDTO;
 import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.entity.Rules;
+import pro.sky.recommendation_service.enums.RulesArgumentsENUM;
 import pro.sky.recommendation_service.enums.RulesQueryENUM;
 import pro.sky.recommendation_service.repository.RecommendationsRepository;
 import pro.sky.recommendation_service.service.RecommendationsService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -33,9 +36,16 @@ public class RecommendationsServiceImpl implements RecommendationsService {
 
         List<Rules> rules = recommendationsDTO.getRule().stream()
                 .map(ruleDTO -> {
+
+                    checkQuery(ruleDTO.getQuery().toUpperCase());
+                    checkArguments(ruleDTO.getArguments());
+
                     Rules rule = new Rules();
                     rule.setQuery(ruleDTO.getQuery().toUpperCase());
-                    rule.setArguments(String.join(",", ruleDTO.getArguments()).toUpperCase());
+                    rule.setArguments(ruleDTO.getArguments()
+                            .stream()
+                            .map(String::toUpperCase)
+                            .collect(Collectors.toList()));
                     rule.setNegate(ruleDTO.isNegate());
                     rule.setRecommendations(recommendation);
                     return rule;
@@ -48,9 +58,29 @@ public class RecommendationsServiceImpl implements RecommendationsService {
     }
 
     @Override
-    public Recommendations readRule(UUID id) {
+    public Optional<RecommendationsDTO> readRule(UUID id) {
         return recommendationsRepository.findById(id)
-                .orElse(null);
+                .map(recommendation -> {
+                    RecommendationsDTO dto = new RecommendationsDTO();
+                    dto.setId(recommendation.getId());
+                    dto.setProduct_name(recommendation.getProduct_name());
+                    dto.setProduct_id(recommendation.getProduct_id());
+                    dto.setProduct_text(recommendation.getProduct_text());
+
+                    List<RulesDTO> rulesDTO = recommendation.getRule().stream()
+                            .map(rule -> {
+                                RulesDTO ruleDTO = new RulesDTO();
+                                ruleDTO.setId(rule.getId());
+                                ruleDTO.setQuery(rule.getQuery());
+                                ruleDTO.setArguments(rule.getArguments());
+                                ruleDTO.setNegate(rule.isNegate());
+                                return ruleDTO;
+                            })
+                            .collect(Collectors.toList());
+
+                    dto.setRule(rulesDTO);
+                    return dto;
+                });
     }
 
     @Override
@@ -58,39 +88,37 @@ public class RecommendationsServiceImpl implements RecommendationsService {
         recommendationsRepository.deleteById(id);
     }
 
-    public boolean checkQuery(String query) {
-        if (Arrays.stream(RulesQueryENUM.values()).noneMatch(e -> e.name().equals(query))) {
-            throw new IllegalArgumentException("Query should contains in RulesQueryENUM");
-        } else return true;
+    public void checkQuery(String query) {
+        if (query == null || query.isEmpty()) {
+            throw new IllegalArgumentException("Query cannot be null or empty");
+        }
+
+        if (Arrays.stream(RulesQueryENUM.values()).noneMatch(e -> e.name().equals(query.toUpperCase()))) {
+            throw new IllegalArgumentException("Query should be one of the values in RulesQueryENUM");
+        }
     }
 
-//    public boolean checkArguments(Rules rules) {
-//
-//        if (rules.getQuery() == null
-//                || rules.getQuery().isEmpty()
-//                || Arrays.stream(RulesQueryENUM.values()).noneMatch(e -> e.name().equals(rules.getQuery().toUpperCase()))) {
-//            throw new IllegalArgumentException("Query cannot be null or empty and should contain in RulesQueryENUM");
-//        }
-//
-//        String[] arguments = rules.getArguments();
-//        if (arguments == null
-//                || arguments.length == 0) {
-//            throw new IllegalArgumentException("Arguments cannot be null or empty");
-//        }
-//
-//        String argumentsStr = Arrays.toString(arguments).toUpperCase();
-//
-//        if (Arrays.stream(RulesArgumentsENUM.values()).anyMatch(e -> argumentsStr.contains(e.name()))
-//                || argumentsStr.contains(">")
-//                || argumentsStr.contains("<")
-//                || argumentsStr.contains(">=")
-//                || argumentsStr.contains("<=")
-//                || argumentsStr.contains("=")
-//        ) {
-//            return true;
-//        } else {
-//            throw new IllegalArgumentException("Rules must have at least one argument or contains in RulesArgumentsENUM");
-//        }
-//    }
+    public boolean checkArguments(List<String> arguments) {
+        if (arguments == null || arguments.isEmpty()) {
+            throw new IllegalArgumentException("Arguments cannot be null or empty");
+        }
+
+        List<String> argumentsStr = arguments.stream()
+                .map(String::toUpperCase)
+                .toList();
+
+        String[] VALID_OPERATORS = {">", "<", ">=", "<=", "="};
+
+        boolean containsValidArgument = Arrays.stream(RulesArgumentsENUM.values())
+                .anyMatch(e -> argumentsStr.contains(e.name()))
+                || Arrays.stream(VALID_OPERATORS)
+                .anyMatch(argumentsStr::contains);
+
+        if (!containsValidArgument) {
+            throw new IllegalArgumentException("Rules must have at least one argument or contains in RulesArgumentsENUM");
+        }
+
+        return true;
+    }
 
 }
