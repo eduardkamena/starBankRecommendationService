@@ -11,10 +11,7 @@ import pro.sky.recommendation_service.enums.RulesQueryENUM;
 import pro.sky.recommendation_service.repository.RecommendationsRepository;
 import pro.sky.recommendation_service.service.RecommendationsService;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,7 +64,8 @@ public class RecommendationsServiceImpl implements RecommendationsService {
                     dto.setProduct_id(recommendation.getProduct_id());
                     dto.setProduct_text(recommendation.getProduct_text());
 
-                    List<RulesDTO> rulesDTO = recommendation.getRule().stream()
+                    List<RulesDTO> rulesDTO = recommendation.getRule()
+                            .stream()
                             .map(rule -> {
                                 RulesDTO ruleDTO = new RulesDTO();
                                 ruleDTO.setId(rule.getId());
@@ -81,6 +79,35 @@ public class RecommendationsServiceImpl implements RecommendationsService {
                     dto.setRule(rulesDTO);
                     return dto;
                 });
+    }
+
+    @Override
+    public List<RecommendationsDTO> readAllRules() {
+        return recommendationsRepository.findAll()
+                .stream()
+                .map(recommendation -> {
+                    RecommendationsDTO dto = new RecommendationsDTO();
+                    dto.setId(recommendation.getId());
+                    dto.setProduct_name(recommendation.getProduct_name());
+                    dto.setProduct_id(recommendation.getProduct_id());
+                    dto.setProduct_text(recommendation.getProduct_text());
+
+                    List<RulesDTO> rulesDTO = recommendation.getRule()
+                            .stream()
+                            .map(rule -> {
+                                RulesDTO ruleDTO = new RulesDTO();
+                                ruleDTO.setId(rule.getId());
+                                ruleDTO.setQuery(rule.getQuery());
+                                ruleDTO.setArguments(rule.getArguments());
+                                ruleDTO.setNegate(rule.isNegate());
+                                return ruleDTO;
+                            })
+                            .collect(Collectors.toList());
+
+                    dto.setRule(rulesDTO);
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -103,7 +130,8 @@ public class RecommendationsServiceImpl implements RecommendationsService {
             throw new IllegalArgumentException("Arguments cannot be null or empty");
         }
 
-        List<String> argumentsStr = arguments.stream()
+        List<String> argumentsStr = arguments
+                .stream()
                 .map(String::toUpperCase)
                 .toList();
 

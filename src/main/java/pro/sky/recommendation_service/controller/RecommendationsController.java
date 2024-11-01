@@ -10,6 +10,7 @@ import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.exception.AppError;
 import pro.sky.recommendation_service.service.RecommendationsService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,6 +57,14 @@ public class RecommendationsController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new AppError(HttpStatus.NO_CONTENT.value(),
                         "No Content"));
+    }
+
+    @GetMapping(path = "/all")
+    public ResponseEntity<List<RecommendationsDTO>> readAllRules() {
+
+        List<RecommendationsDTO> foundAllRecommendations = recommendationsService.readAllRules();
+
+        return ResponseEntity.ok(foundAllRecommendations);
     }
 
 }
