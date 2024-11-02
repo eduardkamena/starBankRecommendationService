@@ -1,5 +1,6 @@
 package pro.sky.recommendation_service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Schema(description = "Сущность объекта запроса для правила рекомендации")
 public class RulesDTO {
 
+    @JsonIgnore
     @Schema(description = "Идентификатор объекта запроса для правила рекомендации в БД")
     private UUID id;
 
