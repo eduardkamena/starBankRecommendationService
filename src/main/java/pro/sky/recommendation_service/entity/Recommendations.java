@@ -14,19 +14,19 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Сущность рекомендации")
+@Schema(description = "@Entity рекомендации")
 public class Recommendations {
 
     @Id
-    @Schema(description = "ID рекомендации")
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Schema(description = "Идентификатор правила рекомендации в БД (primary key)")
     private UUID id;
 
     @Column(columnDefinition = "TEXT")
     @Schema(description = "Название рекомендации")
     private String product_name;
 
-    @Schema(description = "Идентификатор рекомендации")
+    @Schema(description = "Идентификатор рекомендации в продакшн")
     private UUID product_id;
 
     @Column(columnDefinition = "TEXT")
@@ -35,6 +35,7 @@ public class Recommendations {
 
     @JsonIgnoreProperties(value = "recommendations", allowSetters = true)
     @OneToMany(mappedBy = "recommendations", cascade = CascadeType.ALL)
+    @Schema(description = "Правила рекомендации")
     private List<Rules> rule;
 
 }

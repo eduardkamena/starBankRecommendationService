@@ -14,26 +14,26 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Сущность объекта запроса")
+@Schema(description = "@Entity объекта запроса для правила рекомендации")
 public class Rules {
 
     @Id
     @JsonIgnore
-    @Schema(description = "ID объекта запроса")
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Schema(description = "Идентификатор объекта запроса для правила рекомендации в БД (primary key)")
     private UUID id;
 
-    @Schema(description = "Название объекта запроса")
+    @Schema(description = "Название объекта запроса для правила рекомендации")
     private String query;
 
-    @Schema(description = "Аргументы объекта запроса")
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "rules_arguments", joinColumns = @JoinColumn(name = "rules_id"))
     @Column(name = "argument")
     @OrderColumn(name = "argument_index")
+    @Schema(description = "Аргументы объекта запроса для правила рекомендации")
     private List<String> arguments;
 
-    @Schema(description = "Подтверждение объекта запроса")
+    @Schema(description = "Соответствие объекта запроса для правила рекомендации)")
     private boolean negate;
 
     @ManyToOne

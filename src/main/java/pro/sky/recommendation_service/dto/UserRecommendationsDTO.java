@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-@Schema(description = "Сущность клиента")
+@Schema(description = "Сущность рекомендации, связанная с клиентом")
 public class UserRecommendationsDTO {
 
     @Schema(description = "Идентификатор клиента")
