@@ -8,10 +8,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pro.sky.recommendation_service.controller.UserRecommendationsController;
+import pro.sky.recommendation_service.controller.UserTotalRecommendationsController;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
-import pro.sky.recommendation_service.service.UserRecommendationsService;
+import pro.sky.recommendation_service.service.UserFixedRecommendationsService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +23,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.is;
 
-@WebMvcTest(UserRecommendationsController.class)
-public class UserProductRecommendationsControllerTest {
+@WebMvcTest(UserTotalRecommendationsController.class)
+public class UserProductDynamicRulesRecommendationsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private UserRecommendationsService userRecommendationsService;
+    private UserFixedRecommendationsService userFixedRecommendationsService;
 
     private final String NAME = "Top Saving";
     private final UUID ID = UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925");
@@ -59,7 +59,7 @@ public class UserProductRecommendationsControllerTest {
         UserRecommendationsDTO mockDTO = new UserRecommendationsDTO(userId, recommendationList);
 
         // when
-        Mockito.when(userRecommendationsService.getAllRecommendations(userId)).thenReturn(mockDTO);
+        Mockito.when(userFixedRecommendationsService.getAllRecommendations(userId)).thenReturn(mockDTO);
 
         // then
         mockMvc.perform(MockMvcRequestBuilders
@@ -79,7 +79,7 @@ public class UserProductRecommendationsControllerTest {
         UUID userId = UUID.randomUUID();
         UserRecommendationsDTO mockDTO = new UserRecommendationsDTO(userId, Collections.emptyList());
 
-        Mockito.when(userRecommendationsService.getAllRecommendations(userId)).thenReturn(mockDTO);
+        Mockito.when(userFixedRecommendationsService.getAllRecommendations(userId)).thenReturn(mockDTO);
 
         mockMvc.perform(get("/recommendation/{user_id}", userId))
                 .andExpect(status().isOk())

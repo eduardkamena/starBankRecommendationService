@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.JdbcTemplate;
-import pro.sky.recommendation_service.repository.TransactionsRepository;
+import pro.sky.recommendation_service.repository.FixedRulesRecommendationsRepository;
 
 import java.util.UUID;
 
@@ -14,13 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-public class TransactionsRepositoryTest {
+public class FixedRulesRecommendationsRepositoryTest {
 
     @Mock
     private JdbcTemplate jdbcTemplate;
 
     @InjectMocks
-    private TransactionsRepository transactionsRepository;
+    private FixedRulesRecommendationsRepository fixedRulesRecommendationsRepository;
 
     private UUID userId;
     private String productsType;
@@ -40,7 +40,7 @@ public class TransactionsRepositoryTest {
         when(jdbcTemplate.queryForObject(anyString(), eq(Integer.class), any(UUID.class)))
                 .thenReturn(500);
 
-        int result = transactionsRepository.getTransactionAmount(userId, productsType, transactionType);
+        int result = fixedRulesRecommendationsRepository.getTransactionAmount(userId, productsType, transactionType);
 
         assertEquals(500, result);
 
@@ -54,7 +54,7 @@ public class TransactionsRepositoryTest {
         when(jdbcTemplate.queryForObject(anyString(), eq(Integer.class), any(UUID.class)))
                 .thenReturn(null);
 
-        int result = transactionsRepository.getTransactionAmount(userId, productsType, transactionType);
+        int result = fixedRulesRecommendationsRepository.getTransactionAmount(userId, productsType, transactionType);
 
         assertEquals(0, result);
     }
@@ -64,7 +64,7 @@ public class TransactionsRepositoryTest {
         when(jdbcTemplate.queryForObject(anyString(), eq(Integer.class), any(UUID.class)))
                 .thenReturn(1);
 
-        boolean result = transactionsRepository.isProductExists(userId, productsType);
+        boolean result = fixedRulesRecommendationsRepository.isProductExists(userId, productsType);
 
         assertTrue(result);
     }
@@ -74,7 +74,7 @@ public class TransactionsRepositoryTest {
 
         when(jdbcTemplate.queryForObject(anyString(), eq(Integer.class), any(UUID.class)))
                 .thenReturn(1);
-        boolean result = transactionsRepository.isUserExists(userId);
+        boolean result = fixedRulesRecommendationsRepository.isUserExists(userId);
         assertTrue(result);
     }
 

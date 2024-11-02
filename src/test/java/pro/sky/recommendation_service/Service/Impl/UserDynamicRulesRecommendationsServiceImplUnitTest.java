@@ -4,13 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import pro.sky.recommendation_service.component.FixedRecommendationRuleSet;
+import pro.sky.recommendation_service.component.FixedRecommendationsRulesSet;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
-import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
-import pro.sky.recommendation_service.repository.TransactionsRepository;
-import pro.sky.recommendation_service.service.UserRecommendationsService;
+import pro.sky.recommendation_service.repository.FixedRulesRecommendationsRepository;
+import pro.sky.recommendation_service.service.UserFixedRecommendationsService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +21,16 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class UserRecommendationsServiceImplUnitTest {
+class UserDynamicRulesRecommendationsServiceImplUnitTest {
 
     @Mock
-    private TransactionsRepository transactionsRepository;
+    private FixedRulesRecommendationsRepository fixedRulesRecommendationsRepository;
 
     @Mock
-    private FixedRecommendationRuleSet fixedRecommendationRuleSet;
+    private FixedRecommendationsRulesSet fixedRecommendationsRulesSet;
 
     @Mock
-    private UserRecommendationsService userRecommendationsService;
+    private UserFixedRecommendationsService userFixedRecommendationsService;
 
     @BeforeEach
     public void setUp() {
@@ -64,10 +63,10 @@ class UserRecommendationsServiceImplUnitTest {
         UserRecommendationsDTO mockDTO = new UserRecommendationsDTO(userId, recommendationList);
 
         // when
-        when(transactionsRepository.isUserExists(userId)).thenReturn(true);
-        when(userRecommendationsService.getAllRecommendations(userId)).thenReturn(mockDTO);
+        when(fixedRulesRecommendationsRepository.isUserExists(userId)).thenReturn(true);
+        when(userFixedRecommendationsService.getAllRecommendations(userId)).thenReturn(mockDTO);
 
-        UserRecommendationsDTO result = userRecommendationsService.getAllRecommendations(userId);
+        UserRecommendationsDTO result = userFixedRecommendationsService.getAllRecommendations(userId);
 
         // then
         assertEquals(userId, result.getUser_id());
@@ -76,7 +75,7 @@ class UserRecommendationsServiceImplUnitTest {
         assertEquals(ID, result.getRecommendations().get(0).getProduct_id());
         assertEquals(TEXT, result.getRecommendations().get(0).getProduct_text());
 
-        verify(userRecommendationsService).getAllRecommendations(userId);
+        verify(userFixedRecommendationsService).getAllRecommendations(userId);
     }
 
     @Test
@@ -86,7 +85,7 @@ class UserRecommendationsServiceImplUnitTest {
         List<ProductRecommendationsDTO> recommendationList = new ArrayList<>();
 
         // when
-        when(fixedRecommendationRuleSet.checkRecommendation(userId)).thenReturn(Optional.empty());
+        when(fixedRecommendationsRulesSet.checkRecommendation(userId)).thenReturn(Optional.empty());
 
         UserRecommendationsDTO result = new UserRecommendationsDTO(userId, recommendationList);
 
@@ -100,11 +99,11 @@ class UserRecommendationsServiceImplUnitTest {
         UUID userId = UUID.randomUUID();
 
         // when
-        when(userRecommendationsService.getAllRecommendations(userId)).thenThrow(UserNotFoundException.class);
+        when(userFixedRecommendationsService.getAllRecommendations(userId)).thenThrow(UserNotFoundException.class);
 
         // then
         assertThatExceptionOfType(UserNotFoundException.class)
-                .isThrownBy(() -> userRecommendationsService.getAllRecommendations(userId));
+                .isThrownBy(() -> userFixedRecommendationsService.getAllRecommendations(userId));
     }
 
 }

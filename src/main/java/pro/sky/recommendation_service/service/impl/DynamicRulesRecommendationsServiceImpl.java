@@ -8,20 +8,20 @@ import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.entity.Rules;
 import pro.sky.recommendation_service.enums.RulesArgumentsENUM;
 import pro.sky.recommendation_service.enums.RulesQueryENUM;
-import pro.sky.recommendation_service.repository.RecommendationsRepository;
-import pro.sky.recommendation_service.service.RecommendationsService;
+import pro.sky.recommendation_service.repository.DynamicRulesRecommendationsRepository;
+import pro.sky.recommendation_service.service.DynamicRulesRecommendationsService;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class RecommendationsServiceImpl implements RecommendationsService {
+public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecommendationsService {
 
-    private final RecommendationsRepository recommendationsRepository;
+    private final DynamicRulesRecommendationsRepository dynamicRulesRecommendationsRepository;
 
     @Autowired
-    public RecommendationsServiceImpl(RecommendationsRepository recommendationsRepository) {
-        this.recommendationsRepository = recommendationsRepository;
+    public DynamicRulesRecommendationsServiceImpl(DynamicRulesRecommendationsRepository dynamicRulesRecommendationsRepository) {
+        this.dynamicRulesRecommendationsRepository = dynamicRulesRecommendationsRepository;
     }
 
     @Override
@@ -51,12 +51,12 @@ public class RecommendationsServiceImpl implements RecommendationsService {
 
         recommendation.setRule(rules);
 
-        return recommendationsRepository.save(recommendation);
+        return dynamicRulesRecommendationsRepository.save(recommendation);
     }
 
     @Override
     public Optional<RecommendationsDTO> getRule(UUID id) {
-        return recommendationsRepository.findById(id)
+        return dynamicRulesRecommendationsRepository.findById(id)
                 .map(recommendation -> {
                     RecommendationsDTO dto = new RecommendationsDTO();
                     dto.setId(recommendation.getId());
@@ -83,7 +83,7 @@ public class RecommendationsServiceImpl implements RecommendationsService {
 
     @Override
     public List<RecommendationsDTO> getAllRules() {
-        return recommendationsRepository.findAll()
+        return dynamicRulesRecommendationsRepository.findAll()
                 .stream()
                 .map(recommendation -> {
                     RecommendationsDTO dto = new RecommendationsDTO();
@@ -112,7 +112,7 @@ public class RecommendationsServiceImpl implements RecommendationsService {
 
     @Override
     public void deleteRule(UUID id) {
-        recommendationsRepository.deleteById(id);
+        dynamicRulesRecommendationsRepository.deleteById(id);
     }
 
     public void checkQuery(String query) {

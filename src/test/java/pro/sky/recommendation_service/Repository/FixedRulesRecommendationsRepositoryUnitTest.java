@@ -4,17 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pro.sky.recommendation_service.repository.TransactionsRepository;
+import pro.sky.recommendation_service.repository.FixedRulesRecommendationsRepository;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class TransactionsRepositoryUnitTest {
+class FixedRulesRecommendationsRepositoryUnitTest {
 
     @Autowired
-    private TransactionsRepository transactionsRepository;
+    private FixedRulesRecommendationsRepository fixedRulesRecommendationsRepository;
 
     private final UUID USER_ID = UUID.fromString("d4a4d619-9a0c-4fc5-b0cb-76c49409546b");
     private final String PRODUCTS_TYPE = "DEBIT";
@@ -28,7 +28,7 @@ class TransactionsRepositoryUnitTest {
     void shouldGetTransactionAmount() {
         // given
         // when
-        int amount = transactionsRepository.getTransactionAmount(USER_ID, PRODUCTS_TYPE, TRANSACTION_TYPE);
+        int amount = fixedRulesRecommendationsRepository.getTransactionAmount(USER_ID, PRODUCTS_TYPE, TRANSACTION_TYPE);
 
         // then
         assertEquals(110_813, amount);
@@ -38,7 +38,7 @@ class TransactionsRepositoryUnitTest {
     void shouldExpectProductIsExists() {
         // given
         // when
-        boolean exists = transactionsRepository.isProductExists(USER_ID, PRODUCTS_TYPE);
+        boolean exists = fixedRulesRecommendationsRepository.isProductExists(USER_ID, PRODUCTS_TYPE);
 
         // then
         assertTrue(exists);
@@ -48,7 +48,7 @@ class TransactionsRepositoryUnitTest {
     void shouldExpectUserIsExists() {
         // given
         // when
-        boolean userExists = transactionsRepository.isUserExists(USER_ID);
+        boolean userExists = fixedRulesRecommendationsRepository.isUserExists(USER_ID);
 
         // then
         assertTrue(userExists);
@@ -60,7 +60,7 @@ class TransactionsRepositoryUnitTest {
         UUID userRandomId = UUID.randomUUID();
 
         // when
-        boolean userExists = transactionsRepository.isUserExists(userRandomId);
+        boolean userExists = fixedRulesRecommendationsRepository.isUserExists(userRandomId);
 
         // then
         assertFalse(userExists);

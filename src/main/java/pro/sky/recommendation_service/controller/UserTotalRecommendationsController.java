@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.AppError;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
-import pro.sky.recommendation_service.service.UserRecommendationsService;
+import pro.sky.recommendation_service.service.UserFixedRecommendationsService;
 
 import java.util.UUID;
 
@@ -23,14 +23,14 @@ import java.util.UUID;
 @Tag(
         name = "Контроллер рекомендаций продукта(ов) клиенту",
         description = "Выполняет действия с рекомендациями продукта(ов) клиенту")
-public class UserRecommendationsController {
+public class UserTotalRecommendationsController {
 
-    private final Logger logger = LoggerFactory.getLogger(UserRecommendationsController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserTotalRecommendationsController.class);
 
-    private final UserRecommendationsService userRecommendationsService;
+    private final UserFixedRecommendationsService userFixedRecommendationsService;
 
-    public UserRecommendationsController(UserRecommendationsService userRecommendationsService) {
-        this.userRecommendationsService = userRecommendationsService;
+    public UserTotalRecommendationsController(UserFixedRecommendationsService userFixedRecommendationsService) {
+        this.userFixedRecommendationsService = userFixedRecommendationsService;
     }
 
     @GetMapping(path = "/fixed/{user_id}")
@@ -43,7 +43,7 @@ public class UserRecommendationsController {
         logger.info("Received request for getting all relevant recommendations for user_id: {}", user_id);
 
         try {
-            UserRecommendationsDTO result = userRecommendationsService.getAllRecommendations(user_id);
+            UserRecommendationsDTO result = userFixedRecommendationsService.getAllRecommendations(user_id);
             logger.info("Outputting in @Controller all relevant recommendations for user_id: {}", user_id);
             return ResponseEntity.ok(result);
 

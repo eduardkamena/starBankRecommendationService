@@ -4,14 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import pro.sky.recommendation_service.component.FixedRecommendationRuleSet;
+import pro.sky.recommendation_service.component.FixedRecommendationsRulesSet;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
-import pro.sky.recommendation_service.dto.RecommendationsDTO;
-import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
-import pro.sky.recommendation_service.repository.TransactionsRepository;
-import pro.sky.recommendation_service.service.impl.UserRecommendationsServiceImpl;
+import pro.sky.recommendation_service.repository.FixedRulesRecommendationsRepository;
+import pro.sky.recommendation_service.service.impl.UserFixedRecommendationsServiceImpl;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,20 +19,20 @@ import java.util.UUID;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserRecommendationsServiceImplTests {
+class UserDynamicRulesRecommendationsServiceImplTests {
 
-    private UserRecommendationsServiceImpl recommendationService;
-
-    @Mock
-    private FixedRecommendationRuleSet ruleSetMock;
+    private UserFixedRecommendationsServiceImpl recommendationService;
 
     @Mock
-    private TransactionsRepository transactionsRepositoryMock;
+    private FixedRecommendationsRulesSet ruleSetMock;
+
+    @Mock
+    private FixedRulesRecommendationsRepository fixedRulesRecommendationsRepositoryMock;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        recommendationService = new UserRecommendationsServiceImpl(new FixedRecommendationRuleSet[]{ruleSetMock}, transactionsRepositoryMock);
+        recommendationService = new UserFixedRecommendationsServiceImpl(new FixedRecommendationsRulesSet[]{ruleSetMock}, fixedRulesRecommendationsRepositoryMock);
     }
 
     @Test
@@ -45,7 +43,7 @@ class UserRecommendationsServiceImplTests {
 
         List<ProductRecommendationsDTO> recommendationsList = Collections.singletonList(recommendation);
 
-        when(transactionsRepositoryMock.isUserExists(userId)).thenReturn(true);
+        when(fixedRulesRecommendationsRepositoryMock.isUserExists(userId)).thenReturn(true);
 
         when(ruleSetMock.checkRecommendation(userId))
                 .thenReturn(Optional.of(recommendationsList));
@@ -61,7 +59,7 @@ class UserRecommendationsServiceImplTests {
     void testGetAllRecommendations_WithoutRecommendations() {
         UUID userId = UUID.randomUUID();
 
-        when(transactionsRepositoryMock.isUserExists(userId)).thenReturn(true);
+        when(fixedRulesRecommendationsRepositoryMock.isUserExists(userId)).thenReturn(true);
 
         when(ruleSetMock.checkRecommendation(userId))
                 .thenReturn(Optional.empty());
@@ -75,7 +73,7 @@ class UserRecommendationsServiceImplTests {
     @Test
     void testGetAllRecommendations_UserNotFound() {
         UUID userId = UUID.randomUUID();
-        when(transactionsRepositoryMock.isUserExists(userId)).thenReturn(false);
+        when(fixedRulesRecommendationsRepositoryMock.isUserExists(userId)).thenReturn(false);
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> {
             recommendationService.getAllRecommendations(userId);

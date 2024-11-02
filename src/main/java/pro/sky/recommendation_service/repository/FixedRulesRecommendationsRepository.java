@@ -10,14 +10,14 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public class TransactionsRepository {
+public class FixedRulesRecommendationsRepository {
 
-    private final Logger logger = LoggerFactory.getLogger(TransactionsRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(FixedRulesRecommendationsRepository.class);
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public TransactionsRepository(
+    public FixedRulesRecommendationsRepository(
             @Qualifier("recommendationsJdbcTemplate")
             JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

@@ -4,30 +4,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pro.sky.recommendation_service.component.FixedRecommendationRuleSet;
+import pro.sky.recommendation_service.component.FixedRecommendationsRulesSet;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
-import pro.sky.recommendation_service.repository.TransactionsRepository;
-import pro.sky.recommendation_service.service.UserRecommendationsService;
+import pro.sky.recommendation_service.repository.FixedRulesRecommendationsRepository;
+import pro.sky.recommendation_service.service.UserFixedRecommendationsService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserRecommendationsServiceImpl implements UserRecommendationsService {
+public class UserFixedRecommendationsServiceImpl implements UserFixedRecommendationsService {
 
-    private final Logger logger = LoggerFactory.getLogger(UserRecommendationsServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(UserFixedRecommendationsServiceImpl.class);
 
-    private final FixedRecommendationRuleSet[] fixedRecommendationRuleSets;
-    private final TransactionsRepository transactionsRepository;
+    private final FixedRecommendationsRulesSet[] fixedRecommendationsRulesSets;
+    private final FixedRulesRecommendationsRepository fixedRulesRecommendationsRepository;
 
     @Autowired
-    public UserRecommendationsServiceImpl(FixedRecommendationRuleSet[] fixedRecommendationRuleSets,
-                                          TransactionsRepository transactionsRepository) {
-        this.fixedRecommendationRuleSets = fixedRecommendationRuleSets;
-        this.transactionsRepository = transactionsRepository;
+    public UserFixedRecommendationsServiceImpl(FixedRecommendationsRulesSet[] fixedRecommendationsRulesSets,
+                                               FixedRulesRecommendationsRepository fixedRulesRecommendationsRepository) {
+        this.fixedRecommendationsRulesSets = fixedRecommendationsRulesSets;
+        this.fixedRulesRecommendationsRepository = fixedRulesRecommendationsRepository;
     }
 
     @Override
@@ -35,12 +35,12 @@ public class UserRecommendationsServiceImpl implements UserRecommendationsServic
 
         logger.info("Starting checking user in database for user_id: {}", user_id);
 
-        if (transactionsRepository.isUserExists(user_id)) {
+        if (fixedRulesRecommendationsRepository.isUserExists(user_id)) {
 
             logger.info("Starting getting in List<> all recommendations for user_id: {}", user_id);
             List<ProductRecommendationsDTO> recommendations = new ArrayList<>();
 
-            for (FixedRecommendationRuleSet rule : fixedRecommendationRuleSets) {
+            for (FixedRecommendationsRulesSet rule : fixedRecommendationsRulesSets) {
                 rule.checkRecommendation(user_id)
                         .ifPresent(recommendations::addAll);
                 logger.info("Adding result of getting recommendation to List<> for user_id: {}", user_id);

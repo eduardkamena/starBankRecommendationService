@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface FixedRecommendationRuleSet {
+public interface FixedRecommendationsRulesSet {
 
     Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID user_id);
 

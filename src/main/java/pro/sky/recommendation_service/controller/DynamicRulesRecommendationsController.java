@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pro.sky.recommendation_service.dto.RecommendationsDTO;
 import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.exception.AppError;
-import pro.sky.recommendation_service.service.RecommendationsService;
+import pro.sky.recommendation_service.service.DynamicRulesRecommendationsService;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,12 +19,12 @@ import java.util.UUID;
 @Tag(
         name = "Контроллер динамических правил рекомендаций",
         description = "Выполняет действия с динамическими правилами рекомендаций")
-public class RecommendationsController {
+public class DynamicRulesRecommendationsController {
 
-    private final RecommendationsService recommendationsService;
+    private final DynamicRulesRecommendationsService dynamicRulesRecommendationsService;
 
-    public RecommendationsController(RecommendationsService recommendationsService) {
-        this.recommendationsService = recommendationsService;
+    public DynamicRulesRecommendationsController(DynamicRulesRecommendationsService dynamicRulesRecommendationsService) {
+        this.dynamicRulesRecommendationsService = dynamicRulesRecommendationsService;
     }
 
     @PostMapping
@@ -32,7 +32,7 @@ public class RecommendationsController {
             @Parameter(description = "Создание динамического правила рекомендации")
             @RequestBody RecommendationsDTO recommendation) {
 
-        Recommendations createdRecommendation = recommendationsService.createRecommendation(recommendation);
+        Recommendations createdRecommendation = dynamicRulesRecommendationsService.createRecommendation(recommendation);
 
         return ResponseEntity.ok(createdRecommendation);
     }
@@ -42,7 +42,7 @@ public class RecommendationsController {
             @Parameter(description = "Идентификатор динамического правила рекомендации")
             @PathVariable UUID rule_id) {
 
-        Optional<RecommendationsDTO> foundRecommendation = recommendationsService.getRule(rule_id);
+        Optional<RecommendationsDTO> foundRecommendation = dynamicRulesRecommendationsService.getRule(rule_id);
 
         return ResponseEntity.ok(foundRecommendation);
     }
@@ -52,7 +52,7 @@ public class RecommendationsController {
             @Parameter(description = "Идентификатор динамического правила рекомендации")
             @PathVariable UUID rule_id) {
 
-        recommendationsService.deleteRule(rule_id);
+        dynamicRulesRecommendationsService.deleteRule(rule_id);
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new AppError(HttpStatus.NO_CONTENT.value(),
@@ -62,7 +62,7 @@ public class RecommendationsController {
     @GetMapping(path = "/all")
     public ResponseEntity<List<RecommendationsDTO>> getAllRules() {
 
-        List<RecommendationsDTO> foundAllRecommendations = recommendationsService.getAllRules();
+        List<RecommendationsDTO> foundAllRecommendations = dynamicRulesRecommendationsService.getAllRules();
 
         return ResponseEntity.ok(foundAllRecommendations);
     }

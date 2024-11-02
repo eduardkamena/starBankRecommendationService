@@ -4,7 +4,7 @@ import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 
 import java.util.UUID;
 
-public interface UserRecommendationsService {
+public interface UserFixedRecommendationsService {
 
     UserRecommendationsDTO getAllRecommendations(UUID user_id);
 

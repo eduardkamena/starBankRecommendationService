@@ -5,6 +5,6 @@ import pro.sky.recommendation_service.entity.Recommendations;
 
 import java.util.UUID;
 
-public interface RecommendationsRepository extends JpaRepository<Recommendations, UUID> {
+public interface DynamicRulesRecommendationsRepository extends JpaRepository<Recommendations, UUID> {
 
 }

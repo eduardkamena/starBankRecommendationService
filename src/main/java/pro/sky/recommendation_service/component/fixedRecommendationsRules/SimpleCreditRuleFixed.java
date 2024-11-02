@@ -1,12 +1,12 @@
-package pro.sky.recommendation_service.component.fixedRecommendationRule;
+package pro.sky.recommendation_service.component.fixedRecommendationsRules;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import pro.sky.recommendation_service.component.FixedRecommendationRuleSet;
+import pro.sky.recommendation_service.component.FixedRecommendationsRulesSet;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
-import pro.sky.recommendation_service.repository.TransactionsRepository;
+import pro.sky.recommendation_service.repository.FixedRulesRecommendationsRepository;
 import pro.sky.recommendation_service.service.ProductRecommendationsService;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Component("SimpleCreditRule")
 @RequiredArgsConstructor
-public class SimpleCreditRuleFixed implements FixedRecommendationRuleSet {
+public class SimpleCreditRuleFixed implements FixedRecommendationsRulesSet {
 
     // Идентификатор продукта из БД (product_id)
     private final UUID ID = UUID.fromString("ab138afb-f3ba-4a93-b74f-0fcee86d447f");
@@ -32,7 +32,7 @@ public class SimpleCreditRuleFixed implements FixedRecommendationRuleSet {
 
     private final Logger logger = LoggerFactory.getLogger(SimpleCreditRuleFixed.class);
 
-    private final TransactionsRepository transactionsRepository;
+    private final FixedRulesRecommendationsRepository fixedRulesRecommendationsRepository;
     private final ProductRecommendationsService productRecommendationsService;
 
     @Override
@@ -52,18 +52,18 @@ public class SimpleCreditRuleFixed implements FixedRecommendationRuleSet {
 
     // Условия выполнения клиентом для предоставления продукта рекомендации
     public boolean hasCreditProduct(UUID user_id) {
-        return transactionsRepository.isProductExists(user_id, PRODUCT_TYPE_CREDIT);
+        return fixedRulesRecommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_CREDIT);
     }
 
     public boolean hasPositiveDebitBalance(UUID user_id) {
-        return transactionsRepository.getTransactionAmount
+        return fixedRulesRecommendationsRepository.getTransactionAmount
                 (user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
-                > transactionsRepository.getTransactionAmount
+                > fixedRulesRecommendationsRepository.getTransactionAmount
                 (user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW);
     }
 
     public boolean hasDebitWithdrawCondition(UUID user_id) {
-        return transactionsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW)
+        return fixedRulesRecommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW)
                 > TRANSACTION_CONDITION;
     }
 
