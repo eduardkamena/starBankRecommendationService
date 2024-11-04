@@ -8,7 +8,7 @@ import pro.sky.recommendation_service.component.FixedRecommendationsRulesSet;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
-import pro.sky.recommendation_service.repository.FixedRulesRecommendationsRepository;
+import pro.sky.recommendation_service.repository.FixedRecommendationsRepository;
 import pro.sky.recommendation_service.service.UserFixedRecommendationsService;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserDynamicRulesRecommendationsServiceImplUnitTest {
 
     @Mock
-    private FixedRulesRecommendationsRepository fixedRulesRecommendationsRepository;
+    private FixedRecommendationsRepository fixedRecommendationsRepository;
 
     @Mock
     private FixedRecommendationsRulesSet fixedRecommendationsRulesSet;
@@ -63,10 +63,10 @@ class UserDynamicRulesRecommendationsServiceImplUnitTest {
         UserRecommendationsDTO mockDTO = new UserRecommendationsDTO(userId, recommendationList);
 
         // when
-        when(fixedRulesRecommendationsRepository.isUserExists(userId)).thenReturn(true);
-        when(userFixedRecommendationsService.getAllRecommendations(userId)).thenReturn(mockDTO);
+        when(fixedRecommendationsRepository.isUserExists(userId)).thenReturn(true);
+        when(userFixedRecommendationsService.getAllFixedRecommendations(userId)).thenReturn(mockDTO);
 
-        UserRecommendationsDTO result = userFixedRecommendationsService.getAllRecommendations(userId);
+        UserRecommendationsDTO result = userFixedRecommendationsService.getAllFixedRecommendations(userId);
 
         // then
         assertEquals(userId, result.getUser_id());
@@ -75,7 +75,7 @@ class UserDynamicRulesRecommendationsServiceImplUnitTest {
         assertEquals(ID, result.getRecommendations().get(0).getProduct_id());
         assertEquals(TEXT, result.getRecommendations().get(0).getProduct_text());
 
-        verify(userFixedRecommendationsService).getAllRecommendations(userId);
+        verify(userFixedRecommendationsService).getAllFixedRecommendations(userId);
     }
 
     @Test
@@ -99,11 +99,11 @@ class UserDynamicRulesRecommendationsServiceImplUnitTest {
         UUID userId = UUID.randomUUID();
 
         // when
-        when(userFixedRecommendationsService.getAllRecommendations(userId)).thenThrow(UserNotFoundException.class);
+        when(userFixedRecommendationsService.getAllFixedRecommendations(userId)).thenThrow(UserNotFoundException.class);
 
         // then
         assertThatExceptionOfType(UserNotFoundException.class)
-                .isThrownBy(() -> userFixedRecommendationsService.getAllRecommendations(userId));
+                .isThrownBy(() -> userFixedRecommendationsService.getAllFixedRecommendations(userId));
     }
 
 }

@@ -26,7 +26,7 @@ public class Rules {
     @Schema(description = "Название объекта запроса для правила рекомендации")
     private String query;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "rules_arguments", joinColumns = @JoinColumn(name = "rules_id"))
     @Column(name = "argument")
     @OrderColumn(name = "argument_index")

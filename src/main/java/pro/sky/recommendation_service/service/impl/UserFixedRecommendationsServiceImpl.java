@@ -8,7 +8,7 @@ import pro.sky.recommendation_service.component.FixedRecommendationsRulesSet;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
-import pro.sky.recommendation_service.repository.FixedRulesRecommendationsRepository;
+import pro.sky.recommendation_service.repository.FixedRecommendationsRepository;
 import pro.sky.recommendation_service.service.UserFixedRecommendationsService;
 
 import java.util.ArrayList;
@@ -21,21 +21,21 @@ public class UserFixedRecommendationsServiceImpl implements UserFixedRecommendat
     private final Logger logger = LoggerFactory.getLogger(UserFixedRecommendationsServiceImpl.class);
 
     private final FixedRecommendationsRulesSet[] fixedRecommendationsRulesSets;
-    private final FixedRulesRecommendationsRepository fixedRulesRecommendationsRepository;
+    private final FixedRecommendationsRepository fixedRecommendationsRepository;
 
     @Autowired
     public UserFixedRecommendationsServiceImpl(FixedRecommendationsRulesSet[] fixedRecommendationsRulesSets,
-                                               FixedRulesRecommendationsRepository fixedRulesRecommendationsRepository) {
+                                               FixedRecommendationsRepository fixedRecommendationsRepository) {
         this.fixedRecommendationsRulesSets = fixedRecommendationsRulesSets;
-        this.fixedRulesRecommendationsRepository = fixedRulesRecommendationsRepository;
+        this.fixedRecommendationsRepository = fixedRecommendationsRepository;
     }
 
     @Override
-    public UserRecommendationsDTO getAllRecommendations(UUID user_id) throws UserNotFoundException {
+    public UserRecommendationsDTO getAllFixedRecommendations(UUID user_id) throws UserNotFoundException {
 
         logger.info("Starting checking user in database for user_id: {}", user_id);
 
-        if (fixedRulesRecommendationsRepository.isUserExists(user_id)) {
+        if (fixedRecommendationsRepository.isUserExists(user_id)) {
 
             logger.info("Starting getting in List<> all recommendations for user_id: {}", user_id);
             List<ProductRecommendationsDTO> recommendations = new ArrayList<>();

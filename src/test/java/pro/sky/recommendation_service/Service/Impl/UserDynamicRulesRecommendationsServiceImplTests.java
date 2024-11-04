@@ -8,7 +8,7 @@ import pro.sky.recommendation_service.component.FixedRecommendationsRulesSet;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
-import pro.sky.recommendation_service.repository.FixedRulesRecommendationsRepository;
+import pro.sky.recommendation_service.repository.FixedRecommendationsRepository;
 import pro.sky.recommendation_service.service.impl.UserFixedRecommendationsServiceImpl;
 
 import java.util.Collections;
@@ -27,12 +27,12 @@ class UserDynamicRulesRecommendationsServiceImplTests {
     private FixedRecommendationsRulesSet ruleSetMock;
 
     @Mock
-    private FixedRulesRecommendationsRepository fixedRulesRecommendationsRepositoryMock;
+    private FixedRecommendationsRepository fixedRecommendationsRepositoryMock;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        recommendationService = new UserFixedRecommendationsServiceImpl(new FixedRecommendationsRulesSet[]{ruleSetMock}, fixedRulesRecommendationsRepositoryMock);
+        recommendationService = new UserFixedRecommendationsServiceImpl(new FixedRecommendationsRulesSet[]{ruleSetMock}, fixedRecommendationsRepositoryMock);
     }
 
     @Test
@@ -43,12 +43,12 @@ class UserDynamicRulesRecommendationsServiceImplTests {
 
         List<ProductRecommendationsDTO> recommendationsList = Collections.singletonList(recommendation);
 
-        when(fixedRulesRecommendationsRepositoryMock.isUserExists(userId)).thenReturn(true);
+        when(fixedRecommendationsRepositoryMock.isUserExists(userId)).thenReturn(true);
 
         when(ruleSetMock.checkRecommendation(userId))
                 .thenReturn(Optional.of(recommendationsList));
 
-        UserRecommendationsDTO result = recommendationService.getAllRecommendations(userId);
+        UserRecommendationsDTO result = recommendationService.getAllFixedRecommendations(userId);
 
         assertEquals(1, result.getRecommendations().size());
         assertEquals(userId, result.getUser_id());
@@ -59,12 +59,12 @@ class UserDynamicRulesRecommendationsServiceImplTests {
     void testGetAllRecommendations_WithoutRecommendations() {
         UUID userId = UUID.randomUUID();
 
-        when(fixedRulesRecommendationsRepositoryMock.isUserExists(userId)).thenReturn(true);
+        when(fixedRecommendationsRepositoryMock.isUserExists(userId)).thenReturn(true);
 
         when(ruleSetMock.checkRecommendation(userId))
                 .thenReturn(Optional.empty());
 
-        UserRecommendationsDTO result = recommendationService.getAllRecommendations(userId);
+        UserRecommendationsDTO result = recommendationService.getAllFixedRecommendations(userId);
 
         assertEquals(0, result.getRecommendations().size());
         assertEquals(userId, result.getUser_id());
@@ -73,10 +73,10 @@ class UserDynamicRulesRecommendationsServiceImplTests {
     @Test
     void testGetAllRecommendations_UserNotFound() {
         UUID userId = UUID.randomUUID();
-        when(fixedRulesRecommendationsRepositoryMock.isUserExists(userId)).thenReturn(false);
+        when(fixedRecommendationsRepositoryMock.isUserExists(userId)).thenReturn(false);
 
         UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> {
-            recommendationService.getAllRecommendations(userId);
+            recommendationService.getAllFixedRecommendations(userId);
         });
 
         assertEquals("User not found in database", exception.getMessage());

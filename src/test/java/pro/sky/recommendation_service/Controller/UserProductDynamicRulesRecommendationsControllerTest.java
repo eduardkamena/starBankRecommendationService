@@ -59,7 +59,7 @@ public class UserProductDynamicRulesRecommendationsControllerTest {
         UserRecommendationsDTO mockDTO = new UserRecommendationsDTO(userId, recommendationList);
 
         // when
-        Mockito.when(userFixedRecommendationsService.getAllRecommendations(userId)).thenReturn(mockDTO);
+        Mockito.when(userFixedRecommendationsService.getAllFixedRecommendations(userId)).thenReturn(mockDTO);
 
         // then
         mockMvc.perform(MockMvcRequestBuilders
@@ -79,7 +79,7 @@ public class UserProductDynamicRulesRecommendationsControllerTest {
         UUID userId = UUID.randomUUID();
         UserRecommendationsDTO mockDTO = new UserRecommendationsDTO(userId, Collections.emptyList());
 
-        Mockito.when(userFixedRecommendationsService.getAllRecommendations(userId)).thenReturn(mockDTO);
+        Mockito.when(userFixedRecommendationsService.getAllFixedRecommendations(userId)).thenReturn(mockDTO);
 
         mockMvc.perform(get("/recommendation/{user_id}", userId))
                 .andExpect(status().isOk())

@@ -6,6 +6,6 @@ import java.util.UUID;
 
 public interface UserFixedRecommendationsService {
 
-    UserRecommendationsDTO getAllRecommendations(UUID user_id);
+    UserRecommendationsDTO getAllFixedRecommendations(UUID user_id);
 
 }

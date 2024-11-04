@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import pro.sky.recommendation_service.component.FixedRecommendationsRulesSet;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
-import pro.sky.recommendation_service.repository.FixedRulesRecommendationsRepository;
+import pro.sky.recommendation_service.repository.FixedRecommendationsRepository;
 import pro.sky.recommendation_service.service.ProductRecommendationsService;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class Invest500RuleFixed implements FixedRecommendationsRulesSet {
 
     private final Logger logger = LoggerFactory.getLogger(Invest500RuleFixed.class);
 
-    private final FixedRulesRecommendationsRepository fixedRulesRecommendationsRepository;
+    private final FixedRecommendationsRepository fixedRecommendationsRepository;
     private final ProductRecommendationsService productRecommendationsService;
 
     @Override
@@ -53,15 +53,15 @@ public class Invest500RuleFixed implements FixedRecommendationsRulesSet {
 
     // Условия выполнения клиентом для предоставления продукта рекомендации
     public boolean hasDebitProduct(UUID user_id) {
-        return fixedRulesRecommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_DEBIT);
+        return fixedRecommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_DEBIT);
     }
 
     public boolean hasInvestProduct(UUID user_id) {
-        return fixedRulesRecommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_INVEST);
+        return fixedRecommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_INVEST);
     }
 
     public boolean hasSavingDepositCondition(UUID user_id) {
-        return fixedRulesRecommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
+        return fixedRecommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
                 > TRANSACTION_CONDITION;
     }
 

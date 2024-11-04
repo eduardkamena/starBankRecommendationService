@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import pro.sky.recommendation_service.component.FixedRecommendationsRulesSet;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
-import pro.sky.recommendation_service.repository.FixedRulesRecommendationsRepository;
+import pro.sky.recommendation_service.repository.FixedRecommendationsRepository;
 import pro.sky.recommendation_service.service.ProductRecommendationsService;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class TopSavingRuleFixed implements FixedRecommendationsRulesSet {
 
     private final Logger logger = LoggerFactory.getLogger(TopSavingRuleFixed.class);
 
-    private final FixedRulesRecommendationsRepository fixedRulesRecommendationsRepository;
+    private final FixedRecommendationsRepository fixedRecommendationsRepository;
     private final ProductRecommendationsService productRecommendationsService;
 
     @Override
@@ -52,23 +52,23 @@ public class TopSavingRuleFixed implements FixedRecommendationsRulesSet {
 
     // Условия выполнения клиентом для предоставления продукта рекомендации
     public boolean hasDebitProduct(UUID user_id) {
-        return fixedRulesRecommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_DEBIT);
+        return fixedRecommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_DEBIT);
     }
 
     public boolean hasDebitDepositCondition(UUID user_id) {
-        return fixedRulesRecommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
+        return fixedRecommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
                 >= TRANSACTION_CONDITION;
     }
 
     public boolean hasSavingDepositCondition(UUID user_id) {
-        return fixedRulesRecommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
+        return fixedRecommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
                 >= TRANSACTION_CONDITION;
     }
 
     public boolean hasPositiveDebitBalance(UUID user_id) {
-        return fixedRulesRecommendationsRepository.getTransactionAmount
+        return fixedRecommendationsRepository.getTransactionAmount
                 (user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
-                > fixedRulesRecommendationsRepository.getTransactionAmount
+                > fixedRecommendationsRepository.getTransactionAmount
                 (user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW);
     }
 
