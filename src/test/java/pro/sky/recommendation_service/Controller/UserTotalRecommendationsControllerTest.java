@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pro.sky.recommendation_service.controller.UserTotalRecommendationsController;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
+import pro.sky.recommendation_service.service.UserDynamicRecommendationsService;
 import pro.sky.recommendation_service.service.UserFixedRecommendationsService;
 
 import java.util.ArrayList;
@@ -24,13 +25,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.is;
 
 @WebMvcTest(UserTotalRecommendationsController.class)
-public class UserProductDynamicRulesRecommendationsControllerTest {
+public class UserTotalRecommendationsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private UserFixedRecommendationsService userFixedRecommendationsService;
+
+    @MockBean
+    private UserDynamicRecommendationsService userDynamicRecommendationsService;
 
     private final String NAME = "Top Saving";
     private final UUID ID = UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925");
@@ -48,7 +52,7 @@ public class UserProductDynamicRulesRecommendationsControllerTest {
             Начните использовать «Копилку» уже сегодня и станьте ближе к своим финансовым целям!""";
 
     @Test
-    public void shouldGetUserRecommendations() throws Exception {
+    public void shouldGetFixedUserRecommendations() throws Exception {
         // given
         UUID userId = UUID.fromString("d4a4d619-9a0c-4fc5-b0cb-76c49409546b");
 
@@ -63,7 +67,7 @@ public class UserProductDynamicRulesRecommendationsControllerTest {
 
         // then
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/recommendation/" + userId) //send
+                        .get("/recommendation/fixed/" + userId) //send
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()) //receive
@@ -81,7 +85,7 @@ public class UserProductDynamicRulesRecommendationsControllerTest {
 
         Mockito.when(userFixedRecommendationsService.getAllFixedRecommendations(userId)).thenReturn(mockDTO);
 
-        mockMvc.perform(get("/recommendation/{user_id}", userId))
+        mockMvc.perform(get("/recommendation/fixed/{user_id}", userId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.user_id", is(userId.toString())));
     }
