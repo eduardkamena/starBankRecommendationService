@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: liquibase/migration/create_recommendation-rules_table.sql
