@@ -1,10 +1,10 @@
 package pro.sky.recommendation_service.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.exception.AppError;
+import pro.sky.recommendation_service.exception.ProductNotFoundException;
 import pro.sky.recommendation_service.service.ProductRecommendationsService;
 
 import java.util.List;
@@ -34,7 +35,10 @@ public class ProductRecommendationsController {
     }
 
     @GetMapping(path = "/{product_id}")
-    public ResponseEntity<Object> getRecommendation(
+    @Operation(
+            summary = "Получение продукта рекомендации",
+            description = "Позволяет получить продукт рекомендации")
+    public ResponseEntity<Object> getProduct(
             @Parameter(description = "Идентификатор продукта рекомендации")
             @PathVariable UUID product_id) {
 
@@ -44,12 +48,12 @@ public class ProductRecommendationsController {
 
         try {
             List<ProductRecommendationsDTO> result = productRecommendationsService.getRecommendationProduct(product_id);
-            logger.info("Outputting recommendation product for product_id: {}", product_id);
+            logger.info("Outputting in @Controller recommendation product for product_id: {}", product_id);
             return ResponseEntity.ok(result);
 
-        } catch (EmptyResultDataAccessException e) {
+        } catch (ProductNotFoundException e) {
 
-            logger.error("Error Outputting recommendation product for product_id: {}", product_id, e);
+            logger.error("Error Outputting in @Controller recommendation product for product_id: {}", product_id, e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new AppError(HttpStatus.NOT_FOUND.value(),
                             "Product with UUID " + product_id + " not found in database"));

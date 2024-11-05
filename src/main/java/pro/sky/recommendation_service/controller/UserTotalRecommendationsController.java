@@ -24,8 +24,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping(path = "/recommendation")
 @Tag(
-        name = "Контроллер рекомендаций продукта(ов) клиенту",
-        description = "Выполняет действия с рекомендациями продукта(ов) клиенту")
+        name = "Контроллер рекомендаций продукта(ов) для клиента",
+        description = "Выполняет действия с рекомендациями продукта(ов) для клиента")
 public class UserTotalRecommendationsController {
 
     private final Logger logger = LoggerFactory.getLogger(UserTotalRecommendationsController.class);
@@ -40,8 +40,8 @@ public class UserTotalRecommendationsController {
 
     @GetMapping(path = "/fixed/{user_id}")
     @Operation(
-            summary = "Получение фиксированных рекомендаций продукта(ов)",
-            description = "Позволяет получить фиксированные рекомендации продукта(ов) клиенту")
+            summary = "Получение фиксированных рекомендаций продукта(ов) для клиента",
+            description = "Позволяет получить фиксированные рекомендации продукта(ов) для клиента")
     public ResponseEntity<Object> getUserFixedRecommendations(
             @PathVariable
             @Parameter(description = "Идентификатор клиента") UUID user_id) {
@@ -63,8 +63,8 @@ public class UserTotalRecommendationsController {
 
     @GetMapping(path = "/dynamic/{user_id}")
     @Operation(
-            summary = "Получение фиксированных рекомендаций продукта(ов)",
-            description = "Позволяет получить фиксированные рекомендации продукта(ов) клиенту")
+            summary = "Получение динамических рекомендаций продукта(ов) для клиента",
+            description = "Позволяет получить динамические рекомендации продукта(ов) для клиента")
     public ResponseEntity<Object> getUserDynamicRecommendations(
             @PathVariable
             @Parameter(description = "Идентификатор клиента") UUID user_id) {
