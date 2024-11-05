@@ -44,7 +44,7 @@ public class TopSavingRuleFixed implements FixedRecommendationsRulesSet {
                 && hasPositiveDebitBalance(user_id)
         ) {
             logger.info("Found {} recommendation for user_id: {}", NAME, user_id);
-            return Optional.of(productRecommendationsService.getByProductId(ID));
+            return Optional.of(productRecommendationsService.getRecommendationProduct(ID));
         }
         logger.info("Not Found {} recommendation for user_id: {}", NAME, user_id);
         return Optional.empty();

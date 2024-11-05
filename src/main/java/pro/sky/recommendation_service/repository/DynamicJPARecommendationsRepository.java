@@ -12,4 +12,6 @@ public interface DynamicJPARecommendationsRepository extends JpaRepository<Recom
     @Query(value = "SELECT r.id AS recommendations_id FROM recommendations r ", nativeQuery = true)
     List<UUID> findAllRecommendationsIDs();
 
+    boolean existsById(UUID id);
+
 }

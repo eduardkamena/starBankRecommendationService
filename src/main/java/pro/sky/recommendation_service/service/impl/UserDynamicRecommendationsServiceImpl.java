@@ -61,11 +61,11 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
                         case "USER_OF" -> dynamicJDBCRecommendationsRepository
                                 .isUserOf(user_id, rule.getArguments());
                         case "ACTIVE_USER_OF" -> dynamicJDBCRecommendationsRepository
-                                .isActiveUserOf(user_id, rule.getArguments(), rule.isNegate());
+                                .isActiveUserOf(user_id, rule.getArguments());
                         case "TRANSACTION_SUM_COMPARE" -> dynamicJDBCRecommendationsRepository
-                                .isTransactionSumCompare(user_id, rule.getArguments(), rule.isNegate());
+                                .isTransactionSumCompare(user_id, rule.getArguments());
                         case "TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW" -> dynamicJDBCRecommendationsRepository
-                                .isTransactionSumCompareDepositWithdraw(user_id, rule.getArguments(), rule.isNegate());
+                                .isTransactionSumCompareDepositWithdraw(user_id, rule.getArguments());
                         default -> false;
                     };
 

@@ -28,31 +28,31 @@ public class DynamicRulesRecommendationsController {
     }
 
     @PostMapping
-    public ResponseEntity<Recommendations> createRecommendation(
+    public ResponseEntity<Recommendations> createDynamicRecommendation(
             @Parameter(description = "Создание динамического правила рекомендации")
             @RequestBody RecommendationsDTO recommendation) {
 
-        Recommendations createdRecommendation = dynamicRulesRecommendationsService.createRecommendation(recommendation);
+        Recommendations createdRecommendation = dynamicRulesRecommendationsService.createDynamicRuleRecommendation(recommendation);
 
         return ResponseEntity.ok(createdRecommendation);
     }
 
     @GetMapping(path = "/{rule_id}")
-    public ResponseEntity<Optional<RecommendationsDTO>> getRule(
+    public ResponseEntity<Optional<RecommendationsDTO>> getDynamicRecommendation(
             @Parameter(description = "Идентификатор динамического правила рекомендации")
             @PathVariable UUID rule_id) {
 
-        Optional<RecommendationsDTO> foundRecommendation = dynamicRulesRecommendationsService.getRule(rule_id);
+        Optional<RecommendationsDTO> foundRecommendation = dynamicRulesRecommendationsService.getDynamicRuleRecommendation(rule_id);
 
         return ResponseEntity.ok(foundRecommendation);
     }
 
     @DeleteMapping(path = "/{rule_id}")
-    public ResponseEntity<Object> deleteRule(
+    public ResponseEntity<Object> deleteDynamicRecommendation(
             @Parameter(description = "Идентификатор динамического правила рекомендации")
             @PathVariable UUID rule_id) {
 
-        dynamicRulesRecommendationsService.deleteRule(rule_id);
+        dynamicRulesRecommendationsService.deleteDynamicRuleRecommendation(rule_id);
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new AppError(HttpStatus.NO_CONTENT.value(),
@@ -60,9 +60,9 @@ public class DynamicRulesRecommendationsController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<RecommendationsDTO>> getAllRules() {
+    public ResponseEntity<List<RecommendationsDTO>> getAllDynamicRecommendations() {
 
-        List<RecommendationsDTO> foundAllRecommendations = dynamicRulesRecommendationsService.getAllRules();
+        List<RecommendationsDTO> foundAllRecommendations = dynamicRulesRecommendationsService.getAllDynamicRulesRecommendations();
 
         return ResponseEntity.ok(foundAllRecommendations);
     }

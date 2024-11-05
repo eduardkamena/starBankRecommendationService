@@ -43,7 +43,7 @@ public class ProductRecommendationsController {
         product_id = UUID.fromString(String.valueOf(product_id));
 
         try {
-            List<ProductRecommendationsDTO> result = productRecommendationsService.getByProductId(product_id);
+            List<ProductRecommendationsDTO> result = productRecommendationsService.getRecommendationProduct(product_id);
             logger.info("Outputting recommendation product for product_id: {}", product_id);
             return ResponseEntity.ok(result);
 

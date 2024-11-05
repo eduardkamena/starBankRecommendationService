@@ -50,9 +50,9 @@ class UserDynamicRulesRecommendationsServiceImplTests {
 
         UserRecommendationsDTO result = recommendationService.getAllFixedRecommendations(userId);
 
-        assertEquals(1, result.getRecommendations().size());
-        assertEquals(userId, result.getUser_id());
-        assertEquals("Инвестиции", result.getRecommendations().get(0).getProduct_name());
+        assertEquals(1, result.recommendations().size());
+        assertEquals(userId, result.user_id());
+        assertEquals("Инвестиции", result.recommendations().get(0).getProduct_name());
     }
 
     @Test
@@ -66,8 +66,8 @@ class UserDynamicRulesRecommendationsServiceImplTests {
 
         UserRecommendationsDTO result = recommendationService.getAllFixedRecommendations(userId);
 
-        assertEquals(0, result.getRecommendations().size());
-        assertEquals(userId, result.getUser_id());
+        assertEquals(0, result.recommendations().size());
+        assertEquals(userId, result.user_id());
     }
 
     @Test

@@ -9,12 +9,12 @@ import java.util.UUID;
 
 public interface DynamicRulesRecommendationsService {
 
-    Recommendations createRecommendation(RecommendationsDTO recommendationsDTO);
+    Recommendations createDynamicRuleRecommendation(RecommendationsDTO recommendationsDTO);
 
-    Optional<RecommendationsDTO> getRule(UUID id);
+    Optional<RecommendationsDTO> getDynamicRuleRecommendation(UUID id);
 
-    void deleteRule(UUID id);
+    List<RecommendationsDTO> getAllDynamicRulesRecommendations();
 
-    List<RecommendationsDTO> getAllRules();
+    void deleteDynamicRuleRecommendation(UUID id);
 
 }
