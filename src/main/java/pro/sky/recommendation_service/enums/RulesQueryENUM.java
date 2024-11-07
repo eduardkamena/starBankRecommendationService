@@ -1,5 +1,8 @@
 package pro.sky.recommendation_service.enums;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+@JsonDeserialize(using = RulesQueryENUMDeserializer.class)
 public enum RulesQueryENUM {
 
     USER_OF,

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pro.sky.recommendation_service.enums.RulesQueryENUM;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +21,7 @@ public class RulesDTO {
     private UUID id;
 
     @Schema(description = "Название объекта запроса для правила рекомендации")
-    private String query;
+    private RulesQueryENUM query;
 
     @Schema(description = "Аргументы объекта запроса для правила рекомендации")
     private List<String> arguments;

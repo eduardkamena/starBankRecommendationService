@@ -58,15 +58,14 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
 
                 for (Rules rule : checkingRecommendationsRules) {
                     boolean result = switch (rule.getQuery()) {
-                        case "USER_OF" -> dynamicJDBCRecommendationsRepository
+                        case USER_OF -> dynamicJDBCRecommendationsRepository
                                 .isUserOf(user_id, rule.getArguments());
-                        case "ACTIVE_USER_OF" -> dynamicJDBCRecommendationsRepository
+                        case ACTIVE_USER_OF -> dynamicJDBCRecommendationsRepository
                                 .isActiveUserOf(user_id, rule.getArguments());
-                        case "TRANSACTION_SUM_COMPARE" -> dynamicJDBCRecommendationsRepository
+                        case TRANSACTION_SUM_COMPARE -> dynamicJDBCRecommendationsRepository
                                 .isTransactionSumCompare(user_id, rule.getArguments());
-                        case "TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW" -> dynamicJDBCRecommendationsRepository
+                        case TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW -> dynamicJDBCRecommendationsRepository
                                 .isTransactionSumCompareDepositWithdraw(user_id, rule.getArguments());
-                        default -> false;
                     };
 
                     if (result != rule.isNegate()) {
