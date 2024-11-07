@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
+
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -19,4 +20,5 @@ public class CacheConfig {
                 .maximumSize(1000));
         return cacheManager;
     }
+
 }

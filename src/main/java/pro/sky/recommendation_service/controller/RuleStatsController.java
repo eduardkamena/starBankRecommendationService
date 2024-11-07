@@ -1,5 +1,7 @@
 package pro.sky.recommendation_service.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +15,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rule")
+@Tag(
+        name = "Контроллер статистики правил рекомендаций",
+        description = "Выполняет действия со статистикой правил рекомендаций")
 public class RuleStatsController {
+
     private final RuleExecutionStatsService statsService;
 
     public RuleStatsController(RuleExecutionStatsService statsService) {
@@ -21,7 +27,10 @@ public class RuleStatsController {
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<Map<String, List<Map<String,? extends Number>>>> getRuleStats() {
+    @Operation(
+            summary = "Статистика срабатывания правил рекомендаций",
+            description = "Позволяет получить статистику срабатываний правил рекомендаций")
+    public ResponseEntity<Map<String, List<Map<String, ? extends Number>>>> getRuleStats() {
 
         List<Map<String, ? extends Number>> statsList = statsService.getAllRuleExecutionStats().stream()
                 .map(stats -> {
@@ -34,5 +43,5 @@ public class RuleStatsController {
 
         return ResponseEntity.ok(Map.of("stats", statsList));
     }
-}
 
+}

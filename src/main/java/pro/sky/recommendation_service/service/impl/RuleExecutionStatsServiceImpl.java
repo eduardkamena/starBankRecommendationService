@@ -32,4 +32,5 @@ public class RuleExecutionStatsServiceImpl implements RuleExecutionStatsService 
     public List<RuleExecutionStats> getAllRuleExecutionStats() {
         return statsRepository.findAll();
     }
+
 }

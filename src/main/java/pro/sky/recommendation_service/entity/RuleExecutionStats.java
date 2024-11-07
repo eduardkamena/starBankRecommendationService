@@ -1,13 +1,14 @@
 package pro.sky.recommendation_service.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Setter
-@Getter
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RuleExecutionStats {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
