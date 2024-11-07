@@ -24,6 +24,7 @@ public class Rules {
     @Schema(description = "Идентификатор объекта запроса для правила рекомендации в БД (primary key)")
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
     @Schema(description = "Название объекта запроса для правила рекомендации")
     private RulesQueryENUM query;
 

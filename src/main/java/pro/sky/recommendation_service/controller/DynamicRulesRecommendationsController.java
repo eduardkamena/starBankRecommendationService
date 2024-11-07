@@ -47,7 +47,7 @@ public class DynamicRulesRecommendationsController {
             logger.info("Successfully created dynamic rule recommendation: {}", recommendation);
             return ResponseEntity.ok(createdRecommendation);
 
-        } catch (DoesNotEnumException | NullOrEmptyException e) {
+        } catch (IllegalArgumentException | NullOrEmptyException e) {
 
             logger.error("Error creating dynamic rule recommendation: {}", recommendation, e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(

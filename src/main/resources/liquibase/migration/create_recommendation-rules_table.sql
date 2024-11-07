@@ -12,7 +12,7 @@ CREATE TABLE if NOT EXISTS recommendations (
 -- changeset ekamenskikh:2
 CREATE TABLE if NOT EXISTS rules (
     id UUID NOT null,
-    query SMALLINT NOT null,
+    query VARCHAR(255) NOT null,
     negate BOOLEAN NOT null,
     PRIMARY KEY(id)
     )

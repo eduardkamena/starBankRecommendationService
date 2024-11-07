@@ -8,7 +8,9 @@ import pro.sky.recommendation_service.dto.RecommendationsDTO;
 import pro.sky.recommendation_service.dto.RulesDTO;
 import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.entity.Rules;
-import pro.sky.recommendation_service.enums.RulesArgumentsENUM;
+import pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators;
+import pro.sky.recommendation_service.enums.rulesArgumentsENUM.SumCompare;
+import pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes;
 import pro.sky.recommendation_service.exception.RuleNotFoundException;
 import pro.sky.recommendation_service.repository.DynamicJPARecommendationsRepository;
 import pro.sky.recommendation_service.service.DynamicRulesRecommendationsService;
@@ -44,7 +46,7 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
 
                     // Проверка на принадлежность к ENUM
                     logger.info("Start checking query and arguments for adding rule: {}", ruleDTO);
-                    //checkArguments(ruleDTO.getArguments());
+                    checkArguments(ruleDTO.getArguments());
                     logger.info("End checking query and arguments for adding rule: {}", ruleDTO);
 
                     Rules rule = new Rules();
@@ -147,15 +149,41 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
         }
     }
 
-//    private void checkArguments(List<String> arguments) {
-//
-//        List<String> VALID_OPERATORS = List.of(">", "<", ">=", "<=", "=");
-//
-//        for (String argument : arguments) {
-//            if (RulesArgumentsENUM.valueOf(argument.toUpperCase()) || VALID_OPERATORS.contains(argument)) {
-//                throw new IllegalArgumentException("Invalid argument: " + argument);
-//            }
-//        }
-//    }
+    // Методы проверки аргументов с ENUM создаваемого динамического правила
+    private void checkArguments(List<String> arguments) throws IllegalArgumentException {
+        for (String argument : arguments) {
+            if (!isValidEnumArguments(argument)) {
+                logger.error("Error argument must be valid ENUMs value");
+                throw new IllegalArgumentException("Argument \"" + argument + "\" should be one of the class's values in rulesArgumentsENUM");
+            }
+        }
+    }
+
+    private boolean isValidEnumArguments(String arguments) {
+        return isTransactionProductTypeENUM(arguments)
+                || isComparisonOperatorsENUM(arguments)
+                || isSumCompareENUM(arguments);
+    }
+
+    private boolean isTransactionProductTypeENUM(String arguments) throws IllegalArgumentException {
+        try {
+            TransactionProductTypes.valueOf(arguments.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    private boolean isComparisonOperatorsENUM(String arguments) {
+        return Arrays.stream(ComparisonOperators.values())
+                .map(ComparisonOperators::getOperatorVal)
+                .anyMatch(operator -> operator.equals(arguments));
+    }
+
+    private boolean isSumCompareENUM(String arguments) {
+        return Arrays.stream(SumCompare.values())
+                .map(sum -> String.valueOf(sum.getSumVal()))
+                .anyMatch(sumVal -> sumVal.equals(arguments));
+    }
 
 }
