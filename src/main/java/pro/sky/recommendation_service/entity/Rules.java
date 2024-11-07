@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pro.sky.recommendation_service.enums.RulesQueryENUM;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,8 +24,9 @@ public class Rules {
     @Schema(description = "Идентификатор объекта запроса для правила рекомендации в БД (primary key)")
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
     @Schema(description = "Название объекта запроса для правила рекомендации")
-    private String query;
+    private RulesQueryENUM query;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "rules_arguments", joinColumns = @JoinColumn(name = "rules_id"))
