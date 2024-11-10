@@ -14,8 +14,12 @@ public class MessageSenderServiceImpl implements MessageSenderService {
 
     private final Logger logger = LoggerFactory.getLogger(MessageSenderServiceImpl.class);
 
+    private final TelegramBot telegramBot;
+
     @Autowired
-    private TelegramBot telegramBot;
+    public MessageSenderServiceImpl(TelegramBot telegramBot) {
+        this.telegramBot = telegramBot;
+    }
 
     // Метод отправки сообщений от бота к пользователю
     @Override
