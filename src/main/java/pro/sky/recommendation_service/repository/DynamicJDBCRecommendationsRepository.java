@@ -52,6 +52,7 @@ public class DynamicJDBCRecommendationsRepository {
      * @param arguments список передаваемых аргументов правила для сравнения.
      *                  Доступные продукты для проверки пользователя:
      *                  <br>{@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
+     * @return true или false
      */
     public boolean isUserOf(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
@@ -85,6 +86,7 @@ public class DynamicJDBCRecommendationsRepository {
      * @param arguments список передаваемых аргументов правила для сравнения.
      *                  Доступные продукты для проверки пользователя:
      *                  <br>{@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
+     * @return true или false
      */
     public boolean isActiveUserOf(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
@@ -121,7 +123,7 @@ public class DynamicJDBCRecommendationsRepository {
      *                      <li>возможные продукты и типы транзакций {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
      *                      <li>возможные постоянные {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators}
      *                  </ul>
-     * @return
+     * @return true или false
      */
     public boolean isTransactionSumCompare(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
@@ -158,7 +160,7 @@ public class DynamicJDBCRecommendationsRepository {
      *                      <li>возможные операторы сравнения{@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators}
      *                      <li>возможные продукты и типы транзакций {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
      *                  </ul>
-     * @return
+     * @return true или false
      */
     public boolean isTransactionSumCompareDepositWithdraw(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
