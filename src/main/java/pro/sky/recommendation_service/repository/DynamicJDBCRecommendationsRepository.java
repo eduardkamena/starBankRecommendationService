@@ -27,8 +27,9 @@ public class DynamicJDBCRecommendationsRepository {
     /**
      * Метод проверки нахождения пользователя в БД.
      * <p>
-     *     Данный метод проверяет, находится ли пользователь в БД:
-     *     <br>{@link pro.sky.recommendation_service.configuration.DataSourceConfig#recommendationsJdbcTemplate}
+     *     Данный метод проверяет, находится ли пользователь в БД/
+     *     <br><b>Note:</b> БД в соотв. с конфигурацией
+     *     {@link pro.sky.recommendation_service.configuration.DataSourceConfig#recommendationsJdbcTemplate DataSourceConfig#recommendationsJdbcTemplate}
      * </p>
      * @param user_id ID пользователя
      * @return true или false если пользователь найден или отсутствует
@@ -85,7 +86,7 @@ public class DynamicJDBCRecommendationsRepository {
      * @param user_id ID пользователя
      * @param arguments список передаваемых аргументов правила для сравнения.
      *                  Доступные продукты для проверки пользователя:
-     *                  <br>{@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
+     *                  {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes TransactionProductTypes}
      * @return true или false
      */
     public boolean isActiveUserOf(UUID user_id, List<String> arguments) {
@@ -119,9 +120,12 @@ public class DynamicJDBCRecommendationsRepository {
      * @param arguments список передаваемых аргументов правила для сравнения.
      *                  Возможные значения аргументов:
      *                  <ul>
-     *                      <li>возможные операторы сравнения{@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators}
-     *                      <li>возможные продукты и типы транзакций {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
-     *                      <li>возможные постоянные {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators}
+     *                      <li>возможные операторы сравнения
+     *                      {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators ComparisonOperators}
+     *                      <li>возможные продукты и типы транзакций
+     *                      {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes TransactionProductTypes}
+     *                      <li>возможные постоянные
+     *                      {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.SumCompare SumCompare}
      *                  </ul>
      * @return true или false
      */
@@ -157,8 +161,10 @@ public class DynamicJDBCRecommendationsRepository {
      * @param arguments список передаваемых аргументов правила для сравнения.
      *                  Возможные значения аргументов:
      *                  <ul>
-     *                      <li>возможные операторы сравнения{@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators}
-     *                      <li>возможные продукты и типы транзакций {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
+     *                      <li>возможные операторы сравнения
+     *                      {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators ComparisonOperators}
+     *                      <li>возможные продукты и типы транзакций
+     *                      {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes TransactionProductTypes}
      *                  </ul>
      * @return true или false
      */
