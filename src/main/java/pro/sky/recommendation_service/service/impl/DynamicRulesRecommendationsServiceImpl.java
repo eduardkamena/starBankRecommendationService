@@ -194,7 +194,7 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
      * @throws IllegalArgumentException если аргумент правила не соответствует заданным
      */
 
-    private void checkArguments(List<String> arguments) throws IllegalArgumentException {
+    public void checkArguments(List<String> arguments) throws IllegalArgumentException {
         for (String argument : arguments) {
             if (!isValidEnumArguments(argument)) {
                 logger.error("Error argument must be valid ENUMs value");
@@ -216,7 +216,7 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
      * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
      * @return true или false если найдено или отсутствует совпадение
      */
-    private boolean isValidEnumArguments(String arguments) {
+    public boolean isValidEnumArguments(String arguments) {
         return isTransactionProductTypeENUM(arguments)
                 || isComparisonOperatorsENUM(arguments)
                 || isSumCompareENUM(arguments);
@@ -229,7 +229,7 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
      * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
      * @return true или false если найдено или отсутствует совпадение
      */
-    private boolean isTransactionProductTypeENUM(String arguments) throws IllegalArgumentException {
+    public boolean isTransactionProductTypeENUM(String arguments) throws IllegalArgumentException {
         try {
             TransactionProductTypes.valueOf(arguments.toUpperCase());
             return true;
@@ -245,7 +245,7 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
      * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
      * @return true или false если найдено или отсутствует совпадение
      */
-    private boolean isComparisonOperatorsENUM(String arguments) {
+    public boolean isComparisonOperatorsENUM(String arguments) {
         return Arrays.stream(ComparisonOperators.values())
                 .map(ComparisonOperators::getOperatorVal)
                 .anyMatch(operator -> operator.equals(arguments));
@@ -258,7 +258,7 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
      * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
      * @return true или false если найдено или отсутствует совпадение
      */
-    private boolean isSumCompareENUM(String arguments) {
+    public boolean isSumCompareENUM(String arguments) {
         return Arrays.stream(SumCompare.values())
                 .map(sum -> String.valueOf(sum.getSumVal()))
                 .anyMatch(sumVal -> sumVal.equals(arguments));
