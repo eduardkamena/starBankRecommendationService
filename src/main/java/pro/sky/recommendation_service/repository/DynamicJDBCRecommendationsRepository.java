@@ -24,6 +24,15 @@ public class DynamicJDBCRecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /**
+     * Метод проверки нахождения пользователя в БД.
+     * <p>
+     *     Данный метод проверяет, находится ли пользователь в БД:
+     *     <br>{@link pro.sky.recommendation_service.configuration.DataSourceConfig#recommendationsJdbcTemplate}
+     * </p>
+     * @param user_id ID пользователя
+     * @return true или false если пользователь найден или отсутствует
+     */
     public boolean isUserExists(UUID user_id) {
         String sql = "SELECT COUNT(*) FROM USERS u WHERE u.ID = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id);
@@ -32,6 +41,18 @@ public class DynamicJDBCRecommendationsRepository {
         return count != null && count > 0;
     }
 
+    /**
+     * Метод проверки пользователя.
+     * <p>
+     *     Метод позволяет проверить, является ли пользователь,
+     *     пользователем продукта.
+     *     <br>Пользователь использует продукт, если есть хотя бы 1 транзакция.
+     * </p>
+     * @param user_id ID пользователя
+     * @param arguments список передаваемых аргументов правила для сравнения.
+     *                  Доступные продукты для проверки пользователя:
+     *                  <br>{@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
+     */
     public boolean isUserOf(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
                 "           CASE " +
@@ -53,6 +74,18 @@ public class DynamicJDBCRecommendationsRepository {
         return Boolean.TRUE.equals(result);
     }
 
+    /**
+     * Метод проверки пользователя.
+     * <p>
+     *     Метод позволяет проверить, является ли пользователь,
+     *     активным пользователем продукта.
+     *     <br>Пользователь является активным, если есть хотя бы 5 транзакций по данному продукту.
+     * </p>
+     * @param user_id ID пользователя
+     * @param arguments список передаваемых аргументов правила для сравнения.
+     *                  Доступные продукты для проверки пользователя:
+     *                  <br>{@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
+     */
     public boolean isActiveUserOf(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
                 "           CASE " +
@@ -74,6 +107,22 @@ public class DynamicJDBCRecommendationsRepository {
         return Boolean.TRUE.equals(result);
     }
 
+
+    /**
+     * Метод проверки возможности рекомендации для пользователя.
+     * <p>
+     *     Метод позволяет сравнить сумму всех транзакций (deposit/withdraw) по продукту с некой постоянной
+     * </p>
+     * @param user_id ID пользователя
+     * @param arguments список передаваемых аргументов правила для сравнения.
+     *                  Возможные значения аргументов:
+     *                  <ul>
+     *                      <li>возможные операторы сравнения{@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators}
+     *                      <li>возможные продукты и типы транзакций {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
+     *                      <li>возможные постоянные {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators}
+     *                  </ul>
+     * @return
+     */
     public boolean isTransactionSumCompare(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
                 "           CASE " +
@@ -96,6 +145,21 @@ public class DynamicJDBCRecommendationsRepository {
         return Boolean.TRUE.equals(result);
     }
 
+    /**
+     * Метод проверки возможности рекомендации для пользователя.
+     * <p>
+     *     Метод позволяет сравнить сумму всех транзакций (deposit)
+     *     с суммой всех транзакций (withdraw) по продукту
+     * </p>
+     * @param user_id ID пользователя
+     * @param arguments список передаваемых аргументов правила для сравнения.
+     *                  Возможные значения аргументов:
+     *                  <ul>
+     *                      <li>возможные операторы сравнения{@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators}
+     *                      <li>возможные продукты и типы транзакций {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
+     *                  </ul>
+     * @return
+     */
     public boolean isTransactionSumCompareDepositWithdraw(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
                 "           CASE " +
