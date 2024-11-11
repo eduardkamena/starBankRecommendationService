@@ -1,21 +1,21 @@
 package pro.sky.recommendation_service.enums;
 
 import com.vdurmont.emoji.EmojiParser;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public enum TelegramBotEmojiENUM {
 
     WRITING_HAND(":writing_hand:"),
-    MINUS(":heavy_minus_sign:"),
-    CHECK(":white_check_mark:"),
-    NOT(":x:"),
-    DOUBT(":zzz:"),
-    FLAG(":checkered_flag:");
+    X(":x:"),
+    ROBOT_FACE(":robot_face:"),
+    TADA(":tada:"),
+    RAISED_HANDS(":raised_hands:"),
+    STAR(":star:"),
+    PILL(":pill:"),
+    DISAPPOINTED(":disappointed:");
 
     private final String value;
-
-    TelegramBotEmojiENUM(String value) {
-        this.value = value;
-    }
 
     public String get() {
         return EmojiParser.parseToUnicode(value);
