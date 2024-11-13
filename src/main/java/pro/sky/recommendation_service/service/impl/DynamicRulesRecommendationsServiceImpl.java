@@ -31,6 +31,15 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
         this.dynamicJPARecommendationsRepository = dynamicJPARecommendationsRepository;
     }
 
+    /**
+     * Создание динамической рекомендации продукта в БД.
+     * <p>
+     *      Метод позволяет создать запись динамического правила для продукта рекомендации
+     *      в БД. Получаемый объект DTO преобразуется к объекту сущности {@link Recommendations}
+     *      и сохраняется в БД
+     * </p>
+     * @param recommendationsDTO ({@link RecommendationsDTO})
+     */
     @Override
     public Recommendations createDynamicRuleRecommendation(RecommendationsDTO recommendationsDTO) {
 
@@ -74,6 +83,16 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
         return dynamicJPARecommendationsRepository.save(recommendation);
     }
 
+    /**
+     * Получение динамической рекомендации по ID.
+     * <p>
+     *      Метод позволяет получить запись динамического правила из БД по ID,
+     *      с последующим преобразованием к объекту DTO
+     * </p>
+     * @param recommendation_id ID динамической рекомендации ({@link Recommendations})
+     * @return объект DTO ({@link RecommendationsDTO})
+     * @throws RuleNotFoundException если рекомендация не найдена в БД
+     */
     @Override
     public Optional<RecommendationsDTO> getDynamicRuleRecommendation(UUID recommendation_id) throws RuleNotFoundException {
 
@@ -110,6 +129,14 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
         throw new RuleNotFoundException("Dynamic rule not found in database");
     }
 
+    /**
+     * Получение всех динамических рекомендаций из БД.
+     * <p>
+     *     Метод позволяет получить запись всех динамических правил из БД,
+     *     с последующим преобразованием к списку объектов DTO
+     * </p>
+     * @return список всех рекомендаций приведенных к виду ({@link RecommendationsDTO})
+     */
     @Override
     public List<RecommendationsDTO> getAllDynamicRulesRecommendations() {
 
@@ -142,6 +169,12 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Удаление динамической рекомендации из БД.
+     *
+     * @param recommendation_id ID динамической рекомендации ({@link Recommendations})
+     * @throws RuleNotFoundException если рекомендация не найдена в БД
+     */
     @Override
     public void deleteDynamicRuleRecommendation(UUID recommendation_id) throws RuleNotFoundException {
 
@@ -156,8 +189,19 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
         }
     }
 
-    // Методы проверки аргументов с ENUM создаваемого динамического правила
-    private void checkArguments(List<String> arguments) throws IllegalArgumentException {
+    /**
+     * Проверка соответствия передаваемых аргументов.
+     * <p>
+     *     Метод выполняющий проверку передаваемых аргументов правил динамической
+     *     рекомендации на соответствие с заданными.
+     *     <br>Метод выполняет последовательные проверки всего списка
+     *     используя {@link DynamicRulesRecommendationsServiceImpl#isValidEnumArguments}
+     *
+     * @param arguments список аргументов динамического правила рекомендации {@link Rules}
+     * @throws IllegalArgumentException если аргумент правила не соответствует заданным
+     */
+
+    public void checkArguments(List<String> arguments) throws IllegalArgumentException {
         for (String argument : arguments) {
             if (!isValidEnumArguments(argument)) {
                 logger.error("Error argument must be valid ENUMs value");
@@ -166,13 +210,33 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
         }
     }
 
-    private boolean isValidEnumArguments(String arguments) {
+    /**
+     * Метод последовательной проверки аргумента правил.
+     * <p>
+     *     Метод использует последовательное сравнение на принадлежность
+     *     заданным значениям используя следующие методы:
+     *     <ul>
+     *         <li>{@link DynamicRulesRecommendationsServiceImpl#isTransactionProductTypeENUM}</li>
+     *         <li>{@link DynamicRulesRecommendationsServiceImpl#isComparisonOperatorsENUM}</li>
+     *         <li>{@link DynamicRulesRecommendationsServiceImpl#isSumCompareENUM}</li>
+     *     </ul>
+     * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
+     * @return true или false если найдено или отсутствует совпадение
+     */
+    public boolean isValidEnumArguments(String arguments) {
         return isTransactionProductTypeENUM(arguments)
                 || isComparisonOperatorsENUM(arguments)
                 || isSumCompareENUM(arguments);
     }
 
-    private boolean isTransactionProductTypeENUM(String arguments) throws IllegalArgumentException {
+    /**
+     * Метод проверки аргумента правил на соответствие Product Type
+     * <p>
+     *     Возможные варианты значений можно увидеть:{@link TransactionProductTypes}
+     * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
+     * @return true или false если найдено или отсутствует совпадение
+     */
+    public boolean isTransactionProductTypeENUM(String arguments) throws IllegalArgumentException {
         try {
             TransactionProductTypes.valueOf(arguments.toUpperCase());
             return true;
@@ -181,13 +245,27 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
         }
     }
 
-    private boolean isComparisonOperatorsENUM(String arguments) {
+    /**
+     * Метод проверки аргумента правил на соответствие Comparison Operator
+     * <p>
+     *     Возможные варианты значений можно увидеть:{@link ComparisonOperators}
+     * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
+     * @return true или false если найдено или отсутствует совпадение
+     */
+    public boolean isComparisonOperatorsENUM(String arguments) {
         return Arrays.stream(ComparisonOperators.values())
                 .map(ComparisonOperators::getOperatorVal)
                 .anyMatch(operator -> operator.equals(arguments));
     }
 
-    private boolean isSumCompareENUM(String arguments) {
+    /**
+     * Метод проверки аргумента правил на соответствие Sum Compare
+     * <p>
+     *     Возможные варианты значений можно увидеть:{@link SumCompare}
+     * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
+     * @return true или false если найдено или отсутствует совпадение
+     */
+    public boolean isSumCompareENUM(String arguments) {
         return Arrays.stream(SumCompare.values())
                 .map(sum -> String.valueOf(sum.getSumVal()))
                 .anyMatch(sumVal -> sumVal.equals(arguments));
