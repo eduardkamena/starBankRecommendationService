@@ -11,6 +11,7 @@ import pro.sky.recommendation_service.repository.DynamicJDBCRecommendationsRepos
 import pro.sky.recommendation_service.repository.DynamicJPARecommendationsRepository;
 import pro.sky.recommendation_service.repository.ProductRecommendationsRepository;
 import pro.sky.recommendation_service.repository.RulesRecommendationsRepository;
+import pro.sky.recommendation_service.service.StatsService;
 import pro.sky.recommendation_service.service.UserDynamicRecommendationsService;
 
 import java.util.ArrayList;
@@ -26,15 +27,18 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
     private final DynamicJPARecommendationsRepository dynamicJPARecommendationsRepository;
     private final RulesRecommendationsRepository rulesRecommendationsRepository;
     private final ProductRecommendationsRepository productRecommendationsRepository;
+    private final StatsService statsService;
 
     public UserDynamicRecommendationsServiceImpl(DynamicJDBCRecommendationsRepository dynamicJDBCRecommendationsRepository,
                                                  DynamicJPARecommendationsRepository dynamicJPARecommendationsRepository,
                                                  RulesRecommendationsRepository rulesRecommendationsRepository,
-                                                 ProductRecommendationsRepository productRecommendationsRepository) {
+                                                 ProductRecommendationsRepository productRecommendationsRepository,
+                                                 StatsService statsService) {
         this.dynamicJDBCRecommendationsRepository = dynamicJDBCRecommendationsRepository;
         this.dynamicJPARecommendationsRepository = dynamicJPARecommendationsRepository;
         this.rulesRecommendationsRepository = rulesRecommendationsRepository;
         this.productRecommendationsRepository = productRecommendationsRepository;
+        this.statsService = statsService;
     }
 
     @Override
@@ -74,7 +78,7 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
     }
 
     // Метод поиска клиента в БД
-    private boolean checkIsUserExists(UUID user_id) throws UserNotFoundException, NullPointerException {
+    private void checkIsUserExists(UUID user_id) throws UserNotFoundException, NullPointerException {
 
         logger.info("Starting checking user in database for user_id: {}", user_id);
         boolean flag = dynamicJDBCRecommendationsRepository.isUserExists(user_id);
@@ -89,7 +93,6 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
         }
 
         logger.info("User with id {} successfully exists", user_id);
-        return true;
     }
 
     // Метод поиска динамической рекомендации для клиента по БД
@@ -100,6 +103,7 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
         logger.info("List's size of checking dynamic recommendations: {}", foundAllRecommendationsInDB.size());
 
         for (UUID recommendation_id : foundAllRecommendationsInDB) {
+
             logger.info("Start checking rules of dynamic recommendation: {}", recommendation_id);
 
             boolean allCasesMatched = true; // Флаг для отслеживания совпадений всех case
@@ -128,6 +132,9 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
             }
 
             if (allCasesMatched) {
+
+                // Увеличение счетчика на 1 только для тех рекомендаций, которые совпали для клиента
+                statsService.incrementStatsCount(recommendation_id);
 
                 logger.info("Adding result of getting recommendation {} to List<> for user_id: {}", recommendation_id, user_id);
                 List<ProductRecommendationsDTO> matchedRecommendations = productRecommendationsRepository.findById(recommendation_id)

@@ -38,4 +38,9 @@ public class Recommendations {
     @Schema(description = "Правила рекомендации")
     private List<Rules> rule;
 
+    @JsonIgnoreProperties(value = "recommendations", allowSetters = true)
+    @OneToOne(mappedBy = "recommendations", cascade = CascadeType.ALL)
+    @Schema(description = "Счетчик срабатывания рекомендаций")
+    private Stats stats;
+
 }

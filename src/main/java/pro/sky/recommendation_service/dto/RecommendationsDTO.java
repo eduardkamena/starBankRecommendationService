@@ -1,9 +1,11 @@
 package pro.sky.recommendation_service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pro.sky.recommendation_service.entity.Stats;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,5 +30,9 @@ public class RecommendationsDTO {
 
     @Schema(description = "Правила рекомендации")
     private List<RulesDTO> rule;
+
+    @JsonIgnore
+    @Schema(description = "Счетчик срабатывания рекомендаций")
+    private Stats stats;
 
 }

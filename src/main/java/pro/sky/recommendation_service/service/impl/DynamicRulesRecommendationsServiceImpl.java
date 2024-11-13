@@ -8,6 +8,7 @@ import pro.sky.recommendation_service.dto.RecommendationsDTO;
 import pro.sky.recommendation_service.dto.RulesDTO;
 import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.entity.Rules;
+import pro.sky.recommendation_service.entity.Stats;
 import pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators;
 import pro.sky.recommendation_service.enums.rulesArgumentsENUM.SumCompare;
 import pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes;
@@ -39,6 +40,12 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
         recommendation.setProduct_id(recommendationsDTO.getProduct_id());
         recommendation.setProduct_text(recommendationsDTO.getProduct_text());
         logger.info("Successfully added recommendation in database for recommendation: {}", recommendation);
+
+        // Добавление нулевого значения для счетчика
+        Stats stats = new Stats(0);
+        stats.setRecommendations(recommendation);
+        recommendation.setStats(stats);
+        logger.info("Successfully added value {} in dynamic recommendations stats count", stats.getCount());
 
         logger.info("Starting adding rules in database for recommendations: {}", recommendationsDTO);
         List<Rules> rules = recommendationsDTO.getRule().stream()
