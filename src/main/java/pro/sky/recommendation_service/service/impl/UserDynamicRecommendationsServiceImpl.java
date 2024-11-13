@@ -18,6 +18,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * <h3>Класс, реализующий работу по выдаче пользователю
+ * динамических рекомендаций пользователю.
+ * <p>
+ *     Класс по выдаче рекомендаций пользователю позволяет использовать
+ *     следующий функционал:
+ *     <ln>
+ *         <li>Поиск клиента по БД
+ *              см.{@link UserDynamicRecommendationsServiceImpl#checkIsUserExists checkIsUserExists}</li>
+ *         <li>Получение всех доступных рекомендаций у пользователя
+ *              см.{@link UserDynamicRecommendationsServiceImpl#getAllDynamicRecommendations getAllDynamicRecommendations}</li>
+ *         <li>Получение в Telegram всех доступных рекомендаций у пользователя
+ *              см.{@link UserDynamicRecommendationsServiceImpl#getAllDynamicRulesRecommendationsForTelegramBot getAllDynamicRulesRecommendationsForTelegramBot}</li>
+ *         <li>Поиск возможных рекомендаций для предложения клиенту
+ *              см.{@link UserDynamicRecommendationsServiceImpl#checkUserDynamicRecommendations checkUserDynamicRecommendations}</li>
+ *     </ln>
+ */
 @Service
 public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecommendationsService {
 
@@ -41,15 +58,23 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
         this.statsService = statsService;
     }
 
+    /**
+     * Метод позволяет получить список доступных рекомендаций
+     * для пользователя, после прохождения проверки на его наличие в БД.
+     *
+     * @param user_id идентификатор пользователя в БД
+     *      ({@link pro.sky.recommendation_service.configuration.DataSourceConfig#recommendationsJdbcTemplate recommendationsJdbcTemplate})
+     * @return пользователь со списком рекомендаций
+     *      ({@link UserRecommendationsDTO})
+     * @throws UserNotFoundException если пользователь не найден в БД
+     */
     @Override
     public UserRecommendationsDTO getAllDynamicRecommendations(UUID user_id) throws UserNotFoundException {
 
         logger.info("Starting executing all dynamic recommendations for user_id: {}", user_id);
 
-        // Проверка пользователя на наличие в БД
         checkIsUserExists(user_id);
 
-        // Проверка наличия динамических рекомендаций для клиента
         List<ProductRecommendationsDTO> recommendations = checkUserDynamicRecommendations(user_id);
 
         logger.info("Transferring all found recommendations from List<> to UserRecommendationsDTO for user_id: {}", user_id);
@@ -57,18 +82,25 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
 
     }
 
+    /**
+     * Метод позволяет получить список доступных рекомендаций
+     * для пользователя, после прохождения проверки на его наличие в БД,
+     * с последующим преобразованием к строке, подготовленной для передачи
+     * сообщения в Telegram.
+     *
+     * @param user_id идентификатор пользователя в БД
+     *      ({@link pro.sky.recommendation_service.configuration.DataSourceConfig#recommendationsJdbcTemplate recommendationsJdbcTemplate})
+     * @return строка, содержащая все доступные пользователю рекомендации
+     */
     @Override
     public String getAllDynamicRulesRecommendationsForTelegramBot(UUID user_id) {
 
         logger.info("Starting executing all dynamic recommendations fot TelegramBot for user_id: {}", user_id);
 
-        // Проверка наличия динамических рекомендаций для клиента
         List<ProductRecommendationsDTO> recommendations = checkUserDynamicRecommendations(user_id);
 
-        // Преобразование динамической рекомендации в строку для Telegram Bot
         StringBuilder sb = new StringBuilder();
 
-        // Возврат результата в виде строки
         for (ProductRecommendationsDTO recommendation : recommendations) {
             sb.append("*Название продукта:* ").append(recommendation.getProduct_name()).append("\n\n");
             sb.append("*Описание продукта:* \n").append(recommendation.getProduct_text()).append("\n\n\n");
@@ -77,7 +109,13 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
         return sb.toString();
     }
 
-    // Метод поиска клиента в БД
+    /**
+     * Метод выполняет проверку нахождения пользователя в БД
+     *
+     * @param user_id идентификатор пользователя в БД
+     * @throws UserNotFoundException если пользователь с данным ID не найден в БД
+     * @throws NullPointerException если не был передан ID
+     */
     private void checkIsUserExists(UUID user_id) throws UserNotFoundException, NullPointerException {
 
         logger.info("Starting checking user in database for user_id: {}", user_id);
@@ -95,7 +133,21 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
         logger.info("User with id {} successfully exists", user_id);
     }
 
-    // Метод поиска динамической рекомендации для клиента по БД
+    /**
+     * Метод выполняет проверку всех возможных рекомендаций
+     * для предложения пользователю.
+     * <p>
+     *     Структура работы:
+     * <ol>
+     *     <li>Получение всех рекомендаций из БД</li>
+     *     <li>Проверка выполнения правил каждой из рекомендаций для пользователя</li>
+     *     <li>Увеличение счетчика сработки рекомендации, если она доступна пользователю</li>
+     *     <li>Добавление и возврат списка всех доступных рекомендаций</li>
+     * </ol>
+     *
+     * @param user_id идентификатор пользователя в БД
+     * @return список (List) всех доступных рекомендаций для пользователя
+     */
     private List<ProductRecommendationsDTO> checkUserDynamicRecommendations(UUID user_id) {
 
         List<ProductRecommendationsDTO> recommendations = new ArrayList<>();
@@ -133,7 +185,6 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
 
             if (allCasesMatched) {
 
-                // Увеличение счетчика на 1 только для тех рекомендаций, которые совпали для клиента
                 statsService.incrementStatsCount(recommendation_id);
 
                 logger.info("Adding result of getting recommendation {} to List<> for user_id: {}", recommendation_id, user_id);
