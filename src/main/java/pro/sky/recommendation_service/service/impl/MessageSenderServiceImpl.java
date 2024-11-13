@@ -26,7 +26,12 @@ public class MessageSenderServiceImpl implements MessageSenderService {
         this.telegramBot = telegramBot;
     }
 
-    // Метод отправки сообщений от бота к пользователю
+    /**
+     * Метод отправки сообщений от бота к пользователю
+     *
+     * @param chatID идентификатор TG-чата
+     * @param messageText текст передаваемого сообщения
+     */
     @Override
     public void sendMessage(Long chatID, String messageText) {
         SendMessage sendMessage = new SendMessage(chatID, messageText).parseMode(ParseMode.Markdown);
@@ -39,7 +44,12 @@ public class MessageSenderServiceImpl implements MessageSenderService {
         }
     }
 
-    // Метод отправки Sticker от бота к пользователю
+    /**
+     * Метод отправки Sticker от бота к пользователю
+     *
+     * @param chatID идентификатор TG-чата
+     * @param fileId идентификатор файла эмодзи
+     */
     @Override
     public void sendSticker(Long chatID, String fileId) {
         SendSticker sendSticker = new SendSticker(chatID, fileId);
@@ -52,7 +62,13 @@ public class MessageSenderServiceImpl implements MessageSenderService {
         }
     }
 
-    // Метод отправки реакции на сообщение от бота к пользователю
+    /**
+     * Метод отправки реакции на сообщение от бота к пользователю
+     *
+     * @param chatID идентификатор TG-чата
+     * @param messageId идентификатор сообщения внутри чата
+     * @param reactionType тип эмодзи
+     */
     @Override
     public void sendReaction(Long chatID, int messageId, ReactionTypeEmoji reactionType) {
         SetMessageReaction messageReaction = new SetMessageReaction(chatID, messageId, reactionType);
