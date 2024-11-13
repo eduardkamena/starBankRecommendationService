@@ -19,6 +19,39 @@ import pro.sky.recommendation_service.service.DynamicRulesRecommendationsService
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * <h3>Класс для работы с динамическими рекомендациями продукта.
+ * <p>
+ * В данной реализации позволяет выполнять действия с рекомендациями:
+ *      <ln>
+ *          <li>Создать запись в БД динамической рекомендации
+ *              см.{@link DynamicRulesRecommendationsServiceImpl#createDynamicRuleRecommendation createDynamicRuleRecommendation}</li>
+ *          <li>Получить рекомендацию из БД по ее ID
+ *              см.{@link DynamicRulesRecommendationsServiceImpl#getDynamicRuleRecommendation getDynamicRuleRecommendation}</li>
+ *          <li>Получить все рекомендации продуктов из БД
+ *              см.{@link DynamicRulesRecommendationsServiceImpl#getAllDynamicRulesRecommendations getAllDynamicRulesRecommendations}</li>
+ *          <li>Удалить рекомендацию из БД по ее ID
+ *              см.{@link DynamicRulesRecommendationsServiceImpl#deleteDynamicRuleRecommendation deleteDynamicRuleRecommendation}</li>
+ *      </ln>
+ * <p>
+ * А так же позволяет выполнять проверки
+ * {@link DynamicRulesRecommendationsServiceImpl#checkArguments checkArguments}
+ * на соответствие
+ * передаваемых аргументов правил для выдачи рекомендации пользователю.
+ * <p>
+ *     Последовательно проверяются
+ *     см.{@link DynamicRulesRecommendationsServiceImpl#isValidEnumArguments isValidEnumArguments}
+ *     следующие аргументы правил:
+ *      <ln>
+ *          <li>На соответствие типам продукта и транзакций
+ *              см.{@link DynamicRulesRecommendationsServiceImpl#isTransactionProductTypeENUM isTransactionProductTypeENUM}</li>
+ *          <li>На соответствие операторам сравнения
+ *          <li></li>
+ *              см.{@link DynamicRulesRecommendationsServiceImpl#isComparisonOperatorsENUM isComparisonOperatorsENUM}</li>
+ *          <li>На соответствие константе-целочисленному значению
+ *              см.{@link DynamicRulesRecommendationsServiceImpl#isSumCompareENUM isSumCompareENUM}</li>
+ *      </ln>
+ */
 @Service
 public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecommendationsService {
 

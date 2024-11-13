@@ -23,6 +23,11 @@ public class StatsServiceImpl implements StatsService {
         this.dynamicJPARecommendationsRepository = dynamicJPARecommendationsRepository;
     }
 
+    /**
+     * Метод позволяет увеличивать счетчик успешной выдачи рекомендации пользователю.
+     *
+     * @param recommendations_id ID динамической рекомендации ({@link Recommendations})
+     */
     @Override
     public void incrementStatsCount(UUID recommendations_id) {
 
@@ -50,6 +55,12 @@ public class StatsServiceImpl implements StatsService {
         }
     }
 
+    /**
+     * Метод позволяет получить список всех динамических рекомендаций
+     * вместе со счетчиком, который показывает, сколько раз данная рекомендация сработала.
+     *
+     * @return List - обработанный список данных по количеству запросов к каждой динамической рекомендации
+     */
     @Override
     public List<Map<String, ? extends Serializable>> getAllStatsCount() {
 

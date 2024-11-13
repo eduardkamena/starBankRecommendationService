@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * <h3>Класс для работы с продуктами рекомендаций.
+ *
+ * <p>В данной реализации позволяет получить сам продукт из рекомендации.
+ */
 @Service
 public class ProductRecommendationsServiceImpl implements ProductRecommendationsService {
 

@@ -14,6 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.recommendation_service.service.MessageSenderService;
 
+/**
+ * <h3>Класс для отправки пользователю сообщения в TG
+ *
+ * <p>В данной реализации позволяет:
+ *      <ln>
+ *          <li>Отправлять сообщения пользователю см.{@link MessageSenderServiceImpl#sendMessage sendMessage}</li>
+ *          <li>Отправлять стикеры пользователю см.{@link MessageSenderServiceImpl#sendSticker sendSticker}</li>
+ *          <li>Отправлять реакции на сообщения пользователя см.{@link MessageSenderServiceImpl#sendReaction sendReaction}</li>
+ *      </ln>
+ */
 @Service
 public class MessageSenderServiceImpl implements MessageSenderService {
 
