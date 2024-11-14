@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -25,6 +26,7 @@ public class TelegramBotRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Cacheable(cacheNames = "telegramBot", key = "#root.methodName + #username")
     public Collection<UserDTO> getUser(String username) {
         String sql = "SELECT u.ID, u.USERNAME, u.FIRST_NAME, u.LAST_NAME " +
                 "          FROM USERS u " +

@@ -3,6 +3,8 @@ package pro.sky.recommendation_service.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.dto.RecommendationsDTO;
@@ -42,6 +44,10 @@ public class ProductRecommendationsServiceImpl implements ProductRecommendations
      * @throws ProductNotFoundException если продукт не найден в БД
      */
     @Override
+    @Caching( cacheable = {
+            @Cacheable(cacheNames = "productRecommendations", key = "#root.methodName + #product_id.toString()"),
+            @Cacheable(cacheNames = "fixedRecommendations", key = "#root.methodName + #product_id.toString()")
+    })
     public List<ProductRecommendationsDTO> getRecommendationProduct(UUID product_id) throws ProductNotFoundException {
 
         logger.info("Starting checking product in database for product_id: {}", product_id);

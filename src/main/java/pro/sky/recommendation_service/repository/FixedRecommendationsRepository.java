@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +26,7 @@ public class FixedRecommendationsRepository {
     }
 
     // Join SQL запрос в БД на сумму транзакций пополнения или списания (transactionType) по продукту (productsType)
+    @Cacheable(cacheNames = "fixedRecommendations", key = "#root.methodName + #user_id.toString() + #productsType + #transactionType")
     public int getTransactionAmount(UUID user_id, String productsType, String transactionType) {
         String sql = "SELECT SUM(t.AMOUNT) AS transactions_amount " +
                 "           FROM TRANSACTIONS t " +
@@ -39,6 +42,7 @@ public class FixedRecommendationsRepository {
     }
 
     // Запрос в БД на наличие/отсутствия продукта у пользователя
+    @Cacheable(cacheNames = "fixedRecommendations", key = "#root.methodName + #user_id.toString() + #productsType")
     public boolean isProductExists(UUID user_id, String productsType) {
         String sql = "SELECT COUNT(*) " +
                 "           FROM TRANSACTIONS t " +
@@ -53,6 +57,10 @@ public class FixedRecommendationsRepository {
     }
 
     // Запрос в БД на наличие/отсутствия пользователя
+    @Caching( cacheable = {
+            @Cacheable(cacheNames = "dynamicRecommendations", key = "#root.methodName + #user_id.toString()"),
+            @Cacheable(cacheNames = "fixedRecommendations", key = "#root.methodName + #user_id.toString()")
+    })
     public boolean isUserExists(UUID user_id) {
         String sql = "SELECT COUNT(*) FROM USERS u WHERE u.ID = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id);

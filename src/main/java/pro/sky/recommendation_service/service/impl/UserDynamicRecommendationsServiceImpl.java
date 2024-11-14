@@ -2,6 +2,7 @@ package pro.sky.recommendation_service.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
@@ -69,6 +70,7 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
      * @throws UserNotFoundException если пользователь не найден в БД
      */
     @Override
+    @Cacheable(cacheNames = "dynamicRecommendations", key = "#root.methodName + #user_id.toString()")
     public UserRecommendationsDTO getAllDynamicRecommendations(UUID user_id) throws UserNotFoundException {
 
         logger.info("Starting executing all dynamic recommendations for user_id: {}", user_id);
@@ -93,6 +95,7 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
      * @return строка, содержащая все доступные пользователю рекомендации
      */
     @Override
+    @Cacheable(cacheNames = "telegramBot", key = "#root.methodName + #user_id.toString()")
     public String getAllDynamicRulesRecommendationsForTelegramBot(UUID user_id) {
 
         logger.info("Starting executing all dynamic recommendations fot TelegramBot for user_id: {}", user_id);
@@ -148,6 +151,7 @@ public class UserDynamicRecommendationsServiceImpl implements UserDynamicRecomme
      * @param user_id идентификатор пользователя в БД
      * @return список (List) всех доступных рекомендаций для пользователя
      */
+
     private List<ProductRecommendationsDTO> checkUserDynamicRecommendations(UUID user_id) {
 
         List<ProductRecommendationsDTO> recommendations = new ArrayList<>();

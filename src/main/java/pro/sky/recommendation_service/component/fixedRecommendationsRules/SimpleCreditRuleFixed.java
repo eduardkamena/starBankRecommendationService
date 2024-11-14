@@ -3,6 +3,7 @@ package pro.sky.recommendation_service.component.fixedRecommendationsRules;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import pro.sky.recommendation_service.component.FixedRecommendationsRulesSet;
 import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
@@ -36,6 +37,7 @@ public class SimpleCreditRuleFixed implements FixedRecommendationsRulesSet {
     private final ProductRecommendationsService productRecommendationsService;
 
     @Override
+    @Cacheable(cacheNames = "fixedRecommendations", keyGenerator = "customKeyGenerator")
     public Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID user_id) {
 
         logger.info("Starting checking {} recommendation for user_id: {}", NAME, user_id);

@@ -3,6 +3,7 @@ package pro.sky.recommendation_service.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pro.sky.recommendation_service.dto.RecommendationsDTO;
 import pro.sky.recommendation_service.dto.RulesDTO;
@@ -127,6 +128,7 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
      * @throws RuleNotFoundException если рекомендация не найдена в БД
      */
     @Override
+    @Cacheable(cacheNames = "dynamicRecommendations", key = "#root.methodName + #recommendation_id.toString()")
     public Optional<RecommendationsDTO> getDynamicRuleRecommendation(UUID recommendation_id) throws RuleNotFoundException {
 
         logger.info("Starting checking dynamic rule in database for id: {}", recommendation_id);
@@ -171,6 +173,7 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
      * @return список всех рекомендаций приведенных к виду ({@link RecommendationsDTO})
      */
     @Override
+    @Cacheable(cacheNames = "dynamicRecommendations", key = "#root.methodName")
     public List<RecommendationsDTO> getAllDynamicRulesRecommendations() {
 
         logger.info("Starting getting all recommendations from database");

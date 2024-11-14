@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +36,10 @@ public class DynamicJDBCRecommendationsRepository {
      * @param user_id ID пользователя
      * @return true или false если пользователь найден или отсутствует
      */
+    @Caching( cacheable = {
+            @Cacheable(cacheNames = "dynamicRecommendations", key = "#root.methodName + #user_id.toString()"),
+            @Cacheable(cacheNames = "fixedRecommendations", key = "#root.methodName + #user_id.toString()")
+    })
     public boolean isUserExists(UUID user_id) {
         String sql = "SELECT COUNT(*) FROM USERS u WHERE u.ID = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id);
@@ -55,6 +61,7 @@ public class DynamicJDBCRecommendationsRepository {
      *                  <br>{@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes}
      * @return true или false
      */
+    @Cacheable(cacheNames = "dynamicRecommendations", key = "#root.methodName + #user_id.toString() + #arguments.get(0)")
     public boolean isUserOf(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
                 "           CASE " +
@@ -89,6 +96,7 @@ public class DynamicJDBCRecommendationsRepository {
      *                  {@link pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes TransactionProductTypes}
      * @return true или false
      */
+    @Cacheable(cacheNames = "dynamicRecommendations", key = "#root.methodName + #user_id.toString() + #arguments.get(0)")
     public boolean isActiveUserOf(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
                 "           CASE " +
@@ -110,7 +118,6 @@ public class DynamicJDBCRecommendationsRepository {
         return Boolean.TRUE.equals(result);
     }
 
-
     /**
      * Метод проверки возможности рекомендации для пользователя.
      * <p>
@@ -129,6 +136,8 @@ public class DynamicJDBCRecommendationsRepository {
      *                  </ul>
      * @return true или false
      */
+    @Cacheable(cacheNames = "dynamicRecommendations",
+            key = "#root.methodName + #user_id.toString() + #arguments.get(0) + #arguments.get(1) + #arguments.get(2) + #arguments.get(3)")
     public boolean isTransactionSumCompare(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
                 "           CASE " +
@@ -168,6 +177,8 @@ public class DynamicJDBCRecommendationsRepository {
      *                  </ul>
      * @return true или false
      */
+    @Cacheable(cacheNames = "dynamicRecommendations",
+            key = "#root.methodName + #user_id.toString() + #arguments.get(0) + #arguments.get(1)")
     public boolean isTransactionSumCompareDepositWithdraw(UUID user_id, List<String> arguments) {
         String sql = "SELECT " +
                 "           CASE " +
