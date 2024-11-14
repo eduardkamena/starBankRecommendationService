@@ -3,6 +3,9 @@ package pro.sky.recommendation_service.enums;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.AllArgsConstructor;
 
+/**
+ * Перечисление возможных эмодзи для Telegram-бота
+ */
 @AllArgsConstructor
 public enum TelegramBotEmojiENUM {
 
