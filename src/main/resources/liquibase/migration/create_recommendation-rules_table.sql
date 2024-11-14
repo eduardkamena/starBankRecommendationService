@@ -16,3 +16,12 @@ CREATE TABLE if NOT EXISTS rules (
     negate BOOLEAN NOT null,
     PRIMARY KEY(id)
     )
+
+-- changeset ekamenskikh:3
+CREATE TABLE stats (
+    id UUID NOT null,
+    count INTEGER NOT null,
+    recommendations_id UUID NOT null ,
+    PRIMARY KEY(id),
+    FOREIGN KEY (recommendations_id) REFERENCES recommendations(id)
+    )

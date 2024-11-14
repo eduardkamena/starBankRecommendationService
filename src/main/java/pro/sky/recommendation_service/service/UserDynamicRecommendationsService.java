@@ -8,4 +8,6 @@ public interface UserDynamicRecommendationsService {
 
     UserRecommendationsDTO getAllDynamicRecommendations(UUID user_id);
 
+    String getAllDynamicRulesRecommendationsForTelegramBot(UUID user_id);
+
 }

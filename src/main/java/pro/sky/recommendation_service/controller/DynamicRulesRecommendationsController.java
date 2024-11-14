@@ -12,8 +12,11 @@ import pro.sky.recommendation_service.dto.RecommendationsDTO;
 import pro.sky.recommendation_service.entity.Recommendations;
 import pro.sky.recommendation_service.exception.*;
 import pro.sky.recommendation_service.service.DynamicRulesRecommendationsService;
+import pro.sky.recommendation_service.service.StatsService;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,9 +30,11 @@ public class DynamicRulesRecommendationsController {
     private final Logger logger = LoggerFactory.getLogger(DynamicRulesRecommendationsController.class);
 
     private final DynamicRulesRecommendationsService dynamicRulesRecommendationsService;
+    private final StatsService statsService;
 
-    public DynamicRulesRecommendationsController(DynamicRulesRecommendationsService dynamicRulesRecommendationsService) {
+    public DynamicRulesRecommendationsController(DynamicRulesRecommendationsService dynamicRulesRecommendationsService, StatsService statsService) {
         this.dynamicRulesRecommendationsService = dynamicRulesRecommendationsService;
+        this.statsService = statsService;
     }
 
     @PostMapping
@@ -80,7 +85,7 @@ public class DynamicRulesRecommendationsController {
         }
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping(path = "/allRules")
     @Operation(
             summary = "Получение всех динамических правил рекомендаций",
             description = "Позволяет получить все динамические правила рекомендаций")
@@ -127,6 +132,20 @@ public class DynamicRulesRecommendationsController {
                             "Dynamic rule recommendation with UUID " + rule_id + " not found in database"));
         }
 
+    }
+
+    @GetMapping("/stats")
+    @Operation(
+            summary = "Статистика срабатывания динамических правил рекомендаций",
+            description = "Позволяет получить статистику срабатываний динамических правил рекомендаций")
+    public ResponseEntity<Map<String, List<Map<String, ? extends Serializable>>>> getAllStatsCount() {
+
+        logger.info("Receiving a request for recommendations counter stats");
+
+        List<Map<String, ? extends Serializable>> mappingStatsCount = statsService.getAllStatsCount();
+
+        logger.info("Outputting in @Controller recommendations counter stats");
+        return ResponseEntity.ok(Map.of("stats", mappingStatsCount));
     }
 
 }

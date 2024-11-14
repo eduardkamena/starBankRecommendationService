@@ -15,6 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * @deprecated
+ *
+ * Класс для работы со статическими рекомендациями.
+ * <p>
+ *     Новый функционал см.{@link UserDynamicRecommendationsServiceImpl}
+ *
+ */
 @Service
 public class UserFixedRecommendationsServiceImpl implements UserFixedRecommendationsService {
 
@@ -30,6 +38,16 @@ public class UserFixedRecommendationsServiceImpl implements UserFixedRecommendat
         this.fixedRecommendationsRepository = fixedRecommendationsRepository;
     }
 
+    /**
+     * @deprecated
+     * Метод для проверки возможности рекомендовать пользователю продукт,
+     * который добавлен в БД путем получения данных из отдельного класса
+     *
+     * @param user_id идентификатор пользователя в БД
+     * @return объект DTO ({@link UserRecommendationsDTO}) хранящий список всех
+     *      доступных пользователю рекомендаций
+     * @throws UserNotFoundException если пользователь не найден в БД
+     */
     @Override
     public UserRecommendationsDTO getAllFixedRecommendations(UUID user_id) throws UserNotFoundException {
 
