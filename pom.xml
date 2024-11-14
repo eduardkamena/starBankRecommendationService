@@ -133,7 +133,14 @@
             <version>5.1.1</version>
         </dependency>
 
-	</dependencies>
+        <!--Build Properties-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>
