@@ -15,23 +15,26 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "@Entity рекомендации")
+@Table(name = "recommendations")
 public class Recommendations {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Schema(description = "Идентификатор правила рекомендации в БД (primary key)")
+    @Column(name = "id", unique = true, nullable = false)
     private UUID id;
 
-    @Column(columnDefinition = "TEXT")
     @Schema(description = "Название рекомендации")
-    private String product_name;
+    @Column(name = "product_name", columnDefinition = "TEXT", nullable = false)
+    private String productName;
 
     @Schema(description = "Идентификатор рекомендации в продакшн")
-    private UUID product_id;
+    @Column(name = "product_id", nullable = false)
+    private UUID productId;
 
-    @Column(columnDefinition = "TEXT")
     @Schema(description = "Описание рекомендации")
-    private String product_text;
+    @Column(name = "product_text", columnDefinition = "TEXT", nullable = false)
+    private String productText;
 
     @JsonIgnoreProperties(value = "recommendations", allowSetters = true)
     @OneToMany(mappedBy = "recommendations", cascade = CascadeType.ALL)

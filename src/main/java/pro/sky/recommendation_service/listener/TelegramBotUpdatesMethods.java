@@ -18,9 +18,10 @@ public class TelegramBotUpdatesMethods {
 
     String sendHelloMessage(String firstName) {
         return "Привет, " + firstName + "! "
-                + TelegramBotEmojiENUM.RAISED_HANDS.get() + "\n" +
-                TelegramBotEmojiENUM.ROBOT_FACE.get() +
-                " Бот находит лучшие рекомендации продуктов Банка \"Стар\" для своих клиентов.\n" +
+                + TelegramBotEmojiENUM.RAISED_HANDS.get() + "\n"
+                + TelegramBotEmojiENUM.ROBOT_FACE.get() +
+                " Бот находит лучшие рекомендации продуктов" +
+                " Банка \"Стар\" для своих клиентов.\n" +
                 "Чтобы узнать как им пользоваться введи команду */help*";
     }
 
@@ -38,7 +39,8 @@ public class TelegramBotUpdatesMethods {
 
     String sendLengthMessage() {
         return TelegramBotEmojiENUM.X.get() +
-                " Нужно написать после /recommend *только* свой *username*, *ничего больше* !";
+                " Нужно написать после /recommend *только*" +
+                " свой *username*, *ничего больше*!";
     }
 
     String sendUserListMessage() {
@@ -49,17 +51,20 @@ public class TelegramBotUpdatesMethods {
     String sendSuccessMessage(UserDTO userDTO) {
         String recommendation = userDynamicRecommendationsService
                 .getAllDynamicRulesRecommendationsForTelegramBot(userDTO.id());
-        return (TelegramBotEmojiENUM.TADA.get() + " *Поиск нашел рекомендацию!*\n\n" +
+        return (TelegramBotEmojiENUM.TADA.get() +
+                " *Поиск нашел рекомендацию!*\n\n" +
                 "Здравствуйте, *%s* *%s*!\n\n" +
                 "Новые продукты для вас:\n\n\n%s").formatted(
-                userDTO.first_name(),
-                userDTO.last_name(),
+                userDTO.firstName(),
+                userDTO.lastName(),
                 recommendation);
     }
 
     String sendErrorMessage() {
-        return "Нужно обязательно указать через *пробел* после */recommend* свой *username*\n\n"
-                + TelegramBotEmojiENUM.WRITING_HAND.get() + " Например:\n*/recommend jabba.hutt*";
+        return "Нужно обязательно указать через *пробел* после" +
+                " */recommend* свой *username*\n\n"
+                + TelegramBotEmojiENUM.WRITING_HAND.get() +
+                " Например:\n*/recommend jabba.hutt*";
     }
 
     String sendElseMessage() {

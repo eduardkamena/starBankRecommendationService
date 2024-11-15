@@ -81,72 +81,73 @@
         }
       }
     },
-    "/rule/{rule_id}": {
-      "get": {
-        "tags": [
-          "Контроллер динамических правил рекомендаций"
-        ],
-        "summary": "Получение динамического правила рекомендации",
-        "description": "Позволяет получить динамическое правило рекомендации",
-        "operationId": "getDynamicRecommendation",
-        "parameters": [
-          {
-            "name": "rule_id",
-            "in": "path",
-            "description": "Идентификатор динамического правила рекомендации",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
+    "/rule/{ruleId}":
+      {
+        "get": {
+          "tags": [
+            "Контроллер динамических правил рекомендаций"
+          ],
+          "summary": "Получение динамического правила рекомендации",
+          "description": "Позволяет получить динамическое правило рекомендации",
+          "operationId": "getDynamicRecommendation",
+          "parameters": [
+            {
+              "name": "ruleId",
+              "in": "path",
+              "description": "Идентификатор динамического правила рекомендации",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
             }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
+        },
+        "delete": {
+          "tags": [
+            "Контроллер динамических правил рекомендаций"
+          ],
+          "summary": "Удаление динамического правила рекомендации",
+          "description": "Позволяет удалить динамическое правило рекомендации",
+          "operationId": "deleteDynamicRecommendation",
+          "parameters": [
+            {
+              "name": "ruleId",
+              "in": "path",
+              "description": "Идентификатор динамического правила рекомендации",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
                 }
               }
             }
           }
         }
       },
-      "delete": {
-        "tags": [
-          "Контроллер динамических правил рекомендаций"
-        ],
-        "summary": "Удаление динамического правила рекомендации",
-        "description": "Позволяет удалить динамическое правило рекомендации",
-        "operationId": "deleteDynamicRecommendation",
-        "parameters": [
-          {
-            "name": "rule_id",
-            "in": "path",
-            "description": "Идентификатор динамического правила рекомендации",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/rule/stats": {
       "get": {
         "tags": [
@@ -200,108 +201,111 @@
         }
       }
     },
-    "/recommendation/fixed/{user_id}": {
-      "get": {
-        "tags": [
-          "Контроллер рекомендаций продукта(ов) для клиента"
-        ],
-        "summary": "Получение фиксированных рекомендаций продукта(ов) для клиента",
-        "description": "Позволяет получить фиксированные рекомендации продукта(ов) для клиента",
-        "operationId": "getUserFixedRecommendations",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "description": "Идентификатор клиента",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
+    "/recommendation/fixed/{userId}":
+      {
+        "get": {
+          "tags": [
+            "Контроллер рекомендаций продукта(ов) для клиента"
+          ],
+          "summary": "Получение фиксированных рекомендаций продукта(ов) для клиента",
+          "description": "Позволяет получить фиксированные рекомендации продукта(ов) для клиента",
+          "operationId": "getUserFixedRecommendations",
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "Идентификатор клиента",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
                 }
               }
             }
           }
         }
-      }
-    },
-    "/recommendation/dynamic/{user_id}": {
-      "get": {
-        "tags": [
-          "Контроллер рекомендаций продукта(ов) для клиента"
-        ],
-        "summary": "Получение динамических рекомендаций продукта(ов) для клиента",
-        "description": "Позволяет получить динамические рекомендации продукта(ов) для клиента",
-        "operationId": "getUserDynamicRecommendations",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "description": "Идентификатор клиента",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
+      },
+    "/recommendation/dynamic/{userId}":
+      {
+        "get": {
+          "tags": [
+            "Контроллер рекомендаций продукта(ов) для клиента"
+          ],
+          "summary": "Получение динамических рекомендаций продукта(ов) для клиента",
+          "description": "Позволяет получить динамические рекомендации продукта(ов) для клиента",
+          "operationId": "getUserDynamicRecommendations",
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "Идентификатор клиента",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
                 }
               }
             }
           }
         }
-      }
-    },
-    "/product/{product_id}": {
-      "get": {
-        "tags": [
-          "Контроллер продукта рекомендации"
-        ],
-        "summary": "Получение продукта рекомендации",
-        "description": "Позволяет получить продукт рекомендации",
-        "operationId": "getProduct",
-        "parameters": [
-          {
-            "name": "product_id",
-            "in": "path",
-            "description": "Идентификатор продукта рекомендации",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
+      },
+    "/product/{productId}":
+      {
+        "get": {
+          "tags": [
+            "Контроллер продукта рекомендации"
+          ],
+          "summary": "Получение продукта рекомендации",
+          "description": "Позволяет получить продукт рекомендации",
+          "operationId": "getProduct",
+          "parameters": [
+            {
+              "name": "productId",
+              "in": "path",
+              "description": "Идентификатор продукта рекомендации",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
                 }
               }
             }
           }
         }
-      }
-    },
+      },
     "/management/info": {
       "get": {
         "tags": [

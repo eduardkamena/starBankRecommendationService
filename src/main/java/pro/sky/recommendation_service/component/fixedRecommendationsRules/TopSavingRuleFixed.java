@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component("TopSavingRule")
+@Component("topSavingRule")
 @RequiredArgsConstructor
 public class TopSavingRuleFixed implements FixedRecommendationsRulesSet {
 
@@ -38,40 +38,40 @@ public class TopSavingRuleFixed implements FixedRecommendationsRulesSet {
 
     @Override
     @Cacheable(cacheNames = "fixedRecommendations", keyGenerator = "customKeyGenerator")
-    public Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID user_id) {
+    public Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID userId) {
 
-        logger.info("Starting checking {} recommendation for user_id: {}", NAME, user_id);
-        if (hasDebitProduct(user_id)
-                && (hasDebitDepositCondition(user_id) || hasSavingDepositCondition(user_id))
-                && hasPositiveDebitBalance(user_id)
+        logger.info("Starting checking {} recommendation for userId: {}", NAME, userId);
+        if (hasDebitProduct(userId)
+                && (hasDebitDepositCondition(userId) || hasSavingDepositCondition(userId))
+                && hasPositiveDebitBalance(userId)
         ) {
-            logger.info("Found {} recommendation for user_id: {}", NAME, user_id);
+            logger.info("Found {} recommendation for userId: {}", NAME, userId);
             return Optional.of(productRecommendationsService.getRecommendationProduct(ID));
         }
-        logger.info("Not Found {} recommendation for user_id: {}", NAME, user_id);
+        logger.info("Not Found {} recommendation for userId: {}", NAME, userId);
         return Optional.empty();
     }
 
     // Условия выполнения клиентом для предоставления продукта рекомендации
-    public boolean hasDebitProduct(UUID user_id) {
-        return fixedRecommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_DEBIT);
+    public boolean hasDebitProduct(UUID userId) {
+        return fixedRecommendationsRepository.isProductExists(userId, PRODUCT_TYPE_DEBIT);
     }
 
-    public boolean hasDebitDepositCondition(UUID user_id) {
-        return fixedRecommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
+    public boolean hasDebitDepositCondition(UUID userId) {
+        return fixedRecommendationsRepository.getTransactionAmount(userId, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
                 >= TRANSACTION_CONDITION;
     }
 
-    public boolean hasSavingDepositCondition(UUID user_id) {
-        return fixedRecommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
+    public boolean hasSavingDepositCondition(UUID userId) {
+        return fixedRecommendationsRepository.getTransactionAmount(userId, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
                 >= TRANSACTION_CONDITION;
     }
 
-    public boolean hasPositiveDebitBalance(UUID user_id) {
+    public boolean hasPositiveDebitBalance(UUID userId) {
         return fixedRecommendationsRepository.getTransactionAmount
-                (user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
+                (userId, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
                 > fixedRecommendationsRepository.getTransactionAmount
-                (user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW);
+                (userId, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW);
     }
 
 }

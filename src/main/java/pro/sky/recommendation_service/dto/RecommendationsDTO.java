@@ -16,17 +16,17 @@ import java.util.UUID;
 @Schema(description = "Сущность рекомендации")
 public class RecommendationsDTO {
 
-    @Schema(description = "Идентификатор правила рекомендации в БД")
+    @Schema(description = "Идентификатор рекомендации в БД")
     private UUID id;
 
     @Schema(description = "Название рекомендации")
-    private String product_name;
+    private String productName;
 
     @Schema(description = "Идентификатор рекомендации в продакшн")
-    private UUID product_id;
+    private UUID productId;
 
     @Schema(description = "Описание рекомендации")
-    private String product_text;
+    private String productText;
 
     @Schema(description = "Правила рекомендации")
     private List<RulesDTO> rule;

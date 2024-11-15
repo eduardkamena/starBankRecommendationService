@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface RulesRecommendationsRepository extends JpaRepository<Rules, UUID> {
 
-    List<Rules> findByRecommendationsId(UUID recommendation_id);
+    List<Rules> findByRecommendationsId(UUID recommendationId);
 
 }

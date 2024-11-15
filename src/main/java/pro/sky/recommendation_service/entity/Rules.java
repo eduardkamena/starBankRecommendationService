@@ -16,26 +16,30 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "@Entity объекта запроса для правила рекомендации")
+@Table(name = "rules")
 public class Rules {
 
     @Id
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.UUID)
     @Schema(description = "Идентификатор объекта запроса для правила рекомендации в БД (primary key)")
+    @Column(name = "id", unique = true, nullable = false)
     private UUID id;
 
     @Enumerated(EnumType.STRING)
     @Schema(description = "Название объекта запроса для правила рекомендации")
+    @Column(name = "query", nullable = false)
     private RulesQueryENUM query;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "rules_arguments", joinColumns = @JoinColumn(name = "rules_id"))
-    @Column(name = "argument")
-    @OrderColumn(name = "argument_index")
     @Schema(description = "Аргументы объекта запроса для правила рекомендации")
+    @Column(name = "argument", nullable = false)
+    @OrderColumn(name = "argument_index")
     private List<String> arguments;
 
     @Schema(description = "Соответствие объекта запроса для правила рекомендации)")
+    @Column(name = "negate", nullable = false)
     private boolean negate;
 
     @ManyToOne

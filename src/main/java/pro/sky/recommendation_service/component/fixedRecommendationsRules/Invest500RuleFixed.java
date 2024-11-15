@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component("Invest500Rule")
+@Component("invest500Rule")
 @RequiredArgsConstructor
 public class Invest500RuleFixed implements FixedRecommendationsRulesSet {
 
@@ -38,32 +38,32 @@ public class Invest500RuleFixed implements FixedRecommendationsRulesSet {
 
     @Override
     @Cacheable(cacheNames = "fixedRecommendations", keyGenerator = "customKeyGenerator")
-    public Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID user_id) {
+    public Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID userId) {
 
-        logger.info("Starting checking {} recommendation for user_id: {}", NAME, user_id);
-        if (hasDebitProduct(user_id)
-                && !hasInvestProduct(user_id)
-                && hasSavingDepositCondition(user_id)
+        logger.info("Starting checking {} recommendation for userId: {}", NAME, userId);
+        if (hasDebitProduct(userId)
+                && !hasInvestProduct(userId)
+                && hasSavingDepositCondition(userId)
         ) {
-            logger.info("Found {} recommendation for user_id: {}", NAME, user_id);
+            logger.info("Found {} recommendation for userId: {}", NAME, userId);
             return Optional.of(productRecommendationsService.getRecommendationProduct(ID));
 
         }
-        logger.info("Not Found {} recommendation for user_id: {}", NAME, user_id);
+        logger.info("Not Found {} recommendation for userId: {}", NAME, userId);
         return Optional.empty();
     }
 
     // Условия выполнения клиентом для предоставления продукта рекомендации
-    public boolean hasDebitProduct(UUID user_id) {
-        return fixedRecommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_DEBIT);
+    public boolean hasDebitProduct(UUID userId) {
+        return fixedRecommendationsRepository.isProductExists(userId, PRODUCT_TYPE_DEBIT);
     }
 
-    public boolean hasInvestProduct(UUID user_id) {
-        return fixedRecommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_INVEST);
+    public boolean hasInvestProduct(UUID userId) {
+        return fixedRecommendationsRepository.isProductExists(userId, PRODUCT_TYPE_INVEST);
     }
 
-    public boolean hasSavingDepositCondition(UUID user_id) {
-        return fixedRecommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
+    public boolean hasSavingDepositCondition(UUID userId) {
+        return fixedRecommendationsRepository.getTransactionAmount(userId, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
                 > TRANSACTION_CONDITION;
     }
 

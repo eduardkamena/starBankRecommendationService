@@ -34,7 +34,7 @@ public class TelegramBotRepository {
 
         Collection<UserDTO> result = jdbcTemplate.query(sql, new DataClassRowMapper<>(UserDTO.class), username);
 
-        logger.info("Executing a SQL query \"isUserExists\" in the database for username: {}", username);
+        logger.info("Executing a SQL query \"isUserExists\" in the database for userName: {}", username);
         return result;
     }
 

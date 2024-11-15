@@ -7,6 +7,6 @@ import java.util.UUID;
 
 public interface ProductRecommendationsService {
 
-    List<ProductRecommendationsDTO> getRecommendationProduct(UUID product_id);
+    List<ProductRecommendationsDTO> getRecommendationProduct(UUID productId);
 
 }

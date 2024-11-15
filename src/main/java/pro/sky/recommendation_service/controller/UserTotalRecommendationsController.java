@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pro.sky.recommendation_service.dto.ProductRecommendationsDTO;
 import pro.sky.recommendation_service.dto.UserRecommendationsDTO;
 import pro.sky.recommendation_service.exception.AppError;
 import pro.sky.recommendation_service.exception.UserNotFoundException;
 import pro.sky.recommendation_service.service.UserDynamicRecommendationsService;
 import pro.sky.recommendation_service.service.UserFixedRecommendationsService;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,49 +36,49 @@ public class UserTotalRecommendationsController {
         this.userDynamicRecommendationsService = userDynamicRecommendationsService;
     }
 
-    @GetMapping(path = "/fixed/{user_id}")
+    @GetMapping(path = "/fixed/{userId}")
     @Operation(
             summary = "Получение фиксированных рекомендаций продукта(ов) для клиента",
             description = "Позволяет получить фиксированные рекомендации продукта(ов) для клиента")
     public ResponseEntity<Object> getUserFixedRecommendations(
             @PathVariable
-            @Parameter(description = "Идентификатор клиента") UUID user_id) {
-        logger.info("Received request for getting all fixed relevant recommendations for user_id: {}", user_id);
+            @Parameter(description = "Идентификатор клиента") UUID userId) {
+        logger.info("Received request for getting all fixed relevant recommendations for userId: {}", userId);
 
         try {
-            UserRecommendationsDTO result = userFixedRecommendationsService.getAllFixedRecommendations(user_id);
-            logger.info("Outputting in @Controller all fixed relevant recommendations for user_id: {}", user_id);
+            UserRecommendationsDTO result = userFixedRecommendationsService.getAllFixedRecommendations(userId);
+            logger.info("Outputting in @Controller all fixed relevant recommendations for userId: {}", userId);
             return ResponseEntity.ok(result);
 
         } catch (UserNotFoundException e) {
 
-            logger.error("Error Outputting in @Controller all fixed relevant recommendations for user_id: {}", user_id, e);
+            logger.error("Error Outputting in @Controller all fixed relevant recommendations for userId: {}", userId, e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new AppError(HttpStatus.NOT_FOUND.value(),
-                            "User with UUID " + user_id + " not found in database"));
+                            "User with UUID " + userId + " not found in database"));
         }
     }
 
-    @GetMapping(path = "/dynamic/{user_id}")
+    @GetMapping(path = "/dynamic/{userId}")
     @Operation(
             summary = "Получение динамических рекомендаций продукта(ов) для клиента",
             description = "Позволяет получить динамические рекомендации продукта(ов) для клиента")
     public ResponseEntity<Object> getUserDynamicRecommendations(
             @PathVariable
-            @Parameter(description = "Идентификатор клиента") UUID user_id) {
-        logger.info("Received request for getting all dynamic relevant recommendations for user_id: {}", user_id);
+            @Parameter(description = "Идентификатор клиента") UUID userId) {
+        logger.info("Received request for getting all dynamic relevant recommendations for userId: {}", userId);
 
         try {
-            UserRecommendationsDTO result = userDynamicRecommendationsService.getAllDynamicRecommendations(user_id);
-            logger.info("Outputting in @Controller all dynamic relevant recommendations for user_id: {}", user_id);
+            UserRecommendationsDTO result = userDynamicRecommendationsService.getAllDynamicRecommendations(userId);
+            logger.info("Outputting in @Controller all dynamic relevant recommendations for userId: {}", userId);
             return ResponseEntity.ok(result);
 
         } catch (UserNotFoundException e) {
 
-            logger.error("Error Outputting in @Controller all dynamic relevant recommendations for user_id: {}", user_id, e);
+            logger.error("Error Outputting in @Controller all dynamic relevant recommendations for userId: {}", userId, e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new AppError(HttpStatus.NOT_FOUND.value(),
-                            "User with UUID " + user_id + " not found in database"));
+                            "User with UUID " + userId + " not found in database"));
         }
     }
 

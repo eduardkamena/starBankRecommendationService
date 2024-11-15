@@ -26,14 +26,14 @@ public class StatsServiceImpl implements StatsService {
     /**
      * Метод позволяет увеличивать счетчик успешной выдачи рекомендации пользователю.
      *
-     * @param recommendations_id ID динамической рекомендации ({@link Recommendations})
+     * @param recommendationsId ID динамической рекомендации ({@link Recommendations})
      */
     @Override
-    public void incrementStatsCount(UUID recommendations_id) {
+    public void incrementStatsCount(UUID recommendationsId) {
 
-        logger.info("Starting incrementing stats count for dynamic recommendations: {}", recommendations_id);
+        logger.info("Starting incrementing stats count for dynamic recommendations: {}", recommendationsId);
 
-        Optional<Recommendations> foundRecommendations = dynamicJPARecommendationsRepository.findById(recommendations_id);
+        Optional<Recommendations> foundRecommendations = dynamicJPARecommendationsRepository.findById(recommendationsId);
 
         if (foundRecommendations.isPresent()) {
             Recommendations recommendations = foundRecommendations.get();
@@ -49,9 +49,9 @@ public class StatsServiceImpl implements StatsService {
 
             dynamicJPARecommendationsRepository.save(recommendations);
 
-            logger.info("Successfully added increment stats count for dynamic recommendations: {}", recommendations_id);
+            logger.info("Successfully added increment stats count for dynamic recommendations: {}", recommendationsId);
         } else {
-            logger.warn("Recommendations with ID {} not found.", recommendations_id);
+            logger.warn("Recommendations with ID {} not found.", recommendationsId);
         }
     }
 
@@ -71,8 +71,8 @@ public class StatsServiceImpl implements StatsService {
                 .stream()
                 .map(stats -> {
                     Integer count = (Integer) stats[0];
-                    UUID recommendations_id = (UUID) stats[1];
-                    return Map.of("recommendations_id", recommendations_id, "count", count);
+                    UUID recommendationsId = (UUID) stats[1];
+                    return Map.of("recommendations_id", recommendationsId, "count", count);
                 })
                 .collect(Collectors.toList());
 

@@ -16,12 +16,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @deprecated
- *
- * Класс для работы со статическими рекомендациями.
+ * @deprecated Класс для работы со статическими рекомендациями.
  * <p>
- *     Новый функционал см.{@link UserDynamicRecommendationsServiceImpl}
- *
+ * Новый функционал см.{@link UserDynamicRecommendationsServiceImpl}
  */
 @Service
 public class UserFixedRecommendationsServiceImpl implements UserFixedRecommendationsService {
@@ -39,35 +36,33 @@ public class UserFixedRecommendationsServiceImpl implements UserFixedRecommendat
     }
 
     /**
-     * @deprecated
-     * Метод для проверки возможности рекомендовать пользователю продукт,
-     * который добавлен в БД путем получения данных из отдельного класса
-     *
-     * @param user_id идентификатор пользователя в БД
+     * @param userId идентификатор пользователя в БД
      * @return объект DTO ({@link UserRecommendationsDTO}) хранящий список всех
-     *      доступных пользователю рекомендаций
+     * доступных пользователю рекомендаций
      * @throws UserNotFoundException если пользователь не найден в БД
+     * @deprecated Метод для проверки возможности рекомендовать пользователю продукт,
+     * который добавлен в БД путем получения данных из отдельного класса
      */
     @Override
-    public UserRecommendationsDTO getAllFixedRecommendations(UUID user_id) throws UserNotFoundException {
+    public UserRecommendationsDTO getAllFixedRecommendations(UUID userId) throws UserNotFoundException {
 
-        logger.info("Starting checking user in database for user_id: {}", user_id);
+        logger.info("Starting checking user in database for userId: {}", userId);
 
-        if (fixedRecommendationsRepository.isUserExists(user_id)) {
+        if (fixedRecommendationsRepository.isUserExists(userId)) {
 
-            logger.info("Starting getting in List<> all recommendations for user_id: {}", user_id);
+            logger.info("Starting getting in List<> all recommendations for userId: {}", userId);
             List<ProductRecommendationsDTO> recommendations = new ArrayList<>();
 
             for (FixedRecommendationsRulesSet rule : fixedRecommendationsRulesSets) {
-                rule.checkRecommendation(user_id)
+                rule.checkRecommendation(userId)
                         .ifPresent(recommendations::addAll);
-                logger.info("Adding result of getting recommendation to List<> for user_id: {}", user_id);
+                logger.info("Adding result of getting recommendation to List<> for userId: {}", userId);
             }
-            logger.info("Transferring all found recommendations from List<> to UserRecommendationsDTO for user_id: {}", user_id);
-            return new UserRecommendationsDTO(user_id, recommendations);
+            logger.info("Transferring all found recommendations from List<> to UserRecommendationsDTO for userId: {}", userId);
+            return new UserRecommendationsDTO(userId, recommendations);
         }
 
-        logger.error("Error checking user in database for user_id: {}", user_id);
+        logger.error("Error checking user in database for userId: {}", userId);
         throw new UserNotFoundException("User not found in database");
     }
 

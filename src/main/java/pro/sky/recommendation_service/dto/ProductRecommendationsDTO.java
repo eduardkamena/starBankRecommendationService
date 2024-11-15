@@ -14,12 +14,12 @@ import java.util.UUID;
 public class ProductRecommendationsDTO {
 
     @Schema(description = "Название продукта рекомендации")
-    private String product_name;
+    private String productName;
 
     @Schema(description = "Идентификатор продукта рекомендации")
-    private UUID product_id;
+    private UUID productId;
 
     @Schema(description = "Описание продукта рекомендации")
-    private String product_text;
+    private String productText;
 
 }

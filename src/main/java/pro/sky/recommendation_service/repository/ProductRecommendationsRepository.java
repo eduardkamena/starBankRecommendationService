@@ -12,8 +12,8 @@ public interface ProductRecommendationsRepository extends JpaRepository<Recommen
 
     @Query(value = "SELECT r.product_name, r.product_id, r.product_text " +
             "           FROM recommendations r " +
-            "           WHERE r.product_id = :product_id", nativeQuery = true)
-    List<Object[]> findByProductId(@Param("product_id") UUID product_id);
+            "           WHERE r.product_id = :productId", nativeQuery = true)
+    List<Object[]> findByProductId(@Param("productId") UUID productId);
 
     @Query(value = "SELECT " +
             "           CASE " +
@@ -22,7 +22,7 @@ public interface ProductRecommendationsRepository extends JpaRepository<Recommen
             "               ELSE false " +
             "           END " +
             "       FROM recommendations r " +
-            "       WHERE r.product_id = :product_id", nativeQuery = true)
-    boolean existsByProductId(UUID product_id);
+            "       WHERE r.product_id = :productId", nativeQuery = true)
+    boolean existsByProductId(@Param("productId") UUID productId);
 
 }
