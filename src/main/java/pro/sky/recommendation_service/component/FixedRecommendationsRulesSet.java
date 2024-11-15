@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface FixedRecommendationsRulesSet {
 
-    Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID user_id);
+    Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID userId);
 
 }

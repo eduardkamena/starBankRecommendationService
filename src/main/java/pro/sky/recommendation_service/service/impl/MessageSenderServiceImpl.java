@@ -18,11 +18,11 @@ import pro.sky.recommendation_service.service.MessageSenderService;
  * <h3>Класс для отправки пользователю сообщения в TG
  *
  * <p>В данной реализации позволяет:
- *      <ln>
- *          <li>Отправлять сообщения пользователю см.{@link MessageSenderServiceImpl#sendMessage sendMessage}</li>
- *          <li>Отправлять стикеры пользователю см.{@link MessageSenderServiceImpl#sendSticker sendSticker}</li>
- *          <li>Отправлять реакции на сообщения пользователя см.{@link MessageSenderServiceImpl#sendReaction sendReaction}</li>
- *      </ln>
+ * <ln>
+ * <li>Отправлять сообщения пользователю см.{@link MessageSenderServiceImpl#sendMessage sendMessage}</li>
+ * <li>Отправлять стикеры пользователю см.{@link MessageSenderServiceImpl#sendSticker sendSticker}</li>
+ * <li>Отправлять реакции на сообщения пользователя см.{@link MessageSenderServiceImpl#sendReaction sendReaction}</li>
+ * </ln>
  */
 @Service
 public class MessageSenderServiceImpl implements MessageSenderService {
@@ -39,7 +39,7 @@ public class MessageSenderServiceImpl implements MessageSenderService {
     /**
      * Метод отправки сообщений от бота к пользователю
      *
-     * @param chatID идентификатор TG-чата
+     * @param chatID      идентификатор TG-чата
      * @param messageText текст передаваемого сообщения
      */
     @Override
@@ -75,8 +75,8 @@ public class MessageSenderServiceImpl implements MessageSenderService {
     /**
      * Метод отправки реакции на сообщение от бота к пользователю
      *
-     * @param chatID идентификатор TG-чата
-     * @param messageId идентификатор сообщения внутри чата
+     * @param chatID       идентификатор TG-чата
+     * @param messageId    идентификатор сообщения внутри чата
      * @param reactionType тип эмодзи
      */
     @Override

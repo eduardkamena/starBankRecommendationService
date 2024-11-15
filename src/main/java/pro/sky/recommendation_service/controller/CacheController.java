@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/management")
+@RequestMapping(path = "/management")
 @Tag(
         name = "Контроллер кеша рекомендаций",
         description = "Выполняет действия с кешем рекомендаций")
@@ -29,7 +29,7 @@ public class CacheController {
         this.cacheManager = cacheManager;
     }
 
-    @PostMapping("/clear-caches")
+    @PostMapping(path = "/clear-caches")
     @Operation(
             summary = "Сброс кэша рекомендаций",
             description = "Позволяет осуществить сброс кэша рекомендаций")
@@ -45,7 +45,7 @@ public class CacheController {
         cacheManager.getCacheNames()
                 .forEach(cacheName -> Objects.requireNonNull(
                         cacheManager.getCache(cacheName)).clear());
-
+        logger.info("Cache was cleaned successfully");
         return ResponseEntity.ok().build();
 
     }

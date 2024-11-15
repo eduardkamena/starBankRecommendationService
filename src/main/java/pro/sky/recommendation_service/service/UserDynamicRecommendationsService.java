@@ -6,8 +6,8 @@ import java.util.UUID;
 
 public interface UserDynamicRecommendationsService {
 
-    UserRecommendationsDTO getAllDynamicRecommendations(UUID user_id);
+    UserRecommendationsDTO getAllDynamicRecommendations(UUID userId);
 
-    String getAllDynamicRulesRecommendationsForTelegramBot(UUID user_id);
+    String getAllDynamicRulesRecommendationsForTelegramBot(UUID userId);
 
 }

@@ -61,27 +61,27 @@ public class DynamicRulesRecommendationsController {
         }
     }
 
-    @GetMapping(path = "/{rule_id}")
+    @GetMapping(path = "/{ruleId}")
     @Operation(
             summary = "Получение динамического правила рекомендации",
             description = "Позволяет получить динамическое правило рекомендации")
     public ResponseEntity<Object> getDynamicRecommendation(
             @Parameter(description = "Идентификатор динамического правила рекомендации")
-            @PathVariable UUID rule_id) {
+            @PathVariable UUID ruleId) {
 
-        logger.info("Received request for getting dynamic rule recommendation for rule_id: {}", rule_id);
+        logger.info("Received request for getting dynamic rule recommendation for ruleId: {}", ruleId);
 
         try {
-            Optional<RecommendationsDTO> foundRecommendation = dynamicRulesRecommendationsService.getDynamicRuleRecommendation(rule_id);
-            logger.info("Outputting in @Controller dynamic rule recommendation for rule_id: {}", rule_id);
+            Optional<RecommendationsDTO> foundRecommendation = dynamicRulesRecommendationsService.getDynamicRuleRecommendation(ruleId);
+            logger.info("Outputting in @Controller dynamic rule recommendation for ruleId: {}", ruleId);
             return ResponseEntity.ok(foundRecommendation);
 
         } catch (RuleNotFoundException e) {
 
-            logger.error("Error Outputting in @Controller dynamic rule recommendation for rule_id: {}", rule_id, e);
+            logger.error("Error Outputting in @Controller dynamic rule recommendation for ruleId: {}", ruleId, e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new AppError(HttpStatus.NOT_FOUND.value(),
-                            "Dynamic rule recommendation with UUID " + rule_id + " not found in database"));
+                            "Dynamic rule recommendation with UUID " + ruleId + " not found in database"));
         }
     }
 
@@ -107,34 +107,34 @@ public class DynamicRulesRecommendationsController {
         }
     }
 
-    @DeleteMapping(path = "/{rule_id}")
+    @DeleteMapping(path = "/{ruleId}")
     @Operation(
             summary = "Удаление динамического правила рекомендации",
             description = "Позволяет удалить динамическое правило рекомендации")
     public ResponseEntity<Object> deleteDynamicRecommendation(
             @Parameter(description = "Идентификатор динамического правила рекомендации")
-            @PathVariable UUID rule_id) {
+            @PathVariable UUID ruleId) {
 
-        logger.info("Received request for deleting dynamic rule recommendation for rule_id: {}", rule_id);
+        logger.info("Received request for deleting dynamic rule recommendation for ruleId: {}", ruleId);
 
         try {
-            dynamicRulesRecommendationsService.deleteDynamicRuleRecommendation(rule_id);
-            logger.info("Successfully deleted dynamic rule recommendation for rule_id: {}", rule_id);
+            dynamicRulesRecommendationsService.deleteDynamicRuleRecommendation(ruleId);
+            logger.info("Successfully deleted dynamic rule recommendation for ruleId: {}", ruleId);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new AppError(HttpStatus.NO_CONTENT.value(),
                             "No Content"));
 
         } catch (RuleNotFoundException e) {
 
-            logger.error("Error deleting dynamic rule recommendation for rule_id: {}", rule_id, e);
+            logger.error("Error deleting dynamic rule recommendation for ruleId: {}", ruleId, e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new AppError(HttpStatus.NOT_FOUND.value(),
-                            "Dynamic rule recommendation with UUID " + rule_id + " not found in database"));
+                            "Dynamic rule recommendation with UUID " + ruleId + " not found in database"));
         }
 
     }
 
-    @GetMapping("/stats")
+    @GetMapping(path = "/stats")
     @Operation(
             summary = "Статистика срабатывания динамических правил рекомендаций",
             description = "Позволяет получить статистику срабатываний динамических правил рекомендаций")

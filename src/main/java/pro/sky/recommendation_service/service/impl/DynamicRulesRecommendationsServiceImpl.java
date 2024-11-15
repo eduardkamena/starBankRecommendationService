@@ -24,35 +24,36 @@ import java.util.stream.Collectors;
  * <h3>Класс для работы с динамическими рекомендациями продукта.
  * <p>
  * В данной реализации позволяет выполнять действия с рекомендациями:
- *      <ln>
- *          <li>Создать запись в БД динамической рекомендации
- *              см.{@link DynamicRulesRecommendationsServiceImpl#createDynamicRuleRecommendation createDynamicRuleRecommendation}</li>
- *          <li>Получить рекомендацию из БД по ее ID
- *              см.{@link DynamicRulesRecommendationsServiceImpl#getDynamicRuleRecommendation getDynamicRuleRecommendation}</li>
- *          <li>Получить все рекомендации продуктов из БД
- *              см.{@link DynamicRulesRecommendationsServiceImpl#getAllDynamicRulesRecommendations getAllDynamicRulesRecommendations}</li>
- *          <li>Удалить рекомендацию из БД по ее ID
- *              см.{@link DynamicRulesRecommendationsServiceImpl#deleteDynamicRuleRecommendation deleteDynamicRuleRecommendation}</li>
- *      </ln>
+ * <ln>
+ * <li>Создать запись в БД динамической рекомендации
+ * см.{@link DynamicRulesRecommendationsServiceImpl#createDynamicRuleRecommendation createDynamicRuleRecommendation}</li>
+ * <li>Получить рекомендацию из БД по ее ID
+ * см.{@link DynamicRulesRecommendationsServiceImpl#getDynamicRuleRecommendation getDynamicRuleRecommendation}</li>
+ * <li>Получить все рекомендации продуктов из БД
+ * см.{@link DynamicRulesRecommendationsServiceImpl#getAllDynamicRulesRecommendations getAllDynamicRulesRecommendations}</li>
+ * <li>Удалить рекомендацию из БД по ее ID
+ * см.{@link DynamicRulesRecommendationsServiceImpl#deleteDynamicRuleRecommendation deleteDynamicRuleRecommendation}</li>
+ * </ln>
  * <p>
  * А так же позволяет выполнять проверки
  * {@link DynamicRulesRecommendationsServiceImpl#checkArguments checkArguments}
  * на соответствие
  * передаваемых аргументов правил для выдачи рекомендации пользователю.
  * <p>
- *     Последовательно проверяются
- *     см.{@link DynamicRulesRecommendationsServiceImpl#isValidEnumArguments isValidEnumArguments}
- *     следующие аргументы правил:
- *      <ln>
- *          <li>На соответствие типам продукта и транзакций
- *              см.{@link DynamicRulesRecommendationsServiceImpl#isTransactionProductTypeENUM isTransactionProductTypeENUM}</li>
- *          <li>На соответствие операторам сравнения
- *          <li></li>
- *              см.{@link DynamicRulesRecommendationsServiceImpl#isComparisonOperatorsENUM isComparisonOperatorsENUM}</li>
- *          <li>На соответствие константе-целочисленному значению
- *              см.{@link DynamicRulesRecommendationsServiceImpl#isSumCompareENUM isSumCompareENUM}</li>
- *      </ln>
+ * Последовательно проверяются
+ * см.{@link DynamicRulesRecommendationsServiceImpl#isValidEnumArguments isValidEnumArguments}
+ * следующие аргументы правил:
+ * <ln>
+ * <li>На соответствие типам продукта и транзакций
+ * см.{@link DynamicRulesRecommendationsServiceImpl#isTransactionProductTypeENUM isTransactionProductTypeENUM}</li>
+ * <li>На соответствие операторам сравнения
+ * <li></li>
+ * см.{@link DynamicRulesRecommendationsServiceImpl#isComparisonOperatorsENUM isComparisonOperatorsENUM}</li>
+ * <li>На соответствие константе-целочисленному значению
+ * см.{@link DynamicRulesRecommendationsServiceImpl#isSumCompareENUM isSumCompareENUM}</li>
+ * </ln>
  */
+
 @Service
 public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecommendationsService {
 
@@ -68,10 +69,11 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
     /**
      * Создание динамической рекомендации продукта в БД.
      * <p>
-     *      Метод позволяет создать запись динамического правила для продукта рекомендации
-     *      в БД. Получаемый объект DTO преобразуется к объекту сущности {@link Recommendations}
-     *      и сохраняется в БД
+     * Метод позволяет создать запись динамического правила для продукта рекомендации
+     * в БД. Получаемый объект DTO преобразуется к объекту сущности {@link Recommendations}
+     * и сохраняется в БД
      * </p>
+     *
      * @param recommendationsDTO ({@link RecommendationsDTO})
      */
     @Override
@@ -79,9 +81,9 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
 
         logger.info("Starting adding recommendation in database for recommendations: {}", recommendationsDTO);
         Recommendations recommendation = new Recommendations();
-        recommendation.setProduct_name(recommendationsDTO.getProduct_name());
-        recommendation.setProduct_id(recommendationsDTO.getProduct_id());
-        recommendation.setProduct_text(recommendationsDTO.getProduct_text());
+        recommendation.setProductName(recommendationsDTO.getProductName());
+        recommendation.setProductId(recommendationsDTO.getProductId());
+        recommendation.setProductText(recommendationsDTO.getProductText());
         logger.info("Successfully added recommendation in database for recommendation: {}", recommendation);
 
         // Добавление нулевого значения для счетчика
@@ -120,28 +122,29 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
     /**
      * Получение динамической рекомендации по ID.
      * <p>
-     *      Метод позволяет получить запись динамического правила из БД по ID,
-     *      с последующим преобразованием к объекту DTO
+     * Метод позволяет получить запись динамического правила из БД по ID,
+     * с последующим преобразованием к объекту DTO
      * </p>
-     * @param recommendation_id ID динамической рекомендации ({@link Recommendations})
+     *
+     * @param recommendationId ID динамической рекомендации ({@link Recommendations})
      * @return объект DTO ({@link RecommendationsDTO})
      * @throws RuleNotFoundException если рекомендация не найдена в БД
      */
     @Override
-    @Cacheable(cacheNames = "dynamicRecommendations", key = "#root.methodName + #recommendation_id.toString()")
-    public Optional<RecommendationsDTO> getDynamicRuleRecommendation(UUID recommendation_id) throws RuleNotFoundException {
+    @Cacheable(cacheNames = "dynamicRecommendations", key = "#root.methodName + #recommendationId.toString()")
+    public Optional<RecommendationsDTO> getDynamicRuleRecommendation(UUID recommendationId) throws RuleNotFoundException {
 
-        logger.info("Starting checking dynamic rule in database for id: {}", recommendation_id);
-        if (dynamicJPARecommendationsRepository.existsById(recommendation_id)) {
+        logger.info("Starting checking dynamic rule in database for id: {}", recommendationId);
+        if (dynamicJPARecommendationsRepository.existsById(recommendationId)) {
 
-            logger.info("Starting getting recommendation from database for recommendation: {}", recommendation_id);
-            return dynamicJPARecommendationsRepository.findById(recommendation_id)
+            logger.info("Starting getting recommendation from database for id: {}", recommendationId);
+            return dynamicJPARecommendationsRepository.findById(recommendationId)
                     .map(recommendation -> {
                         RecommendationsDTO dto = new RecommendationsDTO();
                         dto.setId(recommendation.getId());
-                        dto.setProduct_name(recommendation.getProduct_name());
-                        dto.setProduct_id(recommendation.getProduct_id());
-                        dto.setProduct_text(recommendation.getProduct_text());
+                        dto.setProductName(recommendation.getProductName());
+                        dto.setProductId(recommendation.getProductId());
+                        dto.setProductText(recommendation.getProductText());
 
                         List<RulesDTO> rulesDTO = recommendation.getRule()
                                 .stream()
@@ -156,20 +159,21 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
                                 .collect(Collectors.toList());
 
                         dto.setRule(rulesDTO);
-                        logger.info("Successfully got recommendation from database for recommendation");
+                        logger.info("Successfully got rules from database for for id: {}", recommendationId);
                         return dto;
                     });
         }
-        logger.error("Error checking dynamic rule in database for id: {}", recommendation_id);
+        logger.error("Error checking dynamic rule in database for id: {}", recommendationId);
         throw new RuleNotFoundException("Dynamic rule not found in database");
     }
 
     /**
      * Получение всех динамических рекомендаций из БД.
      * <p>
-     *     Метод позволяет получить запись всех динамических правил из БД,
-     *     с последующим преобразованием к списку объектов DTO
+     * Метод позволяет получить запись всех динамических правил из БД,
+     * с последующим преобразованием к списку объектов DTO
      * </p>
+     *
      * @return список всех рекомендаций приведенных к виду ({@link RecommendationsDTO})
      */
     @Override
@@ -182,9 +186,9 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
                 .map(recommendation -> {
                     RecommendationsDTO dto = new RecommendationsDTO();
                     dto.setId(recommendation.getId());
-                    dto.setProduct_name(recommendation.getProduct_name());
-                    dto.setProduct_id(recommendation.getProduct_id());
-                    dto.setProduct_text(recommendation.getProduct_text());
+                    dto.setProductName(recommendation.getProductName());
+                    dto.setProductId(recommendation.getProductId());
+                    dto.setProductText(recommendation.getProductText());
 
                     List<RulesDTO> rulesDTO = recommendation.getRule()
                             .stream()
@@ -208,19 +212,19 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
     /**
      * Удаление динамической рекомендации из БД.
      *
-     * @param recommendation_id ID динамической рекомендации ({@link Recommendations})
+     * @param recommendationId ID динамической рекомендации ({@link Recommendations})
      * @throws RuleNotFoundException если рекомендация не найдена в БД
      */
     @Override
-    public void deleteDynamicRuleRecommendation(UUID recommendation_id) throws RuleNotFoundException {
+    public void deleteDynamicRuleRecommendation(UUID recommendationId) throws RuleNotFoundException {
 
-        logger.info("Starting checking dynamic rule for deleting in database for id: {}", recommendation_id);
-        if (dynamicJPARecommendationsRepository.existsById(recommendation_id)) {
+        logger.info("Starting checking dynamic rule for deleting in database for id: {}", recommendationId);
+        if (dynamicJPARecommendationsRepository.existsById(recommendationId)) {
 
-            dynamicJPARecommendationsRepository.deleteById(recommendation_id);
-            logger.info("Rule with id: {} was successfully deleted from database", recommendation_id);
+            dynamicJPARecommendationsRepository.deleteById(recommendationId);
+            logger.info("Rule with id: {} was successfully deleted from database", recommendationId);
         } else {
-            logger.error("Error checking dynamic rule in database for deleting for id: {}", recommendation_id);
+            logger.error("Error checking dynamic rule in database for deleting for id: {}", recommendationId);
             throw new RuleNotFoundException("Dynamic rule not found in database");
         }
     }
@@ -228,10 +232,10 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
     /**
      * Проверка соответствия передаваемых аргументов.
      * <p>
-     *     Метод выполняющий проверку передаваемых аргументов правил динамической
-     *     рекомендации на соответствие с заданными.
-     *     <br>Метод выполняет последовательные проверки всего списка
-     *     используя {@link DynamicRulesRecommendationsServiceImpl#isValidEnumArguments}
+     * Метод выполняющий проверку передаваемых аргументов правил динамической
+     * рекомендации на соответствие с заданными.
+     * <br>Метод выполняет последовательные проверки всего списка
+     * используя {@link DynamicRulesRecommendationsServiceImpl#isValidEnumArguments}
      *
      * @param arguments список аргументов динамического правила рекомендации {@link Rules}
      * @throws IllegalArgumentException если аргумент правила не соответствует заданным
@@ -249,13 +253,14 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
     /**
      * Метод последовательной проверки аргумента правил.
      * <p>
-     *     Метод использует последовательное сравнение на принадлежность
-     *     заданным значениям используя следующие методы:
-     *     <ul>
-     *         <li>{@link DynamicRulesRecommendationsServiceImpl#isTransactionProductTypeENUM}</li>
-     *         <li>{@link DynamicRulesRecommendationsServiceImpl#isComparisonOperatorsENUM}</li>
-     *         <li>{@link DynamicRulesRecommendationsServiceImpl#isSumCompareENUM}</li>
-     *     </ul>
+     * Метод использует последовательное сравнение на принадлежность
+     * заданным значениям используя следующие методы:
+     * <ul>
+     *     <li>{@link DynamicRulesRecommendationsServiceImpl#isTransactionProductTypeENUM}</li>
+     *     <li>{@link DynamicRulesRecommendationsServiceImpl#isComparisonOperatorsENUM}</li>
+     *     <li>{@link DynamicRulesRecommendationsServiceImpl#isSumCompareENUM}</li>
+     * </ul>
+     *
      * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
      * @return true или false если найдено или отсутствует совпадение
      */
@@ -268,7 +273,8 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
     /**
      * Метод проверки аргумента правил на соответствие Product Type
      * <p>
-     *     Возможные варианты значений можно увидеть:{@link TransactionProductTypes}
+     * Возможные варианты значений можно увидеть:{@link TransactionProductTypes}
+     *
      * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
      * @return true или false если найдено или отсутствует совпадение
      */
@@ -284,7 +290,8 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
     /**
      * Метод проверки аргумента правил на соответствие Comparison Operator
      * <p>
-     *     Возможные варианты значений можно увидеть:{@link ComparisonOperators}
+     * Возможные варианты значений можно увидеть:{@link ComparisonOperators}
+     *
      * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
      * @return true или false если найдено или отсутствует совпадение
      */
@@ -297,7 +304,8 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
     /**
      * Метод проверки аргумента правил на соответствие Sum Compare
      * <p>
-     *     Возможные варианты значений можно увидеть:{@link SumCompare}
+     * Возможные варианты значений можно увидеть:{@link SumCompare}
+     *
      * @param arguments аргумент из списка правил динамической рекомендации {@link Rules}
      * @return true или false если найдено или отсутствует совпадение
      */

@@ -11,10 +11,18 @@ import org.springframework.cache.caffeine.CaffeineCacheManager;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Конфигурация кеширования
+ */
 @Configuration
 @EnableCaching
 public class CacheConfig implements CachingConfigurer {
 
+    /**
+     * Создание кэш-менеджера на основе {@link CaffeineCacheManager Caffeine}
+     *
+     * @return кеш-менеджер
+     */
     @Bean
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
@@ -25,6 +33,11 @@ public class CacheConfig implements CachingConfigurer {
         return cacheManager;
     }
 
+    /**
+     * Создание генератора ключей для кэшированных объектов
+     *
+     * @return генератор ключей на основе конфигурации {@link CacheKeyGeneratorConfig}
+     */
     @Bean("customKeyGenerator")
     public KeyGenerator keyGenerator() {
         return new CacheKeyGeneratorConfig();

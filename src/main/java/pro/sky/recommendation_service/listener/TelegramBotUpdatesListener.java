@@ -100,7 +100,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                                 telegramBotUpdatesMethods.sendNullMessage());
 
                     } else if (splitMessageText.length > 2) {
-                        logger.warn("Need only 2 arguments, now: {}", userList.size());
+                        logger.warn("Need only 2 arguments, now: {}", splitMessageText.length);
                         messageSenderService.sendMessage(
                                 chatId,
                                 telegramBotUpdatesMethods.sendLengthMessage());

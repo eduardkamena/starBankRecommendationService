@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component("SimpleCreditRule")
+@Component("simpleCreditRule")
 @RequiredArgsConstructor
 public class SimpleCreditRuleFixed implements FixedRecommendationsRulesSet {
 
@@ -38,34 +38,34 @@ public class SimpleCreditRuleFixed implements FixedRecommendationsRulesSet {
 
     @Override
     @Cacheable(cacheNames = "fixedRecommendations", keyGenerator = "customKeyGenerator")
-    public Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID user_id) {
+    public Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID userId) {
 
-        logger.info("Starting checking {} recommendation for user_id: {}", NAME, user_id);
-        if (!hasCreditProduct(user_id)
-                && hasPositiveDebitBalance(user_id)
-                && hasDebitWithdrawCondition(user_id)
+        logger.info("Starting checking {} recommendation for userId: {}", NAME, userId);
+        if (!hasCreditProduct(userId)
+                && hasPositiveDebitBalance(userId)
+                && hasDebitWithdrawCondition(userId)
         ) {
-            logger.info("Found {} recommendation for user_id: {}", NAME, user_id);
+            logger.info("Found {} recommendation for userId: {}", NAME, userId);
             return Optional.of(productRecommendationsService.getRecommendationProduct(ID));
         }
-        logger.info("Not Found {} recommendation for user_id: {}", NAME, user_id);
+        logger.info("Not Found {} recommendation for userId: {}", NAME, userId);
         return Optional.empty();
     }
 
     // Условия выполнения клиентом для предоставления продукта рекомендации
-    public boolean hasCreditProduct(UUID user_id) {
-        return fixedRecommendationsRepository.isProductExists(user_id, PRODUCT_TYPE_CREDIT);
+    public boolean hasCreditProduct(UUID userId) {
+        return fixedRecommendationsRepository.isProductExists(userId, PRODUCT_TYPE_CREDIT);
     }
 
-    public boolean hasPositiveDebitBalance(UUID user_id) {
+    public boolean hasPositiveDebitBalance(UUID userId) {
         return fixedRecommendationsRepository.getTransactionAmount
-                (user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
+                (userId, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
                 > fixedRecommendationsRepository.getTransactionAmount
-                (user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW);
+                (userId, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW);
     }
 
-    public boolean hasDebitWithdrawCondition(UUID user_id) {
-        return fixedRecommendationsRepository.getTransactionAmount(user_id, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW)
+    public boolean hasDebitWithdrawCondition(UUID userId) {
+        return fixedRecommendationsRepository.getTransactionAmount(userId, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW)
                 > TRANSACTION_CONDITION;
     }
 

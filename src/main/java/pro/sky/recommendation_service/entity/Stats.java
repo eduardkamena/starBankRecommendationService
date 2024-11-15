@@ -13,15 +13,17 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "@Entity счетчика срабатывания рекомендаций")
+@Table(name = "stats")
 public class Stats {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Schema(description = "Идентификатор счетчика рекомендации в БД (primary key)")
+    @Column(name = "id", unique = true, nullable = false)
     private UUID id;
 
-    @Column(columnDefinition = "INTEGER", nullable = false)
     @Schema(description = "Количество срабатывания рекомендаций")
+    @Column(name = "count", columnDefinition = "INTEGER", nullable = false)
     private Integer count;
 
     @OneToOne

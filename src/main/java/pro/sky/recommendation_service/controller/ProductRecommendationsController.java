@@ -34,29 +34,29 @@ public class ProductRecommendationsController {
         this.productRecommendationsService = productRecommendationsService;
     }
 
-    @GetMapping(path = "/{product_id}")
+    @GetMapping(path = "/{productId}")
     @Operation(
             summary = "Получение продукта рекомендации",
             description = "Позволяет получить продукт рекомендации")
     public ResponseEntity<Object> getProduct(
             @Parameter(description = "Идентификатор продукта рекомендации")
-            @PathVariable UUID product_id) {
+            @PathVariable UUID productId) {
 
-        logger.info("Received request for getting recommendation product for product_id: {}", product_id);
+        logger.info("Received request for getting recommendation product for productId: {}", productId);
 
-        product_id = UUID.fromString(String.valueOf(product_id));
+        productId = UUID.fromString(String.valueOf(productId));
 
         try {
-            List<ProductRecommendationsDTO> result = productRecommendationsService.getRecommendationProduct(product_id);
-            logger.info("Outputting in @Controller recommendation product for product_id: {}", product_id);
+            List<ProductRecommendationsDTO> result = productRecommendationsService.getRecommendationProduct(productId);
+            logger.info("Outputting in @Controller recommendation product for productId: {}", productId);
             return ResponseEntity.ok(result);
 
         } catch (ProductNotFoundException e) {
 
-            logger.error("Error Outputting in @Controller recommendation product for product_id: {}", product_id, e);
+            logger.error("Error Outputting in @Controller recommendation product for productId: {}", productId, e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new AppError(HttpStatus.NOT_FOUND.value(),
-                            "Product with UUID " + product_id + " not found in database"));
+                            "Product with UUID " + productId + " not found in database"));
         }
     }
 

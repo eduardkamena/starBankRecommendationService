@@ -6,6 +6,11 @@ import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 
+/**
+ * Конфигурация генерации ключей для кешированных объектов.
+ * <p>
+ *     Use {@link CacheConfig#keyGenerator()}
+ */
 public class CacheKeyGeneratorConfig implements KeyGenerator {
 
     @NotNull
