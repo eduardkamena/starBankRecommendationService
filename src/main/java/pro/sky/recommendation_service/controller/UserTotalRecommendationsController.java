@@ -19,6 +19,9 @@ import pro.sky.recommendation_service.service.UserFixedRecommendationsService;
 
 import java.util.UUID;
 
+/**
+ * Контроллер для проверки и выдачи рекомендаций клиентам
+ */
 @RestController
 @RequestMapping(path = "/recommendation")
 @Tag(
@@ -36,6 +39,12 @@ public class UserTotalRecommendationsController {
         this.userDynamicRecommendationsService = userDynamicRecommendationsService;
     }
 
+    /**
+     * GET-Метод для получения фиксированных рекомендаций для пользователя
+     * @param userId идентификатор пользователя
+     * @return 200 - JSON представление {@link UserRecommendationsDTO рекомендаций}
+     *      <p>400 - рекомендаций не найдено
+     */
     @GetMapping(path = "/fixed/{userId}")
     @Operation(
             summary = "Получение фиксированных рекомендаций продукта(ов) для клиента",
@@ -59,6 +68,12 @@ public class UserTotalRecommendationsController {
         }
     }
 
+    /**
+     * GET-Метод для получения динамических рекомендаций для пользователя
+     * @param userId идентификатор пользователя
+     * @return 200 - JSON представление {@link UserRecommendationsDTO рекомендаций}
+     *      <p>400 - рекомендаций не найдено
+     */
     @GetMapping(path = "/dynamic/{userId}")
     @Operation(
             summary = "Получение динамических рекомендаций продукта(ов) для клиента",

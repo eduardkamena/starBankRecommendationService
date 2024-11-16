@@ -12,6 +12,12 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Класс, реализующий работу со счетчиком рекомендаций
+ * <p>
+ *     Позволяет {@link StatsServiceImpl#incrementStatsCount увеличивать} счетчик
+ *     и {@link StatsServiceImpl#getAllStatsCount() получать} список рекомендации / счетчик
+ */
 @Service
 public class StatsServiceImpl implements StatsService {
 

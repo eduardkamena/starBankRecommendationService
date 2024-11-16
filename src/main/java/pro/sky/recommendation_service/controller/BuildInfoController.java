@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Контроллер информации о сервисе
+ */
 @RestController
 @RequestMapping(path = "/management")
 @Tag(
@@ -25,6 +28,11 @@ public class BuildInfoController {
         this.buildProperties = buildProperties;
     }
 
+    /**
+     * Метод получения информации о сервисе
+     *
+     * @return информацию о сервисе полученную из build-info.properties
+     */
     @GetMapping(path = "/info")
     @Operation(
             summary = "Возврат информации о сервисе",

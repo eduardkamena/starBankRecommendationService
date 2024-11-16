@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Контроллер для работы с динамическими рекомендациями
+ */
 @RestController
 @RequestMapping(path = "/rule")
 @Tag(
@@ -37,12 +40,21 @@ public class DynamicRulesRecommendationsController {
         this.statsService = statsService;
     }
 
+    /**
+     * POST-Метод создания в БД записи рекомендации продукта
+     * <p>
+     *     {@link DynamicRulesRecommendationsService Сервис} по работе с динамическими рекомендациями
+     *
+     * @param recommendation принимаемый JSON в теле запроса
+     * @return 200 - запись создана в БД
+     *      <p>400 - при неудаче
+     */
     @PostMapping
     @Operation(
-            summary = "Создание динамического правила рекомендации",
-            description = "Позволяет создать динамическое правило рекомендации")
+            summary = "Создание динамической рекомендации",
+            description = "Позволяет создать динамическую рекомендации продукта")
     public ResponseEntity<Object> createDynamicRecommendation(
-            @Parameter(description = "Динамическое правило рекомендации")
+            @Parameter(description = "Динамическая рекомендация")
             @RequestBody RecommendationsDTO recommendation) {
 
         logger.info("Received request for creating dynamic rule recommendation: {}", recommendation);
@@ -61,12 +73,19 @@ public class DynamicRulesRecommendationsController {
         }
     }
 
+    /**
+     * GET-Метод получения записи рекомендации из БД
+     *
+     * @param ruleId идентификатор динамической рекомендации
+     * @return 200 - JSON динамической рекомендации
+     *      <p>400 - рекомендация с таким ID не найдена
+     */
     @GetMapping(path = "/{ruleId}")
     @Operation(
-            summary = "Получение динамического правила рекомендации",
-            description = "Позволяет получить динамическое правило рекомендации")
+            summary = "Получение динамической рекомендации",
+            description = "Позволяет получить динамическую рекомендации продукта")
     public ResponseEntity<Object> getDynamicRecommendation(
-            @Parameter(description = "Идентификатор динамического правила рекомендации")
+            @Parameter(description = "ID динамической рекомендации")
             @PathVariable UUID ruleId) {
 
         logger.info("Received request for getting dynamic rule recommendation for ruleId: {}", ruleId);
@@ -85,10 +104,16 @@ public class DynamicRulesRecommendationsController {
         }
     }
 
+    /**
+     * GET-Метод получения всех записей рекомендаций из БД
+     *
+     * @return 200 - JSON динамических рекомендаций
+     *      <p>400 - рекомендация в БД не найдено
+     */
     @GetMapping(path = "/allRules")
     @Operation(
-            summary = "Получение всех динамических правил рекомендаций",
-            description = "Позволяет получить все динамические правила рекомендаций")
+            summary = "Получение всех динамических рекомендаций",
+            description = "Позволяет получить все динамические рекомендации продуктов")
     public ResponseEntity<Object> getAllDynamicRecommendations() {
 
         logger.info("Received request for getting all dynamic rules recommendations");
@@ -107,12 +132,19 @@ public class DynamicRulesRecommendationsController {
         }
     }
 
+    /**
+     * DELETE-Метод удаления записи рекомендации из БД
+     *
+     * @param ruleId идентификатор динамической рекомендации
+     * @return 200 с телом No Content
+     *      <p>400 - рекомендация с таким ID не найдена
+     */
     @DeleteMapping(path = "/{ruleId}")
     @Operation(
-            summary = "Удаление динамического правила рекомендации",
-            description = "Позволяет удалить динамическое правило рекомендации")
+            summary = "Удаление динамической рекомендации",
+            description = "Позволяет удалить динамическую рекомендацию продукта")
     public ResponseEntity<Object> deleteDynamicRecommendation(
-            @Parameter(description = "Идентификатор динамического правила рекомендации")
+            @Parameter(description = "ID динамической рекомендации")
             @PathVariable UUID ruleId) {
 
         logger.info("Received request for deleting dynamic rule recommendation for ruleId: {}", ruleId);
@@ -134,10 +166,17 @@ public class DynamicRulesRecommendationsController {
 
     }
 
+    /**
+     * GET-Метод получения статистики срабатывания рекомендаций
+     * <p>
+     * {@link pro.sky.recommendation_service.service.impl.StatsServiceImpl Сервис} статистики динамических рекомендаций
+     *
+     * @return JSON представления карты срабатывания
+     */
     @GetMapping(path = "/stats")
     @Operation(
-            summary = "Статистика срабатывания динамических правил рекомендаций",
-            description = "Позволяет получить статистику срабатываний динамических правил рекомендаций")
+            summary = "Статистика срабатывания динамических рекомендаций",
+            description = "Позволяет получить статистику срабатываний динамических правил рекомендаций продукта")
     public ResponseEntity<Map<String, List<Map<String, ? extends Serializable>>>> getAllStatsCount() {
 
         logger.info("Receiving a request for recommendations counter stats");
