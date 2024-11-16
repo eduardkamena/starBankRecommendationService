@@ -11,9 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pro.sky.recommendation_service.configuration.CacheConfig;
 
 import java.util.Objects;
 
+/**
+ * Контроллер управления кешированием
+ */
 @RestController
 @RequestMapping(path = "/management")
 @Tag(
@@ -29,6 +33,11 @@ public class CacheController {
         this.cacheManager = cacheManager;
     }
 
+    /**
+     * Метод очистки кеша рекомендаций см.({@link CacheConfig#cacheManager() cacheManager})
+     *
+     * @return 200 - кеш очищен
+     */
     @PostMapping(path = "/clear-caches")
     @Operation(
             summary = "Сброс кэша рекомендаций",

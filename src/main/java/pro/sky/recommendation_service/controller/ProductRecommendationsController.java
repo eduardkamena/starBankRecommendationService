@@ -19,6 +19,9 @@ import pro.sky.recommendation_service.service.ProductRecommendationsService;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Контроллер для работы с продуктами рекомендаций
+ */
 @RestController
 @RequestMapping(path = "/product")
 @Tag(
@@ -34,6 +37,13 @@ public class ProductRecommendationsController {
         this.productRecommendationsService = productRecommendationsService;
     }
 
+    /**
+     * GET-Метод получения записи продукта из БД
+     *
+     * @param productId ID продукта
+     * @return 200 - JSON представление {@link ProductRecommendationsDTO продукта}
+     *      <p>400 - рекомендация не найдена
+     */
     @GetMapping(path = "/{productId}")
     @Operation(
             summary = "Получение продукта рекомендации",
