@@ -16,4 +16,4 @@
 
 Версии и изменения
 ---
-[Можно посмотреть тут](https://github.com/eduardkamena/block4-coursework-recommendation_service/blob/develop/CHANGELOG.md)
+[Можно посмотреть тут](https://github.com/eduardkamena/block4-coursework-recommendation_service/blob/master/CHANGELOG.md)
