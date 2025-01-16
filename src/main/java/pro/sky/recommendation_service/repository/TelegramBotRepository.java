@@ -12,6 +12,11 @@ import pro.sky.recommendation_service.dto.UserDTO;
 
 import java.util.Collection;
 
+/**
+ * Репозиторий для работы с данными пользователей через JDBC.
+ * <p>
+ * Используется для выполнения SQL-запросов к базе данных.
+ */
 @Repository
 public class TelegramBotRepository {
 
@@ -26,6 +31,12 @@ public class TelegramBotRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /**
+     * Получение данных пользователя по имени пользователя.
+     *
+     * @param username имя пользователя
+     * @return коллекция данных пользователя
+     */
     @Cacheable(cacheNames = "telegramBot", key = "#root.methodName + #username")
     public Collection<UserDTO> getUser(String username) {
         String sql = "SELECT u.ID, u.USERNAME, u.FIRST_NAME, u.LAST_NAME " +

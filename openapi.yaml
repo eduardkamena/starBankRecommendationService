@@ -1,0 +1,538 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Recommendation Service API",
+    "description": "Recommendation Service",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8085/",
+      "description": "Developer server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Контроллер динамических правил рекомендаций",
+      "description": "Выполняет действия с динамическими правилами рекомендаций"
+    },
+    {
+      "name": "Контроллер продукта рекомендации",
+      "description": "Выполняет действия с продуктом рекомендации"
+    },
+    {
+      "name": "Контроллер рекомендаций продукта(ов) для клиента",
+      "description": "Выполняет действия с рекомендациями продукта(ов) для клиента"
+    },
+    {
+      "name": "Контроллер управления сервисом",
+      "description": "Выполняет действия с сервисом"
+    },
+    {
+      "name": "Контроллер кеша рекомендаций",
+      "description": "Выполняет действия с кешем рекомендаций"
+    }
+  ],
+  "paths": {
+    "/rule": {
+      "post": {
+        "tags": [
+          "Контроллер динамических правил рекомендаций"
+        ],
+        "summary": "Создание динамической рекомендации",
+        "description": "Позволяет создать динамическую рекомендацию продукта",
+        "operationId": "createDynamicRecommendation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecommendationsDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rule/{ruleId}": {
+      "get": {
+        "tags": [
+          "Контроллер динамических правил рекомендаций"
+        ],
+        "summary": "Получение динамической рекомендации",
+        "description": "Позволяет получить динамическую рекомендацию продукта",
+        "operationId": "getDynamicRecommendation",
+        "parameters": [
+          {
+            "name": "ruleId",
+            "in": "path",
+            "description": "Идентификатор динамической рекомендации",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationsDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Контроллер динамических правил рекомендаций"
+        ],
+        "summary": "Удаление динамической рекомендации",
+        "description": "Позволяет удалить динамическую рекомендацию продукта",
+        "operationId": "deleteDynamicRecommendation",
+        "parameters": [
+          {
+            "name": "ruleId",
+            "in": "path",
+            "description": "Идентификатор динамической рекомендации",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rule/allRules": {
+      "get": {
+        "tags": [
+          "Контроллер динамических правил рекомендаций"
+        ],
+        "summary": "Получение всех динамических рекомендаций",
+        "description": "Позволяет получить все динамические рекомендации продуктов",
+        "operationId": "getAllDynamicRecommendations",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecommendationsDTO"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rule/stats": {
+      "get": {
+        "tags": [
+          "Контроллер динамических правил рекомендаций"
+        ],
+        "summary": "Статистика срабатывания динамических рекомендаций",
+        "description": "Позволяет получить статистику срабатываний динамических правил рекомендаций продукта",
+        "operationId": "getAllStatsCount",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/{productId}": {
+      "get": {
+        "tags": [
+          "Контроллер продукта рекомендации"
+        ],
+        "summary": "Получение продукта рекомендации",
+        "description": "Позволяет получить продукт рекомендации",
+        "operationId": "getProduct",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "Идентификатор продукта рекомендации",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductRecommendationsDTO"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recommendation/fixed/{userId}": {
+      "get": {
+        "tags": [
+          "Контроллер рекомендаций продукта(ов) для клиента"
+        ],
+        "summary": "Получение фиксированных рекомендаций продукта(ов) для клиента",
+        "description": "Позволяет получить фиксированные рекомендации продукта(ов) для клиента",
+        "operationId": "getUserFixedRecommendations",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRecommendationsDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recommendation/dynamic/{userId}": {
+      "get": {
+        "tags": [
+          "Контроллер рекомендаций продукта(ов) для клиента"
+        ],
+        "summary": "Получение динамических рекомендаций продукта(ов) для клиента",
+        "description": "Позволяет получить динамические рекомендации продукта(ов) для клиента",
+        "operationId": "getUserDynamicRecommendations",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRecommendationsDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/management/clear-caches": {
+      "post": {
+        "tags": [
+          "Контроллер кеша рекомендаций"
+        ],
+        "summary": "Сброс кэша рекомендаций",
+        "description": "Позволяет осуществить сброс кэша рекомендаций",
+        "operationId": "clearCaches",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/management/info": {
+      "get": {
+        "tags": [
+          "Контроллер управления сервисом"
+        ],
+        "summary": "Возврат информации о сервисе",
+        "description": "Позволяет осуществить возврат информации о сервисе",
+        "operationId": "getBuildInfo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildProperties"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RecommendationsDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор рекомендации в БД"
+          },
+          "productName": {
+            "type": "string",
+            "description": "Название продукта рекомендации"
+          },
+          "productId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор продукта рекомендации"
+          },
+          "productText": {
+            "type": "string",
+            "description": "Описание продукта рекомендации"
+          },
+          "rule": {
+            "type": "array",
+            "description": "Правила рекомендации",
+            "items": {
+              "$ref": "#/components/schemas/RulesDTO"
+            }
+          }
+        }
+      },
+      "RulesDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор правила рекомендации в БД"
+          },
+          "query": {
+            "type": "string",
+            "description": "Название объекта запроса для правила рекомендации",
+            "enum": [
+              "USER_OF",
+              "ACTIVE_USER_OF",
+              "TRANSACTION_SUM_COMPARE",
+              "TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW"
+            ]
+          },
+          "arguments": {
+            "type": "array",
+            "description": "Аргументы объекта запроса для правила рекомендации",
+            "items": {
+              "type": "string"
+            }
+          },
+          "negate": {
+            "type": "boolean",
+            "description": "Соответствие объекта запроса для правила рекомендации"
+          }
+        }
+      },
+      "ProductRecommendationsDTO": {
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string",
+            "description": "Название продукта рекомендации"
+          },
+          "productId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор продукта рекомендации"
+          },
+          "productText": {
+            "type": "string",
+            "description": "Описание продукта рекомендации"
+          }
+        }
+      },
+      "UserRecommendationsDTO": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Идентификатор клиента"
+          },
+          "recommendations": {
+            "type": "array",
+            "description": "Рекомендации, доступные клиенту",
+            "items": {
+              "$ref": "#/components/schemas/ProductRecommendationsDTO"
+            }
+          }
+        }
+      },
+      "AppError": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "description": "Код статуса HTTP"
+          },
+          "message": {
+            "type": "string",
+            "description": "Сообщение об ошибке"
+          }
+        }
+      },
+      "BuildProperties": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "version": {
+            "type": "string"
+          },
+          "group": {
+            "type": "string"
+          },
+          "artifact": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

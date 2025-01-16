@@ -14,6 +14,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Класс, реализующий фиксированное правило рекомендации "Простой кредит".
+ * <p>
+ * Это правило проверяет, не имеет ли пользователь кредитного продукта, имеет положительный баланс
+ * по дебетовому продукту и выполняет условие по сумме транзакций для дебетового продукта.
+ */
 @Component("simpleCreditRule")
 @RequiredArgsConstructor
 public class SimpleCreditRuleFixed implements FixedRecommendationsRulesSet {
@@ -36,6 +42,12 @@ public class SimpleCreditRuleFixed implements FixedRecommendationsRulesSet {
     private final FixedRecommendationsRepository fixedRecommendationsRepository;
     private final ProductRecommendationsService productRecommendationsService;
 
+    /**
+     * Проверка выполнения условий для рекомендации "Простой кредит".
+     *
+     * @param userId идентификатор пользователя
+     * @return список рекомендаций, если условия выполнены, иначе пустой Optional
+     */
     @Override
     @Cacheable(cacheNames = "fixedRecommendations", keyGenerator = "customKeyGenerator")
     public Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID userId) {
@@ -52,11 +64,22 @@ public class SimpleCreditRuleFixed implements FixedRecommendationsRulesSet {
         return Optional.empty();
     }
 
-    // Условия выполнения клиентом для предоставления продукта рекомендации
+    /**
+     * Проверка наличия у пользователя кредитного продукта.
+     *
+     * @param userId идентификатор пользователя
+     * @return true, если у пользователя есть кредитный продукт, иначе false
+     */
     public boolean hasCreditProduct(UUID userId) {
         return fixedRecommendationsRepository.isProductExists(userId, PRODUCT_TYPE_CREDIT);
     }
 
+    /**
+     * Проверка положительного баланса по дебетовому продукту.
+     *
+     * @param userId идентификатор пользователя
+     * @return true, если баланс положительный, иначе false
+     */
     public boolean hasPositiveDebitBalance(UUID userId) {
         return fixedRecommendationsRepository.getTransactionAmount
                 (userId, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_DEPOSIT)
@@ -64,6 +87,12 @@ public class SimpleCreditRuleFixed implements FixedRecommendationsRulesSet {
                 (userId, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW);
     }
 
+    /**
+     * Проверка выполнения условия по сумме транзакций для дебетового продукта.
+     *
+     * @param userId идентификатор пользователя
+     * @return true, если сумма транзакций превышает заданное условие, иначе false
+     */
     public boolean hasDebitWithdrawCondition(UUID userId) {
         return fixedRecommendationsRepository.getTransactionAmount(userId, PRODUCT_TYPE_DEBIT, TRANSACTION_TYPE_WITHDRAW)
                 > TRANSACTION_CONDITION;

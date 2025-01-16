@@ -10,10 +10,23 @@ import pro.sky.recommendation_service.exception.DoesNotEnumException;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * Класс для десериализации значений перечисления {@link RulesQueryENUM}.
+ * <p>
+ * Используется для преобразования строковых значений в элементы перечисления.
+ */
 public class RulesQueryENUMDeserializer extends JsonDeserializer<RulesQueryENUM> {
 
     private final Logger logger = LoggerFactory.getLogger(RulesQueryENUMDeserializer.class);
 
+    /**
+     * Десериализует строковое значение в элемент перечисления {@link RulesQueryENUM}.
+     *
+     * @param p   парсер JSON
+     * @param src контекст десериализации
+     * @return элемент перечисления {@link RulesQueryENUM}
+     * @throws IOException если произошла ошибка ввода-вывода
+     */
     @Override
     public RulesQueryENUM deserialize(JsonParser p, DeserializationContext src) throws IOException {
         String value = p.getText().toUpperCase();

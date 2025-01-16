@@ -71,9 +71,9 @@ class UserDynamicRulesRecommendationsServiceImplUnitTest {
         // then
         assertEquals(userId, result.userId());
         assertEquals(1, result.recommendations().size());
-        assertEquals(NAME, result.recommendations().get(0).getProduct_name());
-        assertEquals(ID, result.recommendations().get(0).getProduct_id());
-        assertEquals(TEXT, result.recommendations().get(0).getProduct_text());
+        assertEquals(NAME, result.recommendations().get(0).getProductName());
+        assertEquals(ID, result.recommendations().get(0).getProductId());
+        assertEquals(TEXT, result.recommendations().get(0).getProductText());
 
         verify(userFixedRecommendationsService).getAllFixedRecommendations(userId);
     }

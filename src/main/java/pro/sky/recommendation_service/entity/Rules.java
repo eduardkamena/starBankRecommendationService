@@ -11,6 +11,11 @@ import pro.sky.recommendation_service.enums.RulesQueryENUM;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Класс, представляющий сущность правила рекомендации.
+ * <p>
+ * Используется для хранения данных о правиле рекомендации в базе данных.
+ */
 @Entity
 @Data
 @AllArgsConstructor

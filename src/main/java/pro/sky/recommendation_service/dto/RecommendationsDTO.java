@@ -10,6 +10,11 @@ import pro.sky.recommendation_service.entity.Stats;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Класс, представляющий DTO (Data Transfer Object) для рекомендации.
+ * <p>
+ * Используется для передачи данных о рекомендации между слоями приложения.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

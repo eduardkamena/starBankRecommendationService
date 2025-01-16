@@ -3,7 +3,9 @@ package pro.sky.recommendation_service.enums.rulesArgumentsENUM;
 import lombok.Getter;
 
 /**
- * Перечисление возможных значений для аргумента правил динамической рекомендации
+ * Перечисление возможных значений для сравнения суммы транзакций в правилах динамической рекомендации.
+ * <p>
+ * Используется для указания пороговых значений суммы транзакций.
  */
 @Getter
 public enum SumCompare {
@@ -14,6 +16,11 @@ public enum SumCompare {
 
     private final int sumVal;
 
+    /**
+     * Конструктор для создания элемента перечисления с указанием суммы.
+     *
+     * @param sumVal целочисленное значение суммы
+     */
     SumCompare(int sumVal) {
         this.sumVal = sumVal;
     }

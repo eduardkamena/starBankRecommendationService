@@ -11,6 +11,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+/**
+ * Репозиторий для работы с фиксированными рекомендациями через JDBC.
+ * <p>
+ * Используется для выполнения SQL-запросов к базе данных.
+ */
 @Repository
 public class FixedRecommendationsRepository {
 
@@ -25,7 +30,14 @@ public class FixedRecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Join SQL запрос в БД на сумму транзакций пополнения или списания (transactionType) по продукту (productsType)
+    /**
+     * Получение суммы транзакций для продукта и типа транзакции.
+     *
+     * @param userId          идентификатор пользователя
+     * @param productsType    тип продукта
+     * @param transactionType тип транзакции
+     * @return сумма транзакций
+     */
     @Cacheable(cacheNames = "fixedRecommendations", key = "#root.methodName + #userId.toString() + #productsType + #transactionType")
     public int getTransactionAmount(UUID userId, String productsType, String transactionType) {
         String sql = "SELECT SUM(t.AMOUNT) AS transactions_amount " +
@@ -41,7 +53,13 @@ public class FixedRecommendationsRepository {
         return result != null ? result : 0;
     }
 
-    // Запрос в БД на наличие/отсутствия продукта у пользователя
+    /**
+     * Проверка наличия продукта у пользователя.
+     *
+     * @param userId       идентификатор пользователя
+     * @param productsType тип продукта
+     * @return true, если продукт существует, иначе false
+     */
     @Cacheable(cacheNames = "fixedRecommendations", key = "#root.methodName + #userId.toString() + #productsType")
     public boolean isProductExists(UUID userId, String productsType) {
         String sql = "SELECT COUNT(*) " +
@@ -56,7 +74,12 @@ public class FixedRecommendationsRepository {
         return count != null && count > 0;
     }
 
-    // Запрос в БД на наличие/отсутствия пользователя
+    /**
+     * Проверка наличия пользователя в базе данных.
+     *
+     * @param userId идентификатор пользователя
+     * @return true, если пользователь существует, иначе false
+     */
     @Caching(cacheable = {
             @Cacheable(cacheNames = "dynamicRecommendations", key = "#root.methodName + #userId.toString()"),
             @Cacheable(cacheNames = "fixedRecommendations", key = "#root.methodName + #userId.toString()")

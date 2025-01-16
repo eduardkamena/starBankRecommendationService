@@ -37,15 +37,16 @@ public class ProductRecommendationsServiceImpl implements ProductRecommendations
     /**
      * Метод получения продукта рекомендации
      * <p>
-     *     Метод нахождения и получения продукта рекомендации
-     *     и приведении его к виду DTO (name, productId, text)
+     * Метод нахождения и получения продукта рекомендации
+     * и приведении его к виду DTO (name, productId, text)
      * </p>
+     *
      * @param productId ID продукта по БД {@link Recommendations Recommendations}
      * @return продукт со списком рекомендаций, приведенный к виду ({@link RecommendationsDTO})
      * @throws ProductNotFoundException если продукт не найден в БД
      */
     @Override
-    @Caching( cacheable = {
+    @Caching(cacheable = {
             @Cacheable(cacheNames = "productRecommendations", key = "#root.methodName + #productId.toString()"),
             @Cacheable(cacheNames = "fixedRecommendations", key = "#root.methodName + #productId.toString()")
     })

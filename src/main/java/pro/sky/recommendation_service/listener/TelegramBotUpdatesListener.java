@@ -18,6 +18,11 @@ import pro.sky.recommendation_service.service.MessageSenderService;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Класс, реализующий слушатель обновлений Telegram-бота.
+ * <p>
+ * Обрабатывает входящие сообщения и команды от пользователей, отправляет ответы и реакции.
+ */
 @Service
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
@@ -28,6 +33,14 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final MessageSenderService messageSenderService;
     private final TelegramBotUpdatesMethods telegramBotUpdatesMethods;
 
+    /**
+     * Конструктор для создания слушателя обновлений Telegram-бота.
+     *
+     * @param telegramBot               экземпляр Telegram-бота
+     * @param telegramBotRepository     репозиторий для работы с данными пользователей
+     * @param messageSenderService      сервис для отправки сообщений
+     * @param telegramBotUpdatesMethods методы для обработки команд Telegram-бота
+     */
     @Autowired
     public TelegramBotUpdatesListener(TelegramBot telegramBot,
                                       TelegramBotRepository telegramBotRepository,
@@ -39,11 +52,20 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         this.telegramBotUpdatesMethods = telegramBotUpdatesMethods;
     }
 
+    /**
+     * Инициализация слушателя обновлений.
+     */
     @PostConstruct
     public void init() {
         telegramBot.setUpdatesListener(this);
     }
 
+    /**
+     * Обработка входящих обновлений.
+     *
+     * @param updates список обновлений
+     * @return статус обработки обновлений
+     */
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {

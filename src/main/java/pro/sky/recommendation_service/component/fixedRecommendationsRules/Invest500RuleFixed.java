@@ -14,6 +14,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Класс, реализующий фиксированное правило рекомендации "Invest 500".
+ * <p>
+ * Это правило проверяет, имеет ли пользователь дебетовый продукт, не имеет инвестиционного продукта
+ * и выполняет условие по сумме транзакций для сберегательного продукта.
+ */
 @Component("invest500Rule")
 @RequiredArgsConstructor
 public class Invest500RuleFixed implements FixedRecommendationsRulesSet {
@@ -36,6 +42,12 @@ public class Invest500RuleFixed implements FixedRecommendationsRulesSet {
     private final FixedRecommendationsRepository fixedRecommendationsRepository;
     private final ProductRecommendationsService productRecommendationsService;
 
+    /**
+     * Проверка выполнения условий для рекомендации "Invest 500".
+     *
+     * @param userId идентификатор пользователя
+     * @return список рекомендаций, если условия выполнены, иначе пустой Optional
+     */
     @Override
     @Cacheable(cacheNames = "fixedRecommendations", keyGenerator = "customKeyGenerator")
     public Optional<List<ProductRecommendationsDTO>> checkRecommendation(UUID userId) {
@@ -53,15 +65,32 @@ public class Invest500RuleFixed implements FixedRecommendationsRulesSet {
         return Optional.empty();
     }
 
-    // Условия выполнения клиентом для предоставления продукта рекомендации
+    /**
+     * Проверка наличия у пользователя дебетового продукта.
+     *
+     * @param userId идентификатор пользователя
+     * @return true, если у пользователя есть дебетовый продукт, иначе false
+     */
     public boolean hasDebitProduct(UUID userId) {
         return fixedRecommendationsRepository.isProductExists(userId, PRODUCT_TYPE_DEBIT);
     }
 
+    /**
+     * Проверка наличия у пользователя инвестиционного продукта.
+     *
+     * @param userId идентификатор пользователя
+     * @return true, если у пользователя есть инвестиционный продукт, иначе false
+     */
     public boolean hasInvestProduct(UUID userId) {
         return fixedRecommendationsRepository.isProductExists(userId, PRODUCT_TYPE_INVEST);
     }
 
+    /**
+     * Проверка выполнения условия по сумме транзакций для сберегательного продукта.
+     *
+     * @param userId идентификатор пользователя
+     * @return true, если сумма транзакций превышает заданное условие, иначе false
+     */
     public boolean hasSavingDepositCondition(UUID userId) {
         return fixedRecommendationsRepository.getTransactionAmount(userId, PRODUCT_TYPE_SAVING, TRANSACTION_TYPE_DEPOSIT)
                 > TRANSACTION_CONDITION;

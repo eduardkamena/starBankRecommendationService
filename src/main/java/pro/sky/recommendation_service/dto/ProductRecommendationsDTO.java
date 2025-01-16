@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+/**
+ * Класс, представляющий DTO (Data Transfer Object) для продукта рекомендации.
+ * <p>
+ * Используется для передачи данных о продукте рекомендации между слоями приложения.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

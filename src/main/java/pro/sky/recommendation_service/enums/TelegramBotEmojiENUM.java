@@ -4,7 +4,9 @@ import com.vdurmont.emoji.EmojiParser;
 import lombok.AllArgsConstructor;
 
 /**
- * Перечисление возможных эмодзи для Telegram-бота
+ * Перечисление возможных эмодзи для Telegram-бота.
+ * <p>
+ * Используется для отправки эмодзи в сообщениях Telegram.
  */
 @AllArgsConstructor
 public enum TelegramBotEmojiENUM {
@@ -20,6 +22,11 @@ public enum TelegramBotEmojiENUM {
 
     private final String value;
 
+    /**
+     * Возвращает эмодзи в виде строки Unicode.
+     *
+     * @return строка Unicode, представляющая эмодзи
+     */
     public String get() {
         return EmojiParser.parseToUnicode(value);
     }
