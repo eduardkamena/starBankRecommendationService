@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @deprecated Класс для работы со статическими рекомендациями.
+ * Класс для работы со статическими рекомендациями.
  * <p>
  * Новый функционал см.{@link UserDynamicRecommendationsServiceImpl}
  */

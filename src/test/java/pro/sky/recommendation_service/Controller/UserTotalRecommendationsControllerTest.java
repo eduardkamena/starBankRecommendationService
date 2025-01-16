@@ -71,11 +71,11 @@ public class UserTotalRecommendationsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()) //receive
-                .andExpect(jsonPath("$.user_id").value(userId.toString()))
+                .andExpect(jsonPath("$.userId").value(userId.toString()))
                 .andExpect(jsonPath("$.recommendations").isArray())
-                .andExpect(jsonPath("$.recommendations[0].product_name").value(NAME))
-                .andExpect(jsonPath("$.recommendations[0].product_id").value(ID.toString()))
-                .andExpect(jsonPath("$.recommendations[0].product_text").value(TEXT));
+                .andExpect(jsonPath("$.recommendations[0].productName").value(NAME))
+                .andExpect(jsonPath("$.recommendations[0].productId").value(ID.toString()))
+                .andExpect(jsonPath("$.recommendations[0].productText").value(TEXT));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class UserTotalRecommendationsControllerTest {
 
         mockMvc.perform(get("/recommendation/fixed/{user_id}", userId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.user_id", is(userId.toString())));
+                .andExpect(jsonPath("$.userId", is(userId.toString())));
     }
 
 }

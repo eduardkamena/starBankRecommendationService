@@ -52,7 +52,7 @@ class UserDynamicRulesRecommendationsServiceImplTests {
 
         assertEquals(1, result.recommendations().size());
         assertEquals(userId, result.userId());
-        assertEquals("Инвестиции", result.recommendations().get(0).getProduct_name());
+        assertEquals("Инвестиции", result.recommendations().get(0).getProductName());
     }
 
     @Test
