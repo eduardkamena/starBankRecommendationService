@@ -10,6 +10,11 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Класс, представляющий сущность рекомендации.
+ * <p>
+ * Используется для хранения данных о рекомендации в базе данных.
+ */
 @Entity
 @Data
 @AllArgsConstructor

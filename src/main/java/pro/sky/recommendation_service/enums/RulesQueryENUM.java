@@ -3,7 +3,9 @@ package pro.sky.recommendation_service.enums;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * Перечисление возможных значений для запроса правил динамической рекомендации
+ * Перечисление возможных запросов для правил динамической рекомендации.
+ * <p>
+ * Используется для указания типа запроса в правилах рекомендаций.
  */
 @JsonDeserialize(using = RulesQueryENUMDeserializer.class)
 public enum RulesQueryENUM {

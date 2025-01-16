@@ -12,6 +12,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Репозиторий для работы с динамическими рекомендациями через JDBC.
+ * <p>
+ * Используется для выполнения SQL-запросов к базе данных.
+ */
 @Repository
 public class DynamicJDBCRecommendationsRepository {
 

@@ -10,6 +10,11 @@ import pro.sky.recommendation_service.enums.RulesQueryENUM;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Класс, представляющий DTO (Data Transfer Object) для правила рекомендации.
+ * <p>
+ * Используется для передачи данных о правиле рекомендации между слоями приложения.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

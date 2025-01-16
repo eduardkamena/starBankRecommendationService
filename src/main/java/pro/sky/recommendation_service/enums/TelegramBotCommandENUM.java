@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * Перечисление возможных команд для Telegram-бота
+ * Перечисление возможных команд для Telegram-бота.
+ * <p>
+ * Используется для обработки команд, отправленных пользователем в Telegram.
  */
 @Getter
 @AllArgsConstructor

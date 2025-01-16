@@ -20,7 +20,10 @@ import pro.sky.recommendation_service.service.UserFixedRecommendationsService;
 import java.util.UUID;
 
 /**
- * Контроллер для проверки и выдачи рекомендаций клиентам
+ * Контроллер для проверки и выдачи рекомендаций клиентам.
+ * <p>
+ * Этот контроллер предоставляет API для получения фиксированных и динамических рекомендаций для пользователя.
+ * </p>
  */
 @RestController
 @RequestMapping(path = "/recommendation")

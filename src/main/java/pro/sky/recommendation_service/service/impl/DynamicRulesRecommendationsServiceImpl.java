@@ -13,6 +13,7 @@ import pro.sky.recommendation_service.entity.Stats;
 import pro.sky.recommendation_service.enums.rulesArgumentsENUM.ComparisonOperators;
 import pro.sky.recommendation_service.enums.rulesArgumentsENUM.SumCompare;
 import pro.sky.recommendation_service.enums.rulesArgumentsENUM.TransactionProductTypes;
+import pro.sky.recommendation_service.exception.NullOrEmptyException;
 import pro.sky.recommendation_service.exception.RuleNotFoundException;
 import pro.sky.recommendation_service.repository.DynamicJPARecommendationsRepository;
 import pro.sky.recommendation_service.service.DynamicRulesRecommendationsService;
@@ -24,34 +25,32 @@ import java.util.stream.Collectors;
  * <h3>Класс для работы с динамическими рекомендациями продукта.
  * <p>
  * В данной реализации позволяет выполнять действия с рекомендациями:
- * <ln>
- * <li>Создать запись в БД динамической рекомендации
- * см.{@link DynamicRulesRecommendationsServiceImpl#createDynamicRuleRecommendation createDynamicRuleRecommendation}</li>
- * <li>Получить рекомендацию из БД по ее ID
- * см.{@link DynamicRulesRecommendationsServiceImpl#getDynamicRuleRecommendation getDynamicRuleRecommendation}</li>
- * <li>Получить все рекомендации продуктов из БД
- * см.{@link DynamicRulesRecommendationsServiceImpl#getAllDynamicRulesRecommendations getAllDynamicRulesRecommendations}</li>
- * <li>Удалить рекомендацию из БД по ее ID
- * см.{@link DynamicRulesRecommendationsServiceImpl#deleteDynamicRuleRecommendation deleteDynamicRuleRecommendation}</li>
- * </ln>
+ * <ul>
+ *     <li>Создать запись в БД динамической рекомендации
+ *     см.{@link DynamicRulesRecommendationsServiceImpl#createDynamicRuleRecommendation createDynamicRuleRecommendation}</li>
+ *     <li>Получить рекомендацию из БД по ее ID
+ *     см.{@link DynamicRulesRecommendationsServiceImpl#getDynamicRuleRecommendation getDynamicRuleRecommendation}</li>
+ *     <li>Получить все рекомендации продуктов из БД
+ *     см.{@link DynamicRulesRecommendationsServiceImpl#getAllDynamicRulesRecommendations getAllDynamicRulesRecommendations}</li>
+ *     <li>Удалить рекомендацию из БД по ее ID
+ *     см.{@link DynamicRulesRecommendationsServiceImpl#deleteDynamicRuleRecommendation deleteDynamicRuleRecommendation}</li>
+ * </ul>
  * <p>
- * А так же позволяет выполнять проверки
+ * А также позволяет выполнять проверки
  * {@link DynamicRulesRecommendationsServiceImpl#checkArguments checkArguments}
- * на соответствие
- * передаваемых аргументов правил для выдачи рекомендации пользователю.
+ * на соответствие передаваемых аргументов правил для выдачи рекомендации пользователю.
  * <p>
  * Последовательно проверяются
  * см.{@link DynamicRulesRecommendationsServiceImpl#isValidEnumArguments isValidEnumArguments}
  * следующие аргументы правил:
- * <ln>
- * <li>На соответствие типам продукта и транзакций
- * см.{@link DynamicRulesRecommendationsServiceImpl#isTransactionProductTypeENUM isTransactionProductTypeENUM}</li>
- * <li>На соответствие операторам сравнения
- * <li></li>
- * см.{@link DynamicRulesRecommendationsServiceImpl#isComparisonOperatorsENUM isComparisonOperatorsENUM}</li>
- * <li>На соответствие константе-целочисленному значению
- * см.{@link DynamicRulesRecommendationsServiceImpl#isSumCompareENUM isSumCompareENUM}</li>
- * </ln>
+ * <ul>
+ *     <li>На соответствие типам продукта и транзакций
+ *     см.{@link DynamicRulesRecommendationsServiceImpl#isTransactionProductTypeENUM isTransactionProductTypeENUM}</li>
+ *     <li>На соответствие операторам сравнения
+ *     см.{@link DynamicRulesRecommendationsServiceImpl#isComparisonOperatorsENUM isComparisonOperatorsENUM}</li>
+ *     <li>На соответствие константе-целочисленному значению
+ *     см.{@link DynamicRulesRecommendationsServiceImpl#isSumCompareENUM isSumCompareENUM}</li>
+ * </ul>
  */
 
 @Service
@@ -71,10 +70,13 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
      * <p>
      * Метод позволяет создать запись динамического правила для продукта рекомендации
      * в БД. Получаемый объект DTO преобразуется к объекту сущности {@link Recommendations}
-     * и сохраняется в БД
+     * и сохраняется в БД.
      * </p>
      *
-     * @param recommendationsDTO ({@link RecommendationsDTO})
+     * @param recommendationsDTO объект DTO, содержащий данные для создания рекомендации
+     * @return созданная рекомендация
+     * @throws IllegalArgumentException если переданы некорректные данные
+     * @throws NullOrEmptyException     если переданы пустые или нулевые значения
      */
     @Override
     public Recommendations createDynamicRuleRecommendation(RecommendationsDTO recommendationsDTO) {
@@ -123,11 +125,11 @@ public class DynamicRulesRecommendationsServiceImpl implements DynamicRulesRecom
      * Получение динамической рекомендации по ID.
      * <p>
      * Метод позволяет получить запись динамического правила из БД по ID,
-     * с последующим преобразованием к объекту DTO
+     * с последующим преобразованием к объекту DTO.
      * </p>
      *
-     * @param recommendationId ID динамической рекомендации ({@link Recommendations})
-     * @return объект DTO ({@link RecommendationsDTO})
+     * @param recommendationId ID динамической рекомендации
+     * @return объект DTO, содержащий данные рекомендации
      * @throws RuleNotFoundException если рекомендация не найдена в БД
      */
     @Override
